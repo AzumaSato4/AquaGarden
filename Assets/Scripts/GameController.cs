@@ -16,12 +16,4 @@ public class GameController : MonoBehaviour
     {
         
     }
-
-    public void GameStart()
-    {
-        if (SelectPlayer.selectPlayer != 0 && gameMode == "TopMenu")
-        {
-            gameMode = "Start";
-        }
-    }
 }

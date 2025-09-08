@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f33ccfd0c5215e4c83e86506f5356f1, type: 3}
   m_Name: Minifish
   m_EditorClassIdentifier: 
-  pieceName: MiniFish
+  pieceName: Minifish
   category: Fish
   oxygen: 0
   items: 23

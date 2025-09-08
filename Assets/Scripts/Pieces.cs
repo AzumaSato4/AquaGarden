@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -7,80 +8,59 @@ using UnityEngine;
 public class Pieces : MonoBehaviour
 {
     public PieceData[] pieces;
+    //布袋
+    public List<string> pouch = new List<string>();
+    //海ボード
+    public Dictionary<string, int> sea = new Dictionary<string, int>();
+
+    int totalPieces = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //プレイ人数によって個数を変える
+        SetPlayer(SelectPlayer.selectPlayer);
 
-        ////布袋
-        //Dictionary<PieceType, int> pouch = new Dictionary<PieceType, int>()
-        //{
-        //    {PieceType.minifish, minifishes},
-        //    {PieceType.bigfish, bigfishes},
-        //    {PieceType.seaturtle, seaturtles},
-        //    {PieceType.seahorse, seahorses},
-        //    {PieceType.shark, sharks},
-        //    {PieceType.whaleshark, whalesharks},
-        //    {PieceType.seaweed, seaweeds},
-        //    {PieceType.coral, corals}
-        //};
+        GameController.gameMode = "Playing";
+        Debug.Log(GameController.gameMode);
 
-        ////海ボード
-        //Dictionary<PieceType, int> sea = new Dictionary<PieceType, int>()
-        //{
-        //    {PieceType.minifish, 0},
-        //    {PieceType.bigfish, 0},
-        //    {PieceType.seaturtle, 0},
-        //    {PieceType.seahorse, 0},
-        //    {PieceType.shark, 0},
-        //    {PieceType.whaleshark, 0},
-        //    {PieceType.seaweed, 0},
-        //    {PieceType.coral, 0}
-        //};
+        //布袋
+        for (int i = 0; i < pieces.Length; i++)
+        {
+            if (pieces[i].category == "Fish")
+            {
+                for (int j = 0; j < pieces[i].items; j++)
+                {
+                    pouch.Add(pieces[i].pieceName);
+                }
+            }
+        }
 
-        ////魚駒だけ集める
-        //PieceType[] fishType = new PieceType[]
-        //{
-        // PieceType.minifish,
-        // PieceType.bigfish,
-        // PieceType.seaturtle,
-        // PieceType.seahorse,
-        // PieceType.shark,
-        // PieceType.whaleshark
-        //};
-
-        ////袋から魚駒5個海へ
-        //Setup(fishType, pouch, sea, 5);
+        //海ボード
+        //初期化
+        for (int i = 0; i < pieces.Length; i++)
+        {
+            sea.Add(pieces[i].pieceName, 0);
+        }
+        //海藻とサンゴを入れる
+        sea["Seaweed"] = pieces[6].items;
+        sea["Coral"] = pieces[7].items;
 
 
 
-        ////中身の確認（テスト用）
-        //foreach (var kp in pouch)
-        //{
-        //    var key = kp.Key;
-        //    var value = kp.Value;
-        //    Debug.Log($"{key} / {value}");
-        //}
-        //foreach (var kp in sea)
-        //{
-        //    var key = kp.Key;
-        //    var value = kp.Value;
-        //    Debug.Log($"{key} / {value}");
-        //}
+        //袋から魚駒5個海へ
+        PouchToSea(5);
+
+        //中身確認用
+        foreach (KeyValuePair<string, int> kvp in sea)
+        {
+            Debug.Log(kvp.Key + "=" + kvp.Value);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameController.gameMode == "Start")
-        {
-            //プレイ人数によって個数を変える
-            SetPlayer(SelectPlayer.selectPlayer);
-
-            GameController.gameMode = "Playing";
-            Debug.Log(GameController.gameMode);
-
-        }
 
     }
 
@@ -111,34 +91,20 @@ public class Pieces : MonoBehaviour
             pieces[7].items = 16; //サンゴ
         }
 
-
-        foreach (var count in pieces)
-        {
-            Debug.Log(count.items);
-        }
     }
 
 
-    ////fromからtoへ魚駒を移動させる
-    //void Setup(PieceType[] types, Dictionary<PieceType, int> from, Dictionary<PieceType, int> to, int count)
-    //{
-    //    for (int i = 0; i < count; i++)
-    //    {
-    //        //残っている駒をすべて集める
-    //        List<PieceType> available = new List<PieceType>();
-    //        foreach (var t in types)
-    //        {
-    //            if (from[t] > 0)
-    //            {
-    //                available.Add(t);
-    //            }
-    //        }
+    //pouchからseaへ魚駒を移動させる
+    void PouchToSea(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            //ランダムな駒を移動させる
+            int rnd = Random.Range(0, pouch.Count);
+            string select = pouch[rnd];
 
-    //        //ランダムな駒を移動させる
-    //        int rnd = Random.Range(0, available.Count);
-    //        PieceType select = available[rnd];
-    //        from[select]--;
-    //        to[select]++;
-    //    }
-    //}
+            sea[select]++;
+            pouch.RemoveAt(rnd);
+        }
+    }
 }
