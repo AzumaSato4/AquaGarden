@@ -13,16 +13,22 @@ public class ChangePanelManager : MonoBehaviour
     //次のパネルに切り替える
     public void MoveNextPanel()
     {
-        currentPanel.SetActive(false);
-        nextPanel.SetActive(true);
-        titleUIManager.mainPanel = nextPanel.name;
+        if (currentPanel.name == titleUIManager.mainPanel)
+        {
+            currentPanel.SetActive(false);
+            nextPanel.SetActive(true);
+            titleUIManager.mainPanel = nextPanel.name;
+        }
     }
 
     //前のパネルに切り替える
     public void MovePrePanel()
     {
-        currentPanel.SetActive(false);
-        prePanel.SetActive(true);
-        titleUIManager.mainPanel = prePanel.name;
+        if (currentPanel.name == titleUIManager.mainPanel)
+        {
+            currentPanel.SetActive(false);
+            prePanel.SetActive(true);
+            titleUIManager.mainPanel = prePanel.name;
+        }
     }
 }

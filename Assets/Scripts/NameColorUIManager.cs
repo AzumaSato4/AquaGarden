@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class NameColorUIManager : MonoBehaviour
 {
-    public PlayerManager playerManager;
-    public GameObject p1Player;
-    public GameObject p2Player;
-    public GameObject p3Player;
-    public GameObject p4Player;
+    public GameObject player1;
+    public GameObject player2;
+    public GameObject player3;
+    public GameObject player4;
 
     public TitleUIManager titleUIManager;
 
+    public TMP_InputField player3Name;
+    public TMP_Dropdown player3Color;
+
     void Start()
     {
-        p1Player.SetActive(false);
-        p2Player.SetActive(false);
-        p3Player.SetActive(false);
-        p4Player.SetActive(false);
+        //初期値は非表示
     }
 
-    void Update()
+    public void SetNameColor()
     {
         if (titleUIManager.mainPanel == "Panel2")
         {
+            player3Name.interactable = true;
             HideField(PlayerManager.players);
+
+            //2人プレイの場合は「Goss」が3pに強制的になる
+            if (PlayerManager.players == 2)
+            {
+                player3.SetActive(true);
+                player3Name.interactable = false;
+                player3Color.interactable = true;
+            }
         }
-
-
-        if (PlayerManager.players == 2) PlayerManager.p3Name = "Goss";
     }
 
     //プレイ人数に合わせて表示を変える
@@ -37,28 +42,28 @@ public class NameColorUIManager : MonoBehaviour
         switch (n)
         {
             case 1:
-                p1Player.SetActive(true);
-                p2Player.SetActive(false);
-                p3Player.SetActive(false);
-                p4Player.SetActive(false);
+                player1.SetActive(true);
+                player2.SetActive(false);
+                player3.SetActive(false);
+                player4.SetActive(false);
                 break;
             case 2:
-                p1Player.SetActive(true);
-                p2Player.SetActive(true);
-                p3Player.SetActive(false);
-                p4Player.SetActive(false);
+                player1.SetActive(true);
+                player2.SetActive(true);
+                player3.SetActive(false);
+                player4.SetActive(false);
                 break;
             case 3:
-                p1Player.SetActive(true);
-                p2Player.SetActive(true);
-                p3Player.SetActive(true);
-                p4Player.SetActive(false);
+                player1.SetActive(true);
+                player2.SetActive(true);
+                player3.SetActive(true);
+                player4.SetActive(false);
                 break;
             case 4:
-                p1Player.SetActive(true);
-                p2Player.SetActive(true);
-                p3Player.SetActive(true);
-                p4Player.SetActive(true);
+                player1.SetActive(true);
+                player2.SetActive(true);
+                player3.SetActive(true);
+                player4.SetActive(true);
                 break;
         }
     }
