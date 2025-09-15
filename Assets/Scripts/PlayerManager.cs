@@ -8,7 +8,6 @@ public class PlayerManager : MonoBehaviour
     public static int players;
 
     public TMP_InputField[] pNameField;
-
     public TMP_Dropdown[] pColorField;
 
     public bool isName;
@@ -20,7 +19,8 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-
+        pName = new string[4];
+        pColor = new int[4];
     }
 
     //プレイ可能かチェック
@@ -64,7 +64,6 @@ public class PlayerManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log(pColor);
     }
 
 

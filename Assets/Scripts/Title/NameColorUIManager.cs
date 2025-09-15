@@ -32,6 +32,9 @@ public class NameColorUIManager : MonoBehaviour
                 player3.SetActive(true);
                 player3Name.interactable = false;
                 player3Color.interactable = true;
+
+                PlayerManager.pName[2] = "Goss";
+                player3Name.text = "Goss";
             }
         }
     }
