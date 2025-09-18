@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 56c664b10cc66fc429699f3d37b3bda0
+  productGUID: ab74c56846d5e184698e6e8c58b703c9
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: AquaGarden
+  productName: AquaGarden1.1
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -750,11 +750,11 @@ PlayerSettings:
   webGLTemplate: APPLICATION:Default
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
-  webGLCompressionFormat: 1
+  webGLCompressionFormat: 0
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
-  webGLDecompressionFallback: 1
+  webGLDecompressionFallback: 0
   webGLInitialMemorySize: 32
   webGLMaximumMemorySize: 2048
   webGLMemoryGrowthMode: 2
@@ -788,14 +788,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: AquaGarden
+  metroPackageName: AquaGarden1.1
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: AquaGarden
+  metroApplicationDescription: AquaGarden1.1
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -866,10 +866,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: ea416891-7f16-466f-a49d-53a5b1e48a86
+  cloudProjectId: 61795adb-2d05-4cee-90fa-a0ce28b6b923
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: AquaGarden 2025-09-12_19-21-13
+  projectName: AquaGarden1.1
   organizationId: yonny424
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
