@@ -11,19 +11,30 @@ public class GameManager : MonoBehaviour
         aquarium
     }
 
-    public Part currentPart = Part.gallery;
+    Part currentPart = Part.gallery;
 
+    public SeaBoard sea;
+    public SeaFish seaFish;
+    public GameObject fishPrefab;
+
+    [Header("StartSeaFish")]
+    public List<FishData> fishData;
+    public List<int> fishCount;
 
     public PlayerController[] players;
     public Tile[] galleryTiles;
 
     public GameObject galleryCam;   //ギャラリーボードを映すためのカメラ
+    public GameObject[] aquariumCams;   //水族館ボードを映すためのカメラ
+
     public float moveCamTime;
 
     PlayerController currentPlayer;
     PlayerController nextPlayer;
 
     public int maxRound;
+    public GameObject confirmButton;
+    public static bool UIActive = false;
 
     int turnCount;
     int roundCount;
@@ -36,6 +47,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        sea.Initialze(fishData, fishCount);
+        seaFish.Initialze(fishData, fishCount);
+
         roundCount = 0;
 
         StartRound();
@@ -48,10 +62,12 @@ public class GameManager : MonoBehaviour
     {
         currentPart = Part.gallery;
         galleryCam.SetActive(true);
+        confirmButton.SetActive(false);
 
         turnCount = 0;
         currentPlayerIndex = 0;
         finishOrder.Clear();
+        movableTiles.Clear();
         ClearHighlights();
 
         roundCount++;
@@ -126,15 +142,33 @@ public class GameManager : MonoBehaviour
         if (!movableTiles.Contains(clickedTile)) return;
 
         currentPlayer.MoveToAquaTile(clickedTile);
-
-
-        //次のプレイヤーのターンへ
-        NextPlayerTurn();
-
+        confirmButton.SetActive(true);
     }
 
 
-    //次のターンへ
+    //水族館パートの決定ボタン
+    public void OnConfirmButton()
+    {
+        //水槽のハイライトを消す（元に戻す）
+        currentPlayer.currentAquaTile.leftSlot.SetHighlight(false);
+        currentPlayer.currentAquaTile.rightSlot.SetHighlight(false);
+
+        //水槽のコライダーを消す
+        currentPlayer.currentAquaTile.leftSlot.GetComponent<Collider2D>().enabled = false;
+        currentPlayer.currentAquaTile.rightSlot.GetComponent<Collider2D>().enabled = false;
+
+        //仮置きを確定に
+        currentPlayer.currentAquaTile.leftSlot.ConfirmFishPlacement();
+        currentPlayer.currentAquaTile.rightSlot.ConfirmFishPlacement();
+
+        //次のプレイヤーのターンへ
+        StartCoroutine(ChangeCamera(currentPlayer.aquariumCam, galleryCam));
+        NextPlayerTurn();
+    }
+
+
+
+    //次のプレイヤーのターンへ
     public void NextPlayerTurn()
     {
         //移動を終えたらマスのハイライトを戻して次のターンへ
@@ -157,8 +191,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
+        confirmButton.SetActive(false);
+
         currentPart = Part.gallery;
-        StartCoroutine(ChangeCamera(currentPlayer.aquariumCam, galleryCam));
 
         HighlightMovableTiles(nextPlayer.currentGalleryTile, galleryTiles);
         Debug.Log(nextPlayer.pData.playerName + "のターン");
@@ -264,6 +300,7 @@ public class GameManager : MonoBehaviour
             foreach (Tile t in p.aquariumTiles)
             {
                 t.Highlight(false);
+                t.GetComponent<Collider2D>().enabled = true;
             }
         }
     }
@@ -297,6 +334,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+    //カメラをmoveCamTime秒後に切り替え
     IEnumerator ChangeCamera(GameObject from, GameObject to)
     {
         yield return new WaitForSeconds(moveCamTime);

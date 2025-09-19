@@ -10,6 +10,9 @@ public class Tile : MonoBehaviour
 
     public bool isGallery;  //ture = ギャラリー、false = 水族館
 
+    public AquaSlot leftSlot;   //左隣の水槽
+    public AquaSlot rightSlot;  //右隣の水槽
+
     SpriteRenderer spriteRenderer;
     Color defaultcolor;
     public Color highlightColor = Color.white;
@@ -25,6 +28,9 @@ public class Tile : MonoBehaviour
     //マスがクリックされた
     private void OnMouseDown()
     {
+        // UIの上にカーソルがあったら、入力を受け付けない
+        if (GameManager.UIActive) return;
+
         if (isGallery)
         {
             manager.OnTileClicked(this);

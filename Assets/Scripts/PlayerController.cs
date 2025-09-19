@@ -7,14 +7,14 @@ public class PlayerController : MonoBehaviour
 
     //ギャラリーボード
     public GameObject galleryPiece; //ギャラリーボード用の駒
-    public Tile currentGalleryTile;        //現在のマス番号（初期値はスタートマス）
+    public Tile currentGalleryTile; //現在のマス番号（初期値はスタートマス）
     public bool isGoal = false;     //ゴールしたかどうか
-    
+
     //水族館ボード
     public GameObject aquariumPiece; //水族館ボード用の駒
     public Tile[] aquariumTiles;     //プレイヤーそれぞれが持つ水族館ボード
     public Tile currentAquaTile;    //水族館ボードの現在のマス番号
-    public GameObject aquariumCam;      //水族館ボードを映す用のカメラ
+    public GameObject aquariumCam;  //水族館用カメラ
 
     float moveTime = 0.3f; //プレイヤー駒が目的地までかかる時間
 
@@ -47,8 +47,25 @@ public class PlayerController : MonoBehaviour
     public void MoveToAquaTile(Tile toTile)
     {
         currentAquaTile = toTile;
-        currentGalleryTile.Highlight(false);
+        EnableAquariumSlot(toTile);
         StartCoroutine(MoveCoroutine(toTile.transform.position, aquariumPiece));
+    }
+
+
+    public void EnableAquariumSlot(Tile currentTile)
+    {
+        foreach (Tile t in aquariumTiles)
+        {
+            t.Highlight(false);
+            t.GetComponent<Collider2D>().enabled = false;
+        }
+
+        //隣接の水槽を有効化
+        currentTile.leftSlot.SetHighlight(true);
+        currentTile.rightSlot.SetHighlight(true);
+
+        currentTile.leftSlot.GetComponent<Collider2D>().enabled = true;
+        currentTile.rightSlot.GetComponent<Collider2D>().enabled = true;
     }
 
 
