@@ -1,9 +1,11 @@
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
     public int index;       //マス番号
     public bool isAd;       //広告マスかどうか
+    public bool isStart;    //スタートマスかどうか
     public bool uesdTile;   //ほかのプレイヤーが一度でも止まったかどうか
 
     public GameManager manager;
@@ -15,7 +17,7 @@ public class Tile : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
     Color defaultcolor;
-    public Color highlightColor = Color.white;
+    public Color highlightColor;
 
     
     private void Awake()

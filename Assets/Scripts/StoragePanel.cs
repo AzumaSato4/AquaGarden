@@ -4,15 +4,13 @@ using UnityEngine;
 public class StoragePanel : MonoBehaviour
 {
     public List<FishPiece> storageFishes = new List<FishPiece>();
-    [SerializeField] GameObject fishPrefab;
-    GameObject storageFish;
 
     //ストレージに魚駒を追加する
     public void AddStorage(FishPiece fish)
     {
         storageFishes.Add(fish);
-        storageFish = Instantiate(fishPrefab, transform);
-        storageFish.transform.localPosition = Vector3.zero;
+        fish.transform.SetParent(transform);
+        fish.transform.localPosition = Vector3.zero;
     }
 
 

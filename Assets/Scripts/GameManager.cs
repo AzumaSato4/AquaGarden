@@ -14,15 +14,18 @@ public class GameManager : MonoBehaviour
     Part currentPart = Part.gallery;
 
     public SeaBoard sea;
-    public SeaFish seaFish;
     public GameObject fishPrefab;
 
     [Header("StartSeaFish")]
-    public List<FishData> fishData;
-    public List<int> fishCount;
+    public FishData[] fishData;
+    public int[] startSeaFishCount; //スタート時の海ボード魚駒数
+    public int[] startFishCount;    //スタート時のギャラリー魚駒数
 
     public PlayerController[] players;
     public Tile[] galleryTiles;
+
+    public StoragePanel[] storagePanel; //各プレイヤーのストレージパネル
+    public bool canSelct = false;   //海ボードのゲットボタンが押せるかどうか
 
     public GameObject galleryCam;   //ギャラリーボードを映すためのカメラ
     public GameObject[] aquariumCams;   //水族館ボードを映すためのカメラ
@@ -47,8 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        sea.Initialze(fishData, fishCount);
-        seaFish.Initialze(fishData, fishCount);
+        sea.Initialze(fishData, startSeaFishCount);
 
         roundCount = 0;
 
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
     {
         currentPart = Part.gallery;
         galleryCam.SetActive(true);
+        canSelct = false;
         confirmButton.SetActive(false);
 
         turnCount = 0;
@@ -84,6 +87,27 @@ public class GameManager : MonoBehaviour
         }
 
         HighlightMovableTiles(players[currentPlayerIndex].currentGalleryTile, galleryTiles);
+
+        //ギャラリーに魚駒を並べる
+        foreach (Tile tile in galleryTiles)
+        {
+            if (!tile.isAd && !tile.isStart)
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    int rand = Random.Range(2, 8);
+                    if (startFishCount[rand] > 0)
+                    {
+                        GameObject fish = Instantiate(fishPrefab, tile.transform);
+                        fish.GetComponent<FishPiece>().fishData = fishData[rand];
+
+                        startFishCount[rand]--;
+                        break;
+                    }
+                }
+            }
+        }
+        
         Debug.Log("ラウンド" + roundCount);
         Debug.Log(players[currentPlayerIndex].pData.playerName + "のターン");
     }
@@ -126,11 +150,35 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //マス上の魚駒ゲット
+        if (clickedTile != clickedTile.isAd)
+        {
+            GameObject piece = clickedTile.transform.GetChild(0).gameObject;
+            FishPiece fish = piece.GetComponent<FishPiece>();
+
+            //魚駒を上に少し飛ばす（ゲットアニメーション）
+            Rigidbody2D rbody = piece.GetComponent<Rigidbody2D>();
+            rbody.gravityScale = 1.0f;
+            rbody.bodyType = RigidbodyType2D.Dynamic;
+            rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+
+            StartCoroutine(MoveStorage(fish, rbody));
+        }
+
+
 
         StartCoroutine(ChangeCamera(galleryCam, currentPlayer.aquariumCam));
         //水族館ターンへ
         currentPart = Part.aquarium;
         HighlightMovableTiles(currentPlayer.currentAquaTile, currentPlayer.aquariumTiles);
+    }
+
+    //ストレージに移動するコルーチン
+    IEnumerator MoveStorage(FishPiece fish, Rigidbody2D rbody)
+    {
+        yield return new WaitForSeconds(1.0f);
+        storagePanel[currentPlayerIndex].AddStorage(fish);
+        rbody.gravityScale = 0;
     }
 
 
@@ -143,6 +191,9 @@ public class GameManager : MonoBehaviour
 
         currentPlayer.MoveToAquaTile(clickedTile);
         confirmButton.SetActive(true);
+
+        //移動が終わったら海ボードのゲットボタンを復活させる
+        canSelct = true;
     }
 
 
@@ -191,7 +242,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-
+        //ボタンを押せないように元に戻す
+        canSelct = false;
         confirmButton.SetActive(false);
 
         currentPart = Part.gallery;

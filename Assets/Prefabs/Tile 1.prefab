@@ -103,10 +103,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   isAd: 0
+  isStart: 0
   uesdTile: 0
   manager: {fileID: 0}
   isGallery: 0
-  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  leftSlot: {fileID: 0}
+  rightSlot: {fileID: 0}
+  highlightColor: {r: 0.9403061, g: 0.98490566, b: 0.75633323, a: 1}
 --- !u!61 &2478790716881810545
 BoxCollider2D:
   m_ObjectHideFlags: 0

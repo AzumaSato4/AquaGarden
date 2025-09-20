@@ -1,17 +1,18 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SeaBoard : MonoBehaviour
 {
-    public List<FishData> seaFishes;
-    public List<int> seaCounts;
+    public FishData[] seaFishes;
+    public int[] seaCounts;
+
+    public SelectSeaFish[] selectSeaFish;
 
     //ゲーム開始時に初期化
-    public void Initialze(List<FishData> fishTypes, List<int> counts)
+    public void Initialze(FishData[] fishTypes, int[] counts)
     {
         //魚駒の種類
         //その種類の個数
-        for (int i = 0; i < fishTypes.Count; i++)
+        for (int i = 0; i < fishTypes.Length; i++)
         {
             seaFishes[i] = fishTypes[i];
             seaCounts[i] = counts[i];
@@ -20,15 +21,28 @@ public class SeaBoard : MonoBehaviour
 
 
     //海ボードに魚駒を追加
-    public void AddSeaFish(FishPiece fish)
+    public void AddSeaFish(FishData fish)
     {
-        seaFishes.Add(fish.fishData);
+        seaCounts[fish.id]++;
+        selectSeaFish[fish.id].InFish();
     }
 
 
-    //海ボードから魚駒を取り除く
-    public void RemoveSeaFish(FishPiece fish)
+    // 指定したインデックスの魚を取り出す
+    public FishData TakeFish(int index)
     {
-        seaFishes.Remove(fish.fishData);
+        if (seaCounts[index] > 0)
+        {
+            gameObject.SetActive(false);
+            GameManager.UIActive = false;
+
+            seaCounts[index]--;
+            return seaFishes[index];
+        }
+        else
+        {
+            Debug.Log("その魚はいません");
+            return null;
+        }
     }
 }

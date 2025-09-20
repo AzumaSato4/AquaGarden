@@ -840,10 +840,58 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 7f34fa8e6f039534bb6825138ab9373e, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1066990975}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnSelectFish
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SelectSeaFish, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 6956256472120833343, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1727,7 +1775,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sea: {fileID: 651426492}
-  seaFish: {fileID: 2017961739}
   fishPrefab: {fileID: 7390629642147873660, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
   fishData:
   - {fileID: 11400000, guid: 7f34fa8e6f039534bb6825138ab9373e, type: 2}
@@ -1738,7 +1785,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5ba2358bda2d29d46a7953ab145c5e46, type: 2}
   - {fileID: 11400000, guid: 3ae2b05c8491f614482a37718b5afb01, type: 2}
   - {fileID: 11400000, guid: 57b9b5aacd1eb844ca0d6f6fa9cdaa71, type: 2}
-  fishCount: 1100000010000000000000000000000000000000000000000000000000000000
+  startSeaFishCount: 1100000010000000000000000000000000000000000000000000000000000000
+  startFishCount: 0000000000000000170000001000000009000000050000000900000003000000
   players:
   - {fileID: 955850846}
   - {fileID: 548828955}
@@ -1768,6 +1816,12 @@ MonoBehaviour:
   - {fileID: 1676282976}
   - {fileID: 1107502236}
   - {fileID: 1703593820}
+  storagePanel:
+  - {fileID: 859077572}
+  - {fileID: 1751223668}
+  - {fileID: 1080190253}
+  - {fileID: 527585901}
+  canSelct: 0
   galleryCam: {fileID: 519420028}
   aquariumCams:
   - {fileID: 753127057}
@@ -3057,6 +3111,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 651426488}
   seaPanel: {fileID: 1730774024}
+--- !u!114 &527585901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6021820334681727179, guid: a6a32793580bffe44918e7055357c41a, type: 3}
+  m_PrefabInstance: {fileID: 1932614975}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a8654c97b561e4e83fdd76fa2944a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &539974384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3811,6 +3876,15 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   seaCounts: 0000000000000000000000000000000000000000000000000000000000000000
+  selectSeaFish:
+  - {fileID: 1066990975}
+  - {fileID: 1643756411}
+  - {fileID: 2054859948}
+  - {fileID: 1736316595}
+  - {fileID: 2054070214}
+  - {fileID: 1083687010}
+  - {fileID: 1211763030}
+  - {fileID: 1015730033}
 --- !u!114 &675360018 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7591303717827494540, guid: c092f51e66feddd4985fab2e76216c8b, type: 3}
@@ -4434,10 +4508,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: c1f598c28b3797146ba9ffe607871d14, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 4
@@ -4624,6 +4734,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 850fe99d1e6b78640a22dfea52595ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &859077572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6021820334681727179, guid: a6a32793580bffe44918e7055357c41a, type: 3}
+  m_PrefabInstance: {fileID: 4083871514488334919}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a8654c97b561e4e83fdd76fa2944a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &907404124
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4705,10 +4826,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 57b9b5aacd1eb844ca0d6f6fa9cdaa71, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 7
@@ -5610,6 +5767,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6956256472120833343, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
   m_PrefabInstance: {fileID: 910965384}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1015730033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 910965384}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1021726078
 GameObject:
   m_ObjectHideFlags: 0
@@ -5684,10 +5852,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 21b96f41a353ebe47b08eb1126864623, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 1
@@ -5782,6 +5986,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6956256472120833343, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
   m_PrefabInstance: {fileID: 223914507}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1066990975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 223914507}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1078267769 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2048071331891292520, guid: de609a547641f3243a61d8997b9132a8, type: 3}
@@ -5792,6 +6007,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6742119051125142441, guid: a6a32793580bffe44918e7055357c41a, type: 3}
   m_PrefabInstance: {fileID: 1538891193}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1080190253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6021820334681727179, guid: a6a32793580bffe44918e7055357c41a, type: 3}
+  m_PrefabInstance: {fileID: 1538891193}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a8654c97b561e4e83fdd76fa2944a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1083687010 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 2028627117}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1084635806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4907665141577950396, guid: 796d123a88548774b9ac94b27038da89, type: 3}
@@ -6406,6 +6643,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6956256472120833343, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
   m_PrefabInstance: {fileID: 1939075245}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1211763030 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 1939075245}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1221283263 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7896258166216773908, guid: 1bb496459b9c73a41b9dc556a8c04b94, type: 3}
@@ -8312,6 +8560,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4870591094747192078, guid: c092f51e66feddd4985fab2e76216c8b, type: 3}
   m_PrefabInstance: {fileID: 1770559335}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1643756411 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 1043769482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1676282976 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7591303717827494540, guid: c092f51e66feddd4985fab2e76216c8b, type: 3}
@@ -8696,10 +8955,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: ea6d1e4abfa641148973729c41a531c5, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 3
@@ -8794,6 +9089,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6956256472120833343, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
   m_PrefabInstance: {fileID: 1734702510}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1736316595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 1734702510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1751223668 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6021820334681727179, guid: a6a32793580bffe44918e7055357c41a, type: 3}
+  m_PrefabInstance: {fileID: 2100246608}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a8654c97b561e4e83fdd76fa2944a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1765928640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9736,10 +10053,58 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 3ae2b05c8491f614482a37718b5afb01, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 6
@@ -10191,7 +10556,6 @@ GameObject:
   - component: {fileID: 2017961736}
   - component: {fileID: 2017961738}
   - component: {fileID: 2017961737}
-  - component: {fileID: 2017961739}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -10264,30 +10628,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
---- !u!114 &2017961739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017961735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe5c2d048ffb6f54392dd487869ec74c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 391809499}
-  sea: {fileID: 651426492}
-  seaFishes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  seaFishCounts: 0000000000000000000000000000000000000000000000000000000000000000
 --- !u!1 &2025960826
 GameObject:
   m_ObjectHideFlags: 0
@@ -10348,10 +10688,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 5ba2358bda2d29d46a7953ab145c5e46, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 5
@@ -10622,75 +10998,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b63ad9a364301cb44b52ae124d971afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &2058393138
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -7369169161001660039, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: fishData
-      value: 
-      objectReference: {fileID: 11400000, guid: ea6d1e4abfa641148973729c41a531c5, type: 2}
-    - target: {fileID: 7390629642147873660, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_Name
-      value: FishPiece
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.4201093
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.3210826
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9137943339120041737, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 657943de98af1f74d8bcb147f03228ac, type: 3}
+--- !u!114 &2054070214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 816480585}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2054859948 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+  m_PrefabInstance: {fileID: 8765799192265495306}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936824df239283343aa291f70e2dad94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2067140496
 GameObject:
   m_ObjectHideFlags: 0
@@ -11577,10 +11906,46 @@ PrefabInstance:
       propertyPath: fishData
       value: 
       objectReference: {fileID: 11400000, guid: 5297bbb869716c141895cd6027e291a3, type: 2}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 521697839}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackButoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SeaPanelBackButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406347561546637420, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: sea
+      value: 
+      objectReference: {fileID: 651426492}
+    - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 391809499}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaFish
       value: 
-      objectReference: {fileID: 2017961739}
+      objectReference: {fileID: 0}
     - target: {fileID: 3350836470931276759, guid: d6a23fafae1d658468a4064d2b4bd35d, type: 3}
       propertyPath: seaIndex
       value: 2
@@ -11682,4 +12047,3 @@ SceneRoots:
   - {fileID: 2025960827}
   - {fileID: 238232797}
   - {fileID: 540742471}
-  - {fileID: 2058393138}

@@ -8,9 +8,6 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     Vector3 originalLocalPos;
 
 
-    public SeaBoard sea;
-
-
 
     private void Start()
     {
@@ -49,9 +46,15 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         //ドロップ先判定
         var slot = hit?.GetComponent<AquaSlot>();
-        var sea = hit?.GetComponent<SeaBoard>();
-        var storage = hit?.GetComponent<StoragePanel>();
+        var sea = hit?.GetComponent<SeaPanel>();
 
+        //同じオブジェクトなら元に戻して即リターン
+        if (hit != null && hit.transform == originalParent)
+        {
+            transform.SetParent(originalParent);
+            transform.localPosition = originalLocalPos;
+            return;
+        }
 
         //水槽に置くなら
         if (slot != null)
@@ -62,7 +65,7 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 originalParent.GetComponent<StoragePanel>().RemoveStorageFish(this);
                 slot.AddTempFish(this);
             }
-            else //水槽同士はNG、元の位置に戻す
+            else
             {
                 transform.SetParent(originalParent);
                 transform.localPosition = originalLocalPos;
@@ -72,7 +75,9 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             (originalParent.GetComponent<AquaSlot>())?.RemoveFish(this);
             (originalParent.GetComponent<StoragePanel>())?.RemoveStorageFish(this);
-            sea.AddSeaFish(this);
+
+            sea.seaboard.GetComponent<SeaBoard>().AddSeaFish(this.fishData);
+            Destroy(this.gameObject);
         }
         else
         {
