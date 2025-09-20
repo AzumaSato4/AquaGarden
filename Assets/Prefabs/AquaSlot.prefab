@@ -148,6 +148,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highliteColor: {r: 0.7637664, g: 0.92423916, b: 0.98490566, a: 1}
+  maxOxygen: 6
+  currentOxygen: 4
+  oxygenText: {fileID: 0}
+  normalColor: {r: 0, g: 0, b: 0, a: 1}
+  overLimitColor: {r: 1, g: 0.3226415, b: 0.3226415, a: 1}
   fishes: []
   tempFishes: []
   scattrtRnage: {x: 0.3, y: 0.3}

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SelectSeaFish : MonoBehaviour
 {
-     public GameManager manager;
+    public GameManager manager;
 
     public GameObject fishNameText;
     public GameObject fishCountText;
@@ -58,7 +58,7 @@ public class SelectSeaFish : MonoBehaviour
     //海ボードに魚駒を追加
     public void InFish()
     {
-            // カウントをUIに反映
-            fishCountText.GetComponent<TextMeshProUGUI>().text = sea.seaCounts[seaIndex].ToString();
+        // カウントをUIに反映
+        fishCountText.GetComponent<TextMeshProUGUI>().text = sea.seaCounts[seaIndex].ToString();
     }
 }

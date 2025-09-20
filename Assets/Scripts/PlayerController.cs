@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     public Tile currentAquaTile;    //水族館ボードの現在のマス番号
     public GameObject aquariumCam;  //水族館用カメラ
 
+    public AquaSlot[] aquaSlots;    //プレイヤーごとの水槽
+    public StoragePanel storagePanel;   //プレイヤーごとのストレージ
+
     float moveTime = 0.3f; //プレイヤー駒が目的地までかかる時間
 
 
@@ -83,5 +86,26 @@ public class PlayerController : MonoBehaviour
         }
 
         piece.transform.position = toPos;
+    }
+
+
+    // 現在ドラッグ中の魚を置く候補スロットをチェック
+    public AquaSlot GetValidSlotForFish(FishPiece draggingFish)
+    {
+        foreach (var slot in aquaSlots)
+        {
+            if (slot.CanAcceptFish(draggingFish))
+                return slot;
+        }
+        return null;
+    }
+
+    // 水槽UIスライダーをまとめて更新
+    public void UpdateAllOxygenUI()
+    {
+        foreach (var slot in aquaSlots)
+        {
+            slot.UpdateOxygenUI();
+        }
     }
 }

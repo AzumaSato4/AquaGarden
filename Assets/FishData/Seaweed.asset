@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be83735599be86845a2638d78eebd264, type: 3}
   m_Name: Seaweed
   m_EditorClassIdentifier: 
+  id: 0
   fishName: Seaweed
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   color: {r: 0, g: 0.6981132, b: 0.12218176, a: 1}
-  isSeaweed: 1
+  oxygen: 2

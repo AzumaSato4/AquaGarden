@@ -7,5 +7,5 @@ public class FishData : ScriptableObject
     public string fishName;
     public Sprite icon;
     public Color color;
-    public bool isSeaweed;
+    public int oxygen;
 }

@@ -19,4 +19,11 @@ public class StoragePanel : MonoBehaviour
     {
         storageFishes.Remove(fish);
     }
+
+
+    //ストレージに魚駒が残っていたら警告
+    public bool HasFishInStorage()
+    {
+        return storageFishes.Count > 0;
+    }
 }

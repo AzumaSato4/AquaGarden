@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public GameObject galleryCam;   //ギャラリーボードを映すためのカメラ
     public GameObject[] aquariumCams;   //水族館ボードを映すためのカメラ
 
+    [SerializeField] GameObject[] aquaText; //各プレイヤーの水槽スライダー
+
     public float moveCamTime;
 
     PlayerController currentPlayer;
@@ -107,7 +109,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        
+
         Debug.Log("ラウンド" + roundCount);
         Debug.Log(players[currentPlayerIndex].pData.playerName + "のターン");
     }
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour
         }
 
         //マス上の魚駒ゲット
-        if (clickedTile != clickedTile.isAd)
+        if (!clickedTile.isAd)
         {
             GameObject piece = clickedTile.transform.GetChild(0).gameObject;
             FishPiece fish = piece.GetComponent<FishPiece>();
@@ -168,6 +170,8 @@ public class GameManager : MonoBehaviour
 
 
         StartCoroutine(ChangeCamera(galleryCam, currentPlayer.aquariumCam));
+        StartCoroutine(ChangeAquaSlider(true));
+
         //水族館ターンへ
         currentPart = Part.aquarium;
         HighlightMovableTiles(currentPlayer.currentAquaTile, currentPlayer.aquariumTiles);
@@ -179,6 +183,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         storagePanel[currentPlayerIndex].AddStorage(fish);
         rbody.gravityScale = 0;
+        rbody.bodyType = RigidbodyType2D.Static;
     }
 
 
@@ -200,21 +205,28 @@ public class GameManager : MonoBehaviour
     //水族館パートの決定ボタン
     public void OnConfirmButton()
     {
-        //水槽のハイライトを消す（元に戻す）
-        currentPlayer.currentAquaTile.leftSlot.SetHighlight(false);
+        if (currentPlayer.storagePanel.HasFishInStorage())
+        {
+            // UI に警告を出す
+            UIManager.Instance.ShowMessage("ストレージの魚をすべて配置してください！");
+            return;
+        }
+        else
+        {
+            //水槽のハイライトを消す（元に戻す）
+            currentPlayer.currentAquaTile.leftSlot.SetHighlight(false);
         currentPlayer.currentAquaTile.rightSlot.SetHighlight(false);
 
         //水槽のコライダーを消す
         currentPlayer.currentAquaTile.leftSlot.GetComponent<Collider2D>().enabled = false;
         currentPlayer.currentAquaTile.rightSlot.GetComponent<Collider2D>().enabled = false;
 
-        //仮置きを確定に
-        currentPlayer.currentAquaTile.leftSlot.ConfirmFishPlacement();
-        currentPlayer.currentAquaTile.rightSlot.ConfirmFishPlacement();
 
         //次のプレイヤーのターンへ
         StartCoroutine(ChangeCamera(currentPlayer.aquariumCam, galleryCam));
+        StartCoroutine(ChangeAquaSlider(false));
         NextPlayerTurn();
+        }
     }
 
 
@@ -392,6 +404,24 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(moveCamTime);
         from.SetActive(false);
         to.SetActive(true);
+    }
+
+
+    //水槽酸素量を表示する
+    IEnumerator ChangeAquaSlider(bool show)
+    {
+        yield return new WaitForSeconds(moveCamTime);
+        if (show)
+        {
+            aquaText[currentPlayerIndex].SetActive(true);
+        }
+        else
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                aquaText[i].SetActive(false);
+            }
+        }
     }
 
 

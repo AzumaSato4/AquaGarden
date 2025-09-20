@@ -16,4 +16,4 @@ MonoBehaviour:
   fishName: SeaTurtle
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   color: {r: 1, g: 0.34962472, b: 0.3150943, a: 1}
-  isSeaweed: 0
+  oxygen: -2

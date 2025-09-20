@@ -16,4 +16,4 @@ MonoBehaviour:
   fishName: WhaleShark
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   color: {r: 0.39811313, g: 0.81893986, b: 1, a: 1}
-  isSeaweed: 0
+  oxygen: -4

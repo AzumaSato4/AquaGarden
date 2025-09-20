@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class AquaSlot : MonoBehaviour
@@ -7,6 +8,13 @@ public class AquaSlot : MonoBehaviour
     SpriteRenderer sr;
     Color defalutColor;
     public Color highliteColor = Color.yellow;
+    public int maxOxygen = 6;  //水槽内の最大酸素量
+    public int currentOxygen;  //現在の水槽内酸素量
+
+
+    public TextMeshProUGUI oxygenText; // 水槽酸素量
+    public Color normalColor = Color.black;
+    public Color overLimitColor = Color.red;
 
     //水槽内の魚駒を管理するリスト
     public List<FishPiece> fishes = new List<FishPiece>();
@@ -26,6 +34,7 @@ public class AquaSlot : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         defalutColor = sr.color;
+        UpdateOxygenUI();
     }
 
 
@@ -36,20 +45,39 @@ public class AquaSlot : MonoBehaviour
     }
 
 
-    // 仮置き
-    public void AddTempFish(FishPiece fish)
+    // 酸素量を計算
+    public int GetTotalOxygen(FishPiece draggingFish = null)
     {
-        tempFishes.Add(fish);
-        fish.transform.SetParent(transform);
-        Vector3 localPos = AddFish(fish);
-        fish.transform.localPosition = localPos;
+        int tempOxygen = currentOxygen + tempFishes.Sum(f => f.fishData.oxygen);
+        if (draggingFish != null && !tempFishes.Contains(draggingFish))
+        {
+            tempOxygen += draggingFish.fishData.oxygen;
+        }
+        return tempOxygen;
+    }
+
+
+    //魚駒を置けるか判定
+    public bool CanAcceptFish(FishPiece fish)
+    {
+        int oxygen = GetTotalOxygen(fish);
+        //0以上最大酸素量以下ならOK
+        if (oxygen >= 0 && oxygen <= maxOxygen)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
     //水槽に魚駒を追加する
-    Vector3 AddFish(FishPiece fish)
+    public void AddFish(FishPiece fish)
     {
-        fishes.Add(fish);
+        if (!fishes.Contains(fish)) fishes.Add(fish);
+        tempFishes.Remove(fish); // 仮置きリストから削除
         fish.transform.SetParent(transform);    //水槽の子オブジェクトにする
 
         //重ならないように配置
@@ -59,7 +87,7 @@ public class AquaSlot : MonoBehaviour
 
         while (!validPos && attempt < 50)
         {
-            //水槽内のランダムな位置に仮置き
+            //水槽内のランダムな位置に配置
             localPos = new Vector3(
                 Random.Range(-scattrtRnage.x, scattrtRnage.x),
                 Random.Range(-scattrtRnage.y, scattrtRnage.y),
@@ -68,7 +96,7 @@ public class AquaSlot : MonoBehaviour
 
             //他の駒と位置がかぶっていないか判定
             validPos = true;
-            foreach ( FishPiece fp in fishes )
+            foreach (FishPiece fp in fishes)
             {
                 //自分自身は除外
                 if (fp == fish) continue;
@@ -82,41 +110,31 @@ public class AquaSlot : MonoBehaviour
             attempt++;
 
         }
-        return localPos;
+        fish.transform.localPosition = localPos;
+        currentOxygen += fish.fishData.oxygen;
     }
 
 
     //水槽から魚駒を取り除く
     public void RemoveFish(FishPiece fish)
     {
+        tempFishes.Remove(fish);
         fishes.Remove(fish);
-    }
 
-    
-    //決定ボタンで確定する
-    public void ConfirmFishPlacement()
-    {
-        foreach (FishPiece fish in tempFishes)
-        {
-            fishes.Add(fish);
-        }
-        tempFishes.Clear();
+        currentOxygen -= fish.fishData.oxygen;
+
+        UpdateOxygenUI();
     }
 
 
-    //移動を滑らかにするコルーチン
-    IEnumerator MoveCoroutine(Vector2 toPos, FishPiece piece)
+    // 酸素量表示更新
+    public void UpdateOxygenUI(FishPiece draggingFish = null)
     {
-        Vector2 startPos = piece.transform.position;
-        float elapsed = 0;
-
-        while (elapsed < moveTime)
+        if (oxygenText != null)
         {
-            piece.transform.position = Vector2.Lerp(startPos, toPos, elapsed / moveTime);
-            elapsed += Time.deltaTime;
-            yield return null;
+            int total = GetTotalOxygen(draggingFish);
+            oxygenText.text = total + "/" + maxOxygen;
+            oxygenText.color = total > maxOxygen ? overLimitColor : normalColor;
         }
-
-        piece.transform.position = toPos;
     }
 }
