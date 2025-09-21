@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6742119051125142441}
   - component: {fileID: 5816598278822815375}
   - component: {fileID: -6021820334681727179}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: StoragePlanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

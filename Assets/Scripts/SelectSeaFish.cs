@@ -13,14 +13,14 @@ public class SelectSeaFish : MonoBehaviour
     public SeaBoard sea;
     public int seaIndex;
 
-    public GameObject fishPrefab;     // 魚駒のPrefab
+    public GameObject fishPrefab;     //魚駒のPrefab
 
 
 
     private void Start()
     {
         GetComponent<Image>().color = sea.seaFishes[seaIndex].color;
-        fishNameText.GetComponent<TextMeshProUGUI>().text = sea.seaFishes[seaIndex].fishName;
+        fishNameText.GetComponent<TextMeshProUGUI>().text = sea.seaFishes[seaIndex].type.ToString();
         fishCountText.GetComponent<TextMeshProUGUI>().text = sea.seaCounts[seaIndex].ToString();
     }
 
@@ -44,11 +44,11 @@ public class SelectSeaFish : MonoBehaviour
         if (fish != null)
         {
             // ストレージに魚駒を生成
-            GameObject newFish = Instantiate(fishPrefab, manager.storagePanel[manager.currentPlayerIndex].transform);
+            GameObject newFish = Instantiate(fishPrefab, manager.playersTurn[manager.currentPlayerIndex].storagePanel.transform);
             FishPiece fp = newFish.GetComponent<FishPiece>();
             fp.fishData = fish;
 
-            manager.storagePanel[manager.currentPlayerIndex].AddStorage(fp);
+            manager.playersTurn[manager.currentPlayerIndex].storagePanel.AddStorage(fp);
 
             // カウントをUIに反映
             fishCountText.GetComponent<TextMeshProUGUI>().text = sea.seaCounts[seaIndex].ToString();

@@ -148,6 +148,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0fa0d391715cc504096aa79225cf6771, type: 2}
     - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
+      propertyPath: oxygenText
+      value: 
+      objectReference: {fileID: 856453065}
+    - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
       propertyPath: aquariumCam
       value: 
       objectReference: {fileID: 915765891}
@@ -2023,6 +2027,7 @@ GameObject:
   m_Component:
   - component: {fileID: 391809500}
   - component: {fileID: 391809499}
+  - component: {fileID: 391809501}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2060,11 +2065,12 @@ MonoBehaviour:
   - {fileID: 548828955}
   - {fileID: 1478741479}
   - {fileID: 1530558495}
+  playersTurn: []
   galleryTiles:
-  - {fileID: 1710866158}
-  - {fileID: 1434600114}
-  - {fileID: 1099299493}
   - {fileID: 1381561717}
+  - {fileID: 1099299493}
+  - {fileID: 1434600114}
+  - {fileID: 1710866158}
   - {fileID: 1713914735}
   - {fileID: 365355312}
   - {fileID: 88270588}
@@ -2091,16 +2097,12 @@ MonoBehaviour:
   - {fileID: 527585901}
   canSelct: 0
   galleryCam: {fileID: 519420028}
-  aquariumCams:
-  - {fileID: 753127057}
-  - {fileID: 1509743281}
-  - {fileID: 915765891}
-  - {fileID: 385959113}
   aquaText:
   - {fileID: 2142729832}
   - {fileID: 1605131665}
   - {fileID: 856453065}
   - {fileID: 1783492163}
+  playerRanking: {fileID: 391809501}
   moveCamTime: 1
   maxRound: 3
   confirmButton: {fileID: 228021886}
@@ -2120,6 +2122,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &391809501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391809498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa45d1070a170b44c983f4582ac5aac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 391809499}
+  goalScore: 3
 --- !u!1001 &399991783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2834,6 +2850,10 @@ PrefabInstance:
       propertyPath: pData
       value: 
       objectReference: {fileID: 11400000, guid: 9b09da481f0fb9a4b81a51949bb5cea1, type: 2}
+    - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
+      propertyPath: oxygenText
+      value: 
+      objectReference: {fileID: 1605131665}
     - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
       propertyPath: aquariumCam
       value: 
@@ -6045,6 +6065,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: fe451144c410aa9459807b7e2e1def31, type: 2}
     - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
+      propertyPath: oxygenText
+      value: 
+      objectReference: {fileID: 1783492163}
+    - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
       propertyPath: aquariumCam
       value: 
       objectReference: {fileID: 385959113}
@@ -6686,7 +6710,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 704229152708408830, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_Name
-      value: StartTile3
+      value: StartTile2
       objectReference: {fileID: 0}
     - target: {fileID: 4870591094747192078, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7751,7 +7775,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 704229152708408830, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_Name
-      value: StartTile4
+      value: StartTile1
       objectReference: {fileID: 0}
     - target: {fileID: 4870591094747192078, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8057,7 +8081,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 704229152708408830, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_Name
-      value: StartTile2
+      value: StartTile3
       objectReference: {fileID: 0}
     - target: {fileID: 4870591094747192078, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8304,6 +8328,10 @@ PrefabInstance:
       propertyPath: pData
       value: 
       objectReference: {fileID: 11400000, guid: a840677d75d5f3e4288ca150d5440260, type: 2}
+    - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
+      propertyPath: oxygenText
+      value: 
+      objectReference: {fileID: 2142729832}
     - target: {fileID: -6774244684747303658, guid: 9d58dfa0f1c5f9646b5365ff19848642, type: 3}
       propertyPath: aquariumCam
       value: 
@@ -9355,7 +9383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1653761759
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9389,7 +9417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.20088992, g: 0.72910607, b: 0.78867924, a: 0.67058825}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9686,7 +9714,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 704229152708408830, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_Name
-      value: StartTile1
+      value: StartTile4
       objectReference: {fileID: 0}
     - target: {fileID: 4870591094747192078, guid: f25eefd5dd95f82429c6a4523a7ae4a0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11930,7 +11958,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a819bde5b509bc49a24c44859c7914a, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -11938,7 +11966,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11955,8 +11983,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11996,7 +12024,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2037033795
@@ -12024,7 +12052,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 400}
+  m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2043526365
 PrefabInstance:

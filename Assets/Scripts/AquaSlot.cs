@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static FishData;
 
 public class AquaSlot : MonoBehaviour
 {
@@ -57,18 +58,45 @@ public class AquaSlot : MonoBehaviour
     }
 
 
-    //魚駒を置けるか判定
-    public bool CanAcceptFish(FishPiece fish)
+    //酸素量チェック
+    public bool IsOxygenValid()
     {
-        int oxygen = GetTotalOxygen(fish);
-        //0以上最大酸素量以下ならOK
-        if (oxygen >= 0 && oxygen <= maxOxygen)
+        int oxygen = GetTotalOxygen();
+        return oxygen >= 0 && oxygen <= maxOxygen;
+    }
+
+    //魚の相性チェック
+    public bool CanAcceptFish(FishPiece fish, List<FishPiece> others = null)
+    {
+        switch (fish.fishData.type)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            //海藻は水槽に1つだけ
+            case Type.Seaweed:
+                return !others.Any(f => f.fishData.type == Type.Seaweed);
+
+            //サンゴは水槽に1つだけ
+            case Type.Coral:
+                return !others.Any(f => f.fishData.type == Type.Coral);
+
+            //タツノオトシゴとサメとジンベエザメはどこでもOK
+            case Type.Shark:
+            case Type.Seahorse:
+            case Type.WhaleShark:
+                return true;
+
+            //ウミガメは海藻が必要、サメと共存不可
+            case Type.Seaturtle:
+                return others.Any(f => f.fishData.type == Type.Seaweed) &&
+                       !others.Any(f => f.fishData.type == Type.Shark);
+
+            //小型魚と大型魚はサメと共存不可
+            case Type.SmallFish:
+            case Type.LargeFish:
+                return !others.Any(f => f.fishData.type == Type.Shark);
+
+            //それ以外（基本ない）
+            default:
+                return false;
         }
     }
 
@@ -112,6 +140,8 @@ public class AquaSlot : MonoBehaviour
         }
         fish.transform.localPosition = localPos;
         currentOxygen += fish.fishData.oxygen;
+
+        UpdateOxygenUI();
     }
 
 

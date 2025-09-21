@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public Tile[] aquariumTiles;     //プレイヤーそれぞれが持つ水族館ボード
     public Tile currentAquaTile;    //水族館ボードの現在のマス番号
     public GameObject aquariumCam;  //水族館用カメラ
+    public GameObject oxygenText;  //水槽酸素量を表示するテキスト
 
     public AquaSlot[] aquaSlots;    //プレイヤーごとの水槽
     public StoragePanel storagePanel;   //プレイヤーごとのストレージ
@@ -49,6 +51,10 @@ public class PlayerController : MonoBehaviour
     //選んだ水族館マスに移動する
     public void MoveToAquaTile(Tile toTile)
     {
+        foreach (Tile t in aquariumTiles)
+        {
+            t.GetComponent<Collider2D>().enabled = false;
+        }
         currentAquaTile = toTile;
         EnableAquariumSlot(toTile);
         StartCoroutine(MoveCoroutine(toTile.transform.position, aquariumPiece));
@@ -86,26 +92,5 @@ public class PlayerController : MonoBehaviour
         }
 
         piece.transform.position = toPos;
-    }
-
-
-    // 現在ドラッグ中の魚を置く候補スロットをチェック
-    public AquaSlot GetValidSlotForFish(FishPiece draggingFish)
-    {
-        foreach (var slot in aquaSlots)
-        {
-            if (slot.CanAcceptFish(draggingFish))
-                return slot;
-        }
-        return null;
-    }
-
-    // 水槽UIスライダーをまとめて更新
-    public void UpdateAllOxygenUI()
-    {
-        foreach (var slot in aquaSlots)
-        {
-            slot.UpdateOxygenUI();
-        }
     }
 }

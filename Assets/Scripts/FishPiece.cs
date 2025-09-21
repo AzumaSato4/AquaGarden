@@ -26,7 +26,7 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         originalLocalPos = transform.localPosition;
 
         //元の水槽の酸素表示を更新（ドラッグ分を引く）
-        var slot = originalParent.GetComponent<AquaSlot>();
+        var slot = originalParent?.GetComponent<AquaSlot>();
         if (slot != null)
         {
             currentSlot = slot;
@@ -108,17 +108,14 @@ public class FishPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //水槽に置くなら
         if (slot != null)
         {
-            StoragePanel fromStorage = originalParent.GetComponent<StoragePanel>();
-            //移動元がストレージならOK
-            if (slot.CanAcceptFish(this) && fromStorage != null)
+            StoragePanel fromStorage = originalParent?.GetComponent<StoragePanel>();
+            //移動元がストレージかつ、水槽内における種類ならOK
+            if (fromStorage != null && slot.CanAcceptFish(this, slot.fishes) && slot.GetTotalOxygen(this) <= slot.maxOxygen)
             {
                 fromStorage.RemoveStorageFish(this);
 
                 slot.AddFish(this);
                 currentSlot = slot;
-
-                slot.UpdateOxygenUI();
-
             }
             //水槽からならNG
             else

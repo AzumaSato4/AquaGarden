@@ -1,7 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,15 +24,17 @@ public class GameManager : MonoBehaviour
     public int[] startFishCount;    //スタート時のギャラリー魚駒数
 
     public PlayerController[] players;
+    public PlayerController[] playersTurn;  //スタート時のプレイの順番を管理する配列
     public Tile[] galleryTiles;
 
     public StoragePanel[] storagePanel; //各プレイヤーのストレージパネル
     public bool canSelct = false;   //海ボードのゲットボタンが押せるかどうか
 
     public GameObject galleryCam;   //ギャラリーボードを映すためのカメラ
-    public GameObject[] aquariumCams;   //水族館ボードを映すためのカメラ
 
     [SerializeField] GameObject[] aquaText; //各プレイヤーの水槽スライダー
+
+    [SerializeField] PlayerRanking playerRanking;
 
     public float moveCamTime;
 
@@ -53,11 +57,36 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         sea.Initialze(fishData, startSeaFishCount);
+        playersTurn = new PlayerController[players.Length];
+        Array.Copy(players, playersTurn, players.Length);
+
+        finishOrder.Clear();
+
+        foreach (Tile t in playersTurn[currentPlayerIndex].aquariumTiles)
+        {
+            t.GetComponent<Collider2D>().enabled = false;
+        }
 
         roundCount = 0;
 
         StartRound();
 
+    }
+
+
+    private void Update()
+    {
+        if (currentPart == Part.aquarium)
+        {
+            if (UIActive)
+            {
+                playersTurn[currentPlayerIndex].oxygenText.SetActive(false);
+            }
+            else
+            {
+                playersTurn[currentPlayerIndex].oxygenText.SetActive(true);
+            }
+        }
     }
 
 
@@ -71,7 +100,6 @@ public class GameManager : MonoBehaviour
 
         turnCount = 0;
         currentPlayerIndex = 0;
-        finishOrder.Clear();
         movableTiles.Clear();
         ClearHighlights();
 
@@ -88,7 +116,7 @@ public class GameManager : MonoBehaviour
             t.uesdTile = false;
         }
 
-        HighlightMovableTiles(players[currentPlayerIndex].currentGalleryTile, galleryTiles);
+        HighlightMovableTiles(playersTurn[currentPlayerIndex].currentGalleryTile, galleryTiles);
 
         //ギャラリーに魚駒を並べる
         foreach (Tile tile in galleryTiles)
@@ -97,7 +125,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int i = 0; i < 30; i++)
                 {
-                    int rand = Random.Range(2, 8);
+                    int rand = UnityEngine.Random.Range(2, 8);
                     if (startFishCount[rand] > 0)
                     {
                         GameObject fish = Instantiate(fishPrefab, tile.transform);
@@ -110,8 +138,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Debug.Log("ラウンド" + roundCount);
-        Debug.Log(players[currentPlayerIndex].pData.playerName + "のターン");
+        UIManager.Instance.ShowMessage("ラウンド" + roundCount + "\\n" + playersTurn[currentPlayerIndex].pData.playerName + "のターン");
     }
 
 
@@ -124,7 +151,7 @@ public class GameManager : MonoBehaviour
         //クリックされたマスが選択不可なら即リターン
         if (!movableTiles.Contains(clickedTile)) return;
 
-        currentPlayer = players[currentPlayerIndex];
+        currentPlayer = playersTurn[currentPlayerIndex];
         currentPlayer.MoveToGalleryTile(clickedTile);
 
         //ゴールしたらフラグを立てる
@@ -133,7 +160,7 @@ public class GameManager : MonoBehaviour
             currentPlayer.isGoal = true;
             finishOrder.Add(currentPlayer);
 
-            //全員がゴールしたらラウンド終了
+            //全員がゴールしたかチェック
             int goalCount = 0;
             foreach (PlayerController p in players)
             {
@@ -142,6 +169,7 @@ public class GameManager : MonoBehaviour
                     goalCount++;
                 }
             }
+            //全員がゴールしたらラウンド終了
             if (goalCount == players.Length)
             {
                 EndRound();
@@ -155,33 +183,40 @@ public class GameManager : MonoBehaviour
         //マス上の魚駒ゲット
         if (!clickedTile.isAd)
         {
-            GameObject piece = clickedTile.transform.GetChild(0).gameObject;
-            FishPiece fish = piece.GetComponent<FishPiece>();
+            while (clickedTile.transform.childCount > 0)
+            {
+                GameObject piece = clickedTile.transform.GetChild(0).gameObject;
+                FishPiece fish = piece.GetComponent<FishPiece>();
 
-            //魚駒を上に少し飛ばす（ゲットアニメーション）
-            Rigidbody2D rbody = piece.GetComponent<Rigidbody2D>();
-            rbody.gravityScale = 1.0f;
-            rbody.bodyType = RigidbodyType2D.Dynamic;
-            rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+                //魚駒を上に少し飛ばす（ゲットアニメーション）
+                Rigidbody2D rbody = piece.GetComponent<Rigidbody2D>();
+                rbody.gravityScale = 1.0f;
+                rbody.bodyType = RigidbodyType2D.Dynamic;
+                rbody.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
 
-            StartCoroutine(MoveStorage(fish, rbody));
+                StartCoroutine(MoveStorage(fish, rbody));
+
+                piece.transform.SetParent(null);
+            }
         }
 
 
 
-        StartCoroutine(ChangeCamera(galleryCam, currentPlayer.aquariumCam));
-        StartCoroutine(ChangeAquaSlider(true));
 
         //水族館ターンへ
-        currentPart = Part.aquarium;
+        StartCoroutine(ChangeCamera(galleryCam, currentPlayer.aquariumCam));
         HighlightMovableTiles(currentPlayer.currentAquaTile, currentPlayer.aquariumTiles);
+        foreach (Tile t in playersTurn[currentPlayerIndex].aquariumTiles)
+        {
+            t.GetComponent<Collider2D>().enabled = true;
+        }
     }
 
     //ストレージに移動するコルーチン
     IEnumerator MoveStorage(FishPiece fish, Rigidbody2D rbody)
     {
         yield return new WaitForSeconds(1.0f);
-        storagePanel[currentPlayerIndex].AddStorage(fish);
+        playersTurn[currentPlayerIndex].storagePanel.AddStorage(fish);
         rbody.gravityScale = 0;
         rbody.bodyType = RigidbodyType2D.Static;
     }
@@ -199,6 +234,11 @@ public class GameManager : MonoBehaviour
 
         //移動が終わったら海ボードのゲットボタンを復活させる
         canSelct = true;
+
+        foreach (Tile t in playersTurn[currentPlayerIndex].aquariumTiles)
+        {
+            t.GetComponent<Collider2D>().enabled = false;
+        }
     }
 
 
@@ -207,26 +247,52 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer.storagePanel.HasFishInStorage())
         {
-            // UI に警告を出す
+            //警告を出す
             UIManager.Instance.ShowMessage("ストレージの魚をすべて配置してください！");
+            return;
+        }
+        if (!AreAllAquariumsValid(currentPlayer))
+        {
+            //警告を出す
+            UIManager.Instance.ShowMessage("水槽の魚を確認してください！");
             return;
         }
         else
         {
             //水槽のハイライトを消す（元に戻す）
             currentPlayer.currentAquaTile.leftSlot.SetHighlight(false);
-        currentPlayer.currentAquaTile.rightSlot.SetHighlight(false);
+            currentPlayer.currentAquaTile.rightSlot.SetHighlight(false);
 
-        //水槽のコライダーを消す
-        currentPlayer.currentAquaTile.leftSlot.GetComponent<Collider2D>().enabled = false;
-        currentPlayer.currentAquaTile.rightSlot.GetComponent<Collider2D>().enabled = false;
+            //水槽のコライダーを消す
+            currentPlayer.currentAquaTile.leftSlot.GetComponent<Collider2D>().enabled = false;
+            currentPlayer.currentAquaTile.rightSlot.GetComponent<Collider2D>().enabled = false;
 
 
-        //次のプレイヤーのターンへ
-        StartCoroutine(ChangeCamera(currentPlayer.aquariumCam, galleryCam));
-        StartCoroutine(ChangeAquaSlider(false));
-        NextPlayerTurn();
+            //次のプレイヤーのターンへ
+            StartCoroutine(ChangeCamera(currentPlayer.aquariumCam, galleryCam));
+            NextPlayerTurn();
         }
+    }
+
+
+    //プレイヤーが持つすべての水槽がルールを守っているか
+    bool AreAllAquariumsValid(PlayerController player)
+    {
+        foreach (var slot in player.aquaSlots)
+        {
+            if (!slot.IsOxygenValid()) //酸素量オーバーを先にチェック
+                return false;
+
+            foreach (var fish in slot.fishes)
+            {
+                //自分を一時的にリストから外して判定
+                var others = slot.fishes.Where(f => f != fish).ToList();
+
+                if (!slot.CanAcceptFish(fish, others)) //相性をチェック
+                    return false;
+            }
+        }
+        return true;
     }
 
 
@@ -246,7 +312,7 @@ public class GameManager : MonoBehaviour
             currentPlayerIndex = GetLastPlayerIndex();
         }
 
-        nextPlayer = players[currentPlayerIndex];
+        nextPlayer = playersTurn[currentPlayerIndex];
 
         if (nextPlayer.isGoal)
         {
@@ -258,10 +324,8 @@ public class GameManager : MonoBehaviour
         canSelct = false;
         confirmButton.SetActive(false);
 
-        currentPart = Part.gallery;
-
         HighlightMovableTiles(nextPlayer.currentGalleryTile, galleryTiles);
-        Debug.Log(nextPlayer.pData.playerName + "のターン");
+        UIManager.Instance.ShowMessage("ラウンド" + roundCount + "\n" + nextPlayer.pData.playerName + "のターン");
     }
 
     // 一番後ろのプレイヤーのインデックス番号を返す
@@ -272,13 +336,13 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i].currentGalleryTile.index == 0)
+            if (playersTurn[i].currentGalleryTile.index == 0)
             {
                 continue;
             }
-            else if (players[i].currentGalleryTile.index <= minTile)
+            else if (playersTurn[i].currentGalleryTile.index <= minTile)
             {
-                minTile = players[i].currentGalleryTile.index;
+                minTile = playersTurn[i].currentGalleryTile.index;
                 minIndex = i;
             }
         }
@@ -302,9 +366,9 @@ public class GameManager : MonoBehaviour
                 {
                     //ほかのプレイヤーがいないかどうか
                     bool occupied = false;
-                    foreach (PlayerController p in players)
+                    foreach (PlayerController p in playersTurn)
                     {
-                        if (p != players[currentPlayerIndex] && p.currentGalleryTile == t)
+                        if (p != playersTurn[currentPlayerIndex] && p.currentGalleryTile == t)
                         {
                             //ほかのプレイヤーがいたらtrueにして除外
                             occupied = true;
@@ -321,7 +385,7 @@ public class GameManager : MonoBehaviour
                 }
 
             }
-            if (players[currentPlayerIndex].currentGalleryTile.index >= 1)
+            if (playersTurn[currentPlayerIndex].currentGalleryTile.index >= 1)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -372,20 +436,20 @@ public class GameManager : MonoBehaviour
     //ラウンド終了
     void EndRound()
     {
-        Debug.Log("ラウンド終了！");
+        UIManager.Instance.ShowMessage("ラウンド終了！");
 
         for (int i = 0; i < finishOrder.Count; i++)
         {
             Debug.Log((i + 1) + "位" + finishOrder[i].pData.playerName);
         }
 
-        //ゴール順に並び変え
-        players = finishOrder.ToArray();
+        playersTurn = finishOrder.ToArray();
 
         //指定回数ラウンドを繰り返したらゲーム終了
         if (roundCount >= maxRound)
         {
-            Debug.Log("ゲーム終了");
+            UIManager.Instance.ShowMessage("ゲーム終了！");
+            playerRanking.ResultScore();
             SceneManager.LoadScene("Result");
             return;
         }
@@ -404,25 +468,17 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(moveCamTime);
         from.SetActive(false);
         to.SetActive(true);
-    }
-
-
-    //水槽酸素量を表示する
-    IEnumerator ChangeAquaSlider(bool show)
-    {
-        yield return new WaitForSeconds(moveCamTime);
-        if (show)
+        if (currentPart == Part.gallery)
         {
-            aquaText[currentPlayerIndex].SetActive(true);
+            currentPart = Part.aquarium;
         }
         else
         {
-            for (int i = 0; i < players.Length; i++)
+            currentPart = Part.gallery;
+            foreach (PlayerController p in players)
             {
-                aquaText[i].SetActive(false);
+                p.oxygenText.SetActive(false);
             }
         }
     }
-
-
 }

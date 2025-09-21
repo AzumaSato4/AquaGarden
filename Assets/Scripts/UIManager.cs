@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     //メッセージを画面に表示する
     public void ShowMessage(string msg)
     {
+        GameManager.UIActive = true;
+
         float duration = 2.0f;
         if (messageText != null)
             messageText.text = msg;
@@ -46,6 +48,7 @@ public class UIManager : MonoBehaviour
     // メッセージを非表示にする
     public void HideMessage()
     {
+        GameManager.UIActive = false;
         if (messagePanel != null)
             messagePanel.SetActive(false);
     }
