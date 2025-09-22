@@ -45,6 +45,7 @@ public class SelectSeaFish : MonoBehaviour
         {
             // ストレージに魚駒を生成
             GameObject newFish = Instantiate(fishPrefab, manager.playersTurn[manager.currentPlayerIndex].storagePanel.transform);
+            newFish.transform.localScale = new Vector3(3, 2, 1);
             FishPiece fp = newFish.GetComponent<FishPiece>();
             fp.fishData = fish;
 

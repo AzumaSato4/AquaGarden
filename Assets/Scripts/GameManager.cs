@@ -56,6 +56,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (TitleManager.pName != null)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].pData.playerName = TitleManager.pName[i];
+            }
+        }
         sea.Initialze(fishData, startSeaFishCount);
         playersTurn = new PlayerController[players.Length];
         Array.Copy(players, playersTurn, players.Length);
