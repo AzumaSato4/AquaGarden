@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 69871719664761411}
   - component: {fileID: 7639827269306130667}
   - component: {fileID: 4986333640646728256}
+  - component: {fileID: 3707392171508039934}
   m_Layer: 0
   m_Name: AquariumPlayer
   m_TagString: Untagged
@@ -153,3 +154,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3707392171508039934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2649810590640564544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54258934aaf25648947b62bbabb98d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
+  movedAquarium: 0

@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230439223366601885}
-  - component: {fileID: 455633580853054261}
   - component: {fileID: 8715184921473056385}
   - component: {fileID: 3335879502907666509}
+  - component: {fileID: 7777804724443627206}
+  - component: {fileID: 2604892193394743872}
   m_Layer: 0
   m_Name: PhaseManager
   m_TagString: Untagged
@@ -34,19 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &455633580853054261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4696234820819682449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd64e3caa340ea4eaf29b0332ae7407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selected: {fileID: 0}
 --- !u!114 &8715184921473056385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c06499f737fa34f8caafb4a2f19393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPhase: 0
 --- !u!114 &3335879502907666509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,3 +60,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d0e990bcc9e0447b6aa580225f1265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPlayer: {fileID: 0}
+  players: []
+  loopCnt: 0
+--- !u!114 &7777804724443627206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4696234820819682449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bbdab06cab614a4c86422ddf6080062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData:
+  - {fileID: 11400000, guid: f5425dcd1df2e6742bac74f9cdb9154a, type: 2}
+  - {fileID: 11400000, guid: c6ac286d6cbc9254788067dcfac67b2e, type: 2}
+  - {fileID: 11400000, guid: 4f1bee9d4b83f4d4890d587c626b13c4, type: 2}
+  - {fileID: 11400000, guid: 433493fe19b52dc4eb0bd4c9651649d1, type: 2}
+  playerPrefab: {fileID: 2193617239553590087, guid: 3f86eb4575f6cb7428e01077debcdba3, type: 3}
+--- !u!114 &2604892193394743872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4696234820819682449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d2a6f9131809074eb0ce605c45301c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameras: []
+  aquariumCameraPrefab: {fileID: 2529709820423590655, guid: 229c8d4e9e759494899a697cd7da34c5, type: 3}
+  galleryCamera: {fileID: 0}
+  currentIndex: 0

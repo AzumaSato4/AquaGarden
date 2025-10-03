@@ -45,4 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
+  aquariumBoard: {fileID: 0}
   money: 2
+  galleryIndex: 0
+  phaseManager: {fileID: 0}
+  aquaPieceManager: {fileID: 0}
+  isActive: 0
+  isGoal: 0
+  pieceData: {fileID: 11400000, guid: e4dc3e6cd6273164ea3a5ac9233d829b, type: 2}
