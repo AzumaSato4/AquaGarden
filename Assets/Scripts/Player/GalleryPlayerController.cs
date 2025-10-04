@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GalleryPlayerController : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class GalleryPlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (!movedGallery)
         {
             //カーソルの位置を取得

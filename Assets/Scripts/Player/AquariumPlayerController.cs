@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AquariumPlayerController : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class AquariumPlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (!movedAquarium)
         {
             //カーソルの位置を取得

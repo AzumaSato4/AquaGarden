@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AquaPiece : MonoBehaviour
 {
@@ -29,6 +30,11 @@ public class AquaPiece : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (aquaPieceController.aquaPieceManager.selectedPiece == null && aquaPieceController.playerManager.isActive && aquaPieceController.playerManager.phaseManager.currentPhase == PhaseManager.Phase.edit)
         {
             transform.localScale = new Vector2(2.5f, 2.5f);

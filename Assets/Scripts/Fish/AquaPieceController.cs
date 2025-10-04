@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AquaPieceController : MonoBehaviour
 {
@@ -7,6 +8,11 @@ public class AquaPieceController : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         if (playerManager.isActive && playerManager.phaseManager.currentPhase == PhaseManager.Phase.edit && aquaPieceManager.selectedPiece == this.gameObject)
         {
             //カーソルの位置を取得

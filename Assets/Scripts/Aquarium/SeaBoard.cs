@@ -5,9 +5,9 @@ public class SeaBoard : MonoBehaviour
 {
     public Dictionary<PieceData, int> seaAquaPieces;
 
-    private void Start()
-    {
-        seaAquaPieces = new Dictionary<PieceData, int>(GameManager.avalablePieces.Length);
-        seaAquaPieces.Keys.CopyTo(GetComponent<GameManager>().aquaPieces, 0);
-    }
+    //private void Start()
+    //{
+    //    seaAquaPieces = new Dictionary<PieceData, int>(GameManager.avalablePieces.Length);
+    //    seaAquaPieces.Keys.CopyTo(GetComponent<GameManager>().aquaPieces, 0);
+    //}
 }
