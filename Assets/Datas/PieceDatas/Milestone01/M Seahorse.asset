@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4aa3c0b1e52dbbb4798c362b22258548, type: 3}
-  m_Name: M_LargeFish
+  m_Name: M Seahorse
   m_EditorClassIdentifier: 
-  pieceName: M_LargeFish
-  pieceSprite: {fileID: 5573676990539221882, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
-  animation: {fileID: 9100000, guid: 098b16c0eafb45842b7a62635dc69c19, type: 2}
+  pieceName: M Seahorse
+  pieceSprite: {fileID: -290646914117554870, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+  animation: {fileID: 9100000, guid: f86483094a9aef1408ff15d7dfbc9472, type: 2}
   oxgen: -1

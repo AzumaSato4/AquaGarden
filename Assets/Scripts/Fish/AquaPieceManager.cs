@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AquaPieceManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class AquaPieceManager : MonoBehaviour
     UIController uiController;
     TurnManager turnManager;
     public PhaseManager phaseManager;
+    [SerializeField] SeaBoard seaBoard;
 
     private void Start()
     {
@@ -30,21 +32,50 @@ public class AquaPieceManager : MonoBehaviour
         selectedPiece = null;
         uiController.AbledCancel(false);
         turnManager.currentPlayer.GetComponent<PlayerManager>().DontSelectSlot();
+        turnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
     }
 
-    public void CreatePiece(PlayerManager player,PieceData pieceData, GameObject to)
+    public void CreatePiece(PieceData pieceData)
     {
-        GameObject piece = Instantiate(piecePrefab, to.transform.position, Quaternion.identity);
-        piece.GetComponent<AquaPiece>().pieceData = pieceData;
-        piece.GetComponent<AquaPieceController>().playerManager = player;
-        piece.GetComponent<AquaPieceController>().aquaPieceManager = this;
+        GameObject spot = turnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().Instorage();
+        if (spot != null)
+        {
+            GameObject piece = Instantiate(
+                piecePrefab,
+                spot.transform.position,
+                Quaternion.identity
+            );
+
+            if (piece != null)
+            {
+                //piece.transform.localScale = new Vector2(0.8f, 0.8f);
+                piece.GetComponent<AquaPiece>().pieceData = pieceData;
+                piece.GetComponent<AquaPieceController>().playerManager = turnManager.currentPlayer.GetComponent<PlayerManager>();
+                piece.GetComponent<AquaPieceController>().aquaPieceManager = this;
+            }
+        }
+
     }
 
     public void MoveToSeaBoard()
     {
-        Destroy(selectedPiece);
-        selectedPiece = null;
-        uiController.AbledCancel(false);
-        turnManager.currentPlayer.GetComponent<PlayerManager>().DontSelectSlot();
+        StartCoroutine(SelectCoroutine());
+    }
+
+    IEnumerator SelectCoroutine()
+    {
+        uiController.ShowMassagePanel("海ボードに移動させますか？", selectedPiece.GetComponent<AquaPiece>().pieceData.pieceSprite);
+
+        while (uiController.isActiveUI)
+        {
+            yield return null;
+        }
+
+        if (uiController.isOK)
+        {
+            seaBoard.ReleasePiece(selectedPiece);
+            Destroy(selectedPiece);
+        }
+        CanselSelect();
     }
 }

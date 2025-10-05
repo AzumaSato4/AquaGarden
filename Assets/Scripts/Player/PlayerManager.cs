@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -31,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         //プレイヤーの駒と水族館ボードを生成
-        aquarium = Instantiate(playerData.aquarium, new Vector3(playerData.playerNum * 20, 0, 0), Quaternion.identity);
+        aquarium = Instantiate(playerData.aquarium, new Vector3(playerData.playerNum * 30, 0, 0), Quaternion.identity);
         galleryPlayer = Instantiate(playerData.galleryPlayer);
         aquariumPlayer = Instantiate(playerData.aquariumPlayer);
 
@@ -159,20 +160,34 @@ public class PlayerManager : MonoBehaviour
         aquariumBoard.aquaSlots[another].GetComponent<AquaSlot>().selectable = false;
     }
 
-    public void EndAquarium()
+    public bool EndAquarium()
     {
+        if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
+        {
+            Debug.Log("ストレージを空にしてください！");
+            return false;
+        }
+
         foreach (GameObject slot in aquariumBoard.aquaSlots)
         {
             slot.GetComponent<AquaSlot>().selectable = false;
             slot.GetComponent<AquaSlot>().mask.SetActive(false);
         }
+
+        return true;
     }
 
     public void GetPiece()
     {
+        StartCoroutine(GetPieceCoroutine());
+    }
+
+    IEnumerator GetPieceCoroutine()
+    {
         for (int i = 0; i < 8; i++)
         {
-            aquaPieceManager.CreatePiece(this,pieceData, aquariumBoard.storage);
+            aquaPieceManager.CreatePiece(pieceData);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }

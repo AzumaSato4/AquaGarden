@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,10 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject turnEnd;  //ターンエンドボタン
     [SerializeField] GameObject cancel; //キャンセルボタン
     [SerializeField] GameObject seaBoard; //海ボード
+    [SerializeField] GameObject messagePanel; //メッセージパネル
 
-    bool isShowSeaBoad = false; //海ボードが表示されているかどうか
+    public bool isActiveUI = false; //UIが表示されているかどうか
+    public bool isOK;
 
     AquaPieceManager aquaPieceManager;
 
@@ -18,6 +21,7 @@ public class UIController : MonoBehaviour
         turnEnd.GetComponent<Button>().interactable = false;
         cancel.GetComponent<Button>().interactable = false;
         seaBoard.SetActive(false);
+        messagePanel.SetActive(false);
     }
 
     public void AbledTurnEnd(bool isAble)
@@ -27,7 +31,7 @@ public class UIController : MonoBehaviour
 
     public void AbledCancel(bool isAble)
     {
-        cancel.GetComponent<Button>().interactable= isAble;
+        cancel.GetComponent<Button>().interactable = isAble;
     }
 
     public void OnSeaBoradButton()
@@ -39,8 +43,37 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            seaBoard.SetActive(!isShowSeaBoad);
-            isShowSeaBoad = !isShowSeaBoad;
+            seaBoard.SetActive(!isActiveUI);
+            isActiveUI = !isActiveUI;
+        }
+    }
+
+    public void ShowMassagePanel(string massage, Sprite sprite)
+    {
+        isActiveUI = true;
+        messagePanel.SetActive(true);
+        messagePanel.GetComponent<MessagePanel>().ShowMassage(massage, sprite);
+
+        StartCoroutine(OKCoroutine());
+    }
+
+    IEnumerator OKCoroutine()
+    {
+        while (messagePanel.GetComponent<MessagePanel>().isShow)
+        {
+            yield return null;
+        }
+        if (messagePanel.GetComponent<MessagePanel>().isOK)
+        {
+            isActiveUI = false;
+            messagePanel.SetActive(false);
+            isOK = true;
+        }
+        else
+        {
+            isActiveUI = false;
+            messagePanel.SetActive(false);
+            isOK = false;
         }
     }
 }

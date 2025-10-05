@@ -85,10 +85,12 @@ public class TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
-        currentPlayer.GetComponent<PlayerManager>().EndAquarium();
-        currentPlayer.GetComponent<PlayerManager>().isActive = false;
-        phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().playerData);
-        NextTurn();
+        if (currentPlayer.GetComponent<PlayerManager>().EndAquarium())
+        {
+            currentPlayer.GetComponent<PlayerManager>().isActive = false;
+            phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().playerData);
+            NextTurn();
+        }
     }
 
     void NextTurn()

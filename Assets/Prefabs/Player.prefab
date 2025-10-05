@@ -52,4 +52,4 @@ MonoBehaviour:
   aquaPieceManager: {fileID: 0}
   isActive: 0
   isGoal: 0
-  pieceData: {fileID: 11400000, guid: 0c34a0bbd3c2d5a46ae434243ef15dd6, type: 2}
+  pieceData: {fileID: 11400000, guid: e4dc3e6cd6273164ea3a5ac9233d829b, type: 2}

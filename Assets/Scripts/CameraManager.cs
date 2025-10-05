@@ -17,7 +17,7 @@ public class CameraManager : MonoBehaviour
 
         for (int i = 1; i < cameras.Length; i++)
         {
-            cameras[i] = Instantiate(aquariumCameraPrefab, new Vector3(i * 20, 0, -10), Quaternion.identity);
+            cameras[i] = Instantiate(aquariumCameraPrefab, new Vector3(i * 30, 0, -10), Quaternion.identity);
         }
     }
 

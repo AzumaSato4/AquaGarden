@@ -1,13 +1,17 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static int players = 4;
-    public PieceData[] aquaPieces;
+    [SerializeField] PieceData[] aquaPiecesEditor;
+    public static PieceData[] aquaPieces;
     public static bool[] avalablePieces;
 
-    private void Start()
+    private void Awake()
     {
+        aquaPieces = new PieceData[aquaPiecesEditor.Length];
+        Array.Copy(aquaPiecesEditor, aquaPieces, aquaPiecesEditor.Length);
         avalablePieces = new bool[aquaPieces.Length];
 
         //テスト用
