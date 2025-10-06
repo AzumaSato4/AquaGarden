@@ -12,9 +12,9 @@ public class PhaseManager : MonoBehaviour
         end
     }
 
-    public Phase currentPhase;
+    public static Phase currentPhase;
 
-    UIController uiController; //UIManager‚ğŠi”[‚·‚é‚½‚ß‚Ì•Ï”
+    UIController uiController; //UIManagerã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 
 
     private void Start()
@@ -25,15 +25,26 @@ public class PhaseManager : MonoBehaviour
     public void StartGallery(PlayerData player)
     {
         GetComponent<CameraManager>().ChangeCamera(0);
-        //ƒ^[ƒ“ƒGƒ“ƒhƒ{ƒ^ƒ“‚ğ‰Ÿ‚¹‚È‚¢‚æ‚¤‚É‚·‚é
+        //ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰ãƒœã‚¿ãƒ³ã‚’æŠ¼ã›ãªã„ã‚ˆã†ã«ã™ã‚‹
         uiController.AbledTurnEnd(false);
         currentPhase = Phase.gallery;
-        Debug.Log($"ƒMƒƒƒ‰ƒŠ[i{player.playerName}‚Ìƒ^[ƒ“jŠJn");
+        Debug.Log($"ã‚®ãƒ£ãƒ©ãƒªãƒ¼ï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰é–‹å§‹");
+    }
+
+    public void StartAd(PlayerData player)
+    {
+        currentPhase = Phase.ad;
+        Debug.Log($"åºƒå‘Šã‚¤ãƒ™ãƒ³ãƒˆï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰é–‹å§‹");
+    }
+
+    public void EndAd(PlayerData player)
+    {
+        Debug.Log($"åºƒå‘Šã‚¤ãƒ™ãƒ³ãƒˆï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰çµ‚äº†");
     }
 
     public void EndGallery(PlayerData player)
     {
-        Debug.Log($"ƒMƒƒƒ‰ƒŠ[i{player.playerName}‚Ìƒ^[ƒ“jI—¹");
+        Debug.Log($"ã‚®ãƒ£ãƒ©ãƒªãƒ¼ï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰çµ‚äº†");
         StartAquarium(player);
     }
 
@@ -41,12 +52,25 @@ public class PhaseManager : MonoBehaviour
     {
         GetComponent<CameraManager>().ChangeCamera(player.playerNum);
         currentPhase = Phase.aquarium;
-        Debug.Log($"…‘°ŠÙi{player.playerName}‚Ìƒ^[ƒ“jŠJn");
+        Debug.Log($"æ°´æ—é¤¨ï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰é–‹å§‹");
+    }
+
+    public void StartFeeding(PlayerData player)
+    {
+        currentPhase = Phase.feeding;
+        Debug.Log($"é¤Œã‚„ã‚Šã‚¤ãƒ™ãƒ³ãƒˆï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰é–‹å§‹");
+    }
+
+    public void EndFeeding(PlayerData player)
+    {
+        Debug.Log($"é¤Œã‚„ã‚Šã‚¤ãƒ™ãƒ³ãƒˆï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰çµ‚äº†");
+        currentPhase = Phase.aquarium;
+        MovedAquarium(player);
     }
 
     public void MovedAquarium(PlayerData player)
     {
-        //ƒ^[ƒ“ƒGƒ“ƒhƒ{ƒ^ƒ“‚ğ‰Ÿ‚¹‚é‚æ‚¤‚É‚·‚é
+        //ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰ãƒœã‚¿ãƒ³ã‚’æŠ¼ã›ã‚‹ã‚ˆã†ã«ã™ã‚‹
         uiController.AbledTurnEnd(true);
         StartEdit(player);
     }
@@ -54,12 +78,12 @@ public class PhaseManager : MonoBehaviour
     void StartEdit(PlayerData player)
     {
         currentPhase = Phase.edit;
-        Debug.Log($"ƒŒƒCƒAƒEƒg•ÏXi{player.playerName}‚Ìƒ^[ƒ“jŠJn");
+        Debug.Log($"ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå¤‰æ›´ï¼ˆ{player.playerName}ã®ã‚¿ãƒ¼ãƒ³ï¼‰é–‹å§‹");
     }
 
     public void EndTurn(PlayerData player)
     {
         currentPhase = Phase.end;
-        Debug.Log($"{player.playerName}‚Ìƒ^[ƒ“I—¹");
+        Debug.Log($"{player.playerName}ã®ã‚¿ãƒ¼ãƒ³çµ‚äº†");
     }
 }

@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Manta
   pieceSprite: {fileID: 8379077576387906512, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: e3a7b247cd2030c478447f2b9833ebfe, type: 2}
-  oxgen: -3
+  oxygen: -3
+  amount: 4
+  pieceType: 3

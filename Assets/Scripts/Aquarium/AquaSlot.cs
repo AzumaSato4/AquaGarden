@@ -1,13 +1,22 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AquaSlot : MonoBehaviour
 {
-    public GameObject[] pieceSpots;     //‹›‹î‚ğ’u‚­ƒXƒ|ƒbƒg
-    public bool selectable = false;     //‚±‚Ì…‘…‚ª‘I‘ğ‰Â”\‚©‚Ç‚¤‚©
-    public GameObject mask;   //…‘…‚ğˆÃ‚­‚·‚é‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg
+    public GameObject[] pieceSpots;     //é­šé§’ã‚’ç½®ãã‚¹ãƒãƒƒãƒˆ
+    public bool selectable = false;     //ã“ã®æ°´æ§½ãŒé¸æŠå¯èƒ½ã‹ã©ã†ã‹
+    public GameObject mask;   //æ°´æ§½ã‚’æš—ãã™ã‚‹ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+
+    public List<GameObject> slotPieces; //æ°´æ§½å†…ã®é§’æƒ…å ±ã‚’ç®¡ç†
+    public int slotOxygen = 4; //æ°´æ§½å†…ã®é…¸ç´ é‡
+    //ãƒ†ã‚¹ãƒˆç”¨
+    [SerializeField] TextMeshProUGUI oxygenText; //æ°´æ§½å†…ã®é…¸ç´ é‡ã‚’è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
 
     private void Update()
     {
+        oxygenText.text = slotOxygen.ToString();
+
         if (selectable)
         {
             GetComponent<PolygonCollider2D>().enabled = true;

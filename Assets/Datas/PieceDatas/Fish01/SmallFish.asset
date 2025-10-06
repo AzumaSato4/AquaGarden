@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: SmallFish
   pieceSprite: {fileID: -9003448877997200467, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 186c7861245278f4ba3923118128f1e9, type: 2}
-  oxgen: -1
+  oxygen: -1
+  amount: 0
+  pieceType: 0

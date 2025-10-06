@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4aa3c0b1e52dbbb4798c362b22258548, type: 3}
-  m_Name: M Shark
+  m_Name: M_SeaTurtle
   m_EditorClassIdentifier: 
-  pieceName: M Shark
-  pieceSprite: {fileID: 2823308625058232896, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
-  animation: {fileID: 9100000, guid: 26a73186fb945d04eb1162875880cfb9, type: 2}
-  oxgen: -2
+  pieceName: M_SeaTurtle
+  pieceSprite: {fileID: 4884913219653482509, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+  animation: {fileID: 9100000, guid: 8ec9c35d3f649f540a40f65fd3bc7399, type: 2}
+  oxygen: -2
+  amount: 0
+  pieceType: 1

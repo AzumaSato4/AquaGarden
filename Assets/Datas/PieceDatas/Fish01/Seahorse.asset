@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Seahorse
   pieceSprite: {fileID: -4834764474788953298, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 9050555c8f92d5d4794b92647a5defa2, type: 2}
-  oxgen: -1
+  oxygen: -1
+  amount: 0
+  pieceType: 4

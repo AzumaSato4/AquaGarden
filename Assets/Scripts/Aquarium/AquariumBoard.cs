@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class AquariumBoard : MonoBehaviour
 {
-    //…‘°ŠÙƒ{[ƒh‚É‚ ‚éƒIƒuƒWƒFƒNƒg‚ğŠi”[
+    //æ°´æ—é¤¨ãƒœãƒ¼ãƒ‰ã«ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ ¼ç´
     public GameObject[] aquaTiles;
     public GameObject[] aquaSlots;
     public GameObject storage;
     public GameObject[] CoinSpots;
     public GameObject coin;
+    public GameObject canvas;
 
     public bool[] isPlayer;
 

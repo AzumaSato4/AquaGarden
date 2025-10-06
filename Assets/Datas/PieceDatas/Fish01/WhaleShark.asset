@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: WhaleShark
   pieceSprite: {fileID: -1430698281648099139, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 76e55969c838db84ea2771a9a13f43a6, type: 2}
-  oxgen: -4
+  oxygen: -4
+  amount: 0
+  pieceType: 4

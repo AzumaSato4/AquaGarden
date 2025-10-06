@@ -3,69 +3,86 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public PlayerData playerData; //ƒvƒŒƒCƒ„[î•ñ
-    GalleryBoard galleryBoard; //ƒMƒƒƒ‰ƒŠ[ƒ^ƒCƒ‹î•ñ‚ğæ“¾‚·‚é‚½‚ß‚Ì•Ï”
-    public AquariumBoard aquariumBoard; //…‘°ŠÙƒ{[ƒhî•ñ‚ğæ“¾‚·‚é‚½‚ß‚Ì•Ï”
-    public int money; //Š‘‹à
+    public PlayerData playerData; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±
+    GalleryBoard galleryBoard; //ã‚®ãƒ£ãƒ©ãƒªãƒ¼ã‚¿ã‚¤ãƒ«æƒ…å ±ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    public AquariumBoard aquariumBoard; //æ°´æ—é¤¨ãƒœãƒ¼ãƒ‰æƒ…å ±ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    public int money; //æ‰€æŒè³‡é‡‘
+    int preMoney; //ã²ã¨ã¤å‰æ™‚ç‚¹ã®æ‰€æŒè³‡é‡‘
+    public FeedingData feedingData; //é¤Œã‚„ã‚Šã‚¤ãƒ™ãƒ³ãƒˆæƒ…å ±
 
-    GameObject aquarium;        //…‘°ŠÙƒ{[ƒh
-    GameObject galleryPlayer;   //ƒMƒƒƒ‰ƒŠ[‚ÌƒvƒŒƒCƒ„[‹î
-    GameObject aquariumPlayer;  //…‘°ŠÙ‚ÌƒvƒŒƒCƒ„[‹î
+    GameObject aquarium;        //æ°´æ—é¤¨ãƒœãƒ¼ãƒ‰
+    GameObject galleryPlayer;   //ã‚®ãƒ£ãƒ©ãƒªãƒ¼ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é§’
+    GameObject aquariumPlayer;  //æ°´æ—é¤¨ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é§’
 
-    GameObject currentGalleryTile;  //Œ»İ‚ÌƒMƒƒƒ‰ƒŠ[ƒ}ƒX
-    public int galleryIndex;        //Œ»İ‚ÌƒMƒƒƒ‰ƒŠ[ƒ}ƒX”Ô†
-    GameObject currentAquariumTile; //Œ»İ‚Ì…‘°ŠÙƒ}ƒX
-    int aquariumIndex;              //Œ»İ‚Ì…‘°ŠÙƒ}ƒX”Ô†
+    GameObject currentGalleryTile;  //ç¾åœ¨ã®ã‚®ãƒ£ãƒ©ãƒªãƒ¼ãƒã‚¹
+    public int galleryIndex;        //ç¾åœ¨ã®ã‚®ãƒ£ãƒ©ãƒªãƒ¼ãƒã‚¹ç•ªå·
+    GameObject currentAquariumTile; //ç¾åœ¨ã®æ°´æ—é¤¨ãƒã‚¹
+    int aquariumIndex;              //ç¾åœ¨ã®æ°´æ—é¤¨ãƒã‚¹ç•ªå·
+    GameObject aquariumCanvas; //è‡ªåˆ†ã®æ°´æ—é¤¨å°‚ç”¨ã‚­ãƒ£ãƒ³ãƒã‚¹
 
-    TurnManager turnManager;    //TurnManager‚ğŠi”[‚·‚é‚½‚ß‚Ì•Ï”
-    public PhaseManager phaseManager;  //PhaseManager‚ğŠi”[‚·‚é‚½‚ß‚Ì•Ï”
-    public AquaPieceManager aquaPieceManager;  //PieceManager‚ğŠi”[‚·‚é‚½‚ß‚Ì•Ï”
+    TurnManager turnManager;    //TurnManagerã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    public PhaseManager phaseManager;  //PhaseManagerã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+    public AquaPieceManager aquaPieceManager;  //PieceManagerã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 
-    public bool isActive = false;   //©•ª‚Ìƒ^[ƒ“‚©‚Ç‚¤‚©
-    public bool isGoal = false;     //ƒS[ƒ‹‚µ‚½‚©‚Ç‚¤‚©
+    public bool isActive = false;   //è‡ªåˆ†ã®ã‚¿ãƒ¼ãƒ³ã‹ã©ã†ã‹
+    public bool isGoal = false;     //ã‚´ãƒ¼ãƒ«ã—ãŸã‹ã©ã†ã‹
 
-    int another;    //‘I‘ğ‰Â”\‚È‚à‚¤ˆê‚Â‚Ì…‘…‚ğ‹L˜^‚·‚é‚½‚ß‚Ì•Ï”
+    int another;    //é¸æŠå¯èƒ½ãªã‚‚ã†ä¸€ã¤ã®æ°´æ§½ã‚’è¨˜éŒ²ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 
-    //ƒeƒXƒg—p
-    [SerializeField] PieceData pieceData;
 
     private void Start()
     {
-        //ƒvƒŒƒCƒ„[‚Ì‹î‚Æ…‘°ŠÙƒ{[ƒh‚ğ¶¬
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é§’ã¨æ°´æ—é¤¨ãƒœãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
         aquarium = Instantiate(playerData.aquarium, new Vector3(playerData.playerNum * 30, 0, 0), Quaternion.identity);
         galleryPlayer = Instantiate(playerData.galleryPlayer);
         aquariumPlayer = Instantiate(playerData.aquariumPlayer);
 
-        //ƒvƒŒƒCƒ„[‹î‚Ì‰æ‘œ‚ğƒZƒbƒg
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é§’ã®ç”»åƒã‚’ã‚»ãƒƒãƒˆ
         galleryPlayer.GetComponent<SpriteRenderer>().sprite = playerData.gallerySprite;
         aquariumPlayer.GetComponent<SpriteRenderer>().sprite = playerData.aquariumSprite;
 
-        //playerManager‚É©•ª©g‚ğƒZƒbƒg
+        //playerManagerã«è‡ªåˆ†è‡ªèº«ã‚’ã‚»ãƒƒãƒˆ
         galleryPlayer.GetComponent<GalleryPlayerController>().playerManager = this;
         aquariumPlayer.GetComponent<AquariumPlayerController>().playerManager = this;
 
-        //ƒMƒƒƒ‰ƒŠ[‚Æ…‘°ŠÙ‚Ìî•ñ‚ğæ“¾
+        //ã‚®ãƒ£ãƒ©ãƒªãƒ¼ã¨æ°´æ—é¤¨ã®æƒ…å ±ã‚’å–å¾—
         galleryBoard = GameObject.Find("Gallery").GetComponent<GalleryBoard>();
         aquariumBoard = aquarium.GetComponent<AquariumBoard>();
 
-        //TurnManager‚ÆPhaseManager‚ğæ“¾
+        //æ°´æ—é¤¨ç”¨ã‚­ãƒ£ãƒ³ãƒã‚¹æƒ…å ±ã‚’å–å¾—
+        aquariumCanvas = aquariumBoard.canvas;
+
+        //TurnManagerã¨PhaseManagerã‚’å–å¾—
         turnManager = GameObject.Find("MainManager").GetComponent<TurnManager>();
         phaseManager = GameObject.Find("MainManager").GetComponent<PhaseManager>();
 
-        //‰ŠúˆÊ’u‚ÉƒZƒbƒg
-        //ƒMƒƒƒ‰ƒŠ[ƒXƒ^[ƒgˆÊ’u‚ÉƒZƒbƒg
+        //åˆæœŸä½ç½®ã«ã‚»ãƒƒãƒˆ
+        //ã‚®ãƒ£ãƒ©ãƒªãƒ¼ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®ã«ã‚»ãƒƒãƒˆ
         galleryIndex = playerData.playerNum - 1;
         currentGalleryTile = galleryBoard.startSpots[galleryIndex];
         galleryPlayer.transform.position = currentGalleryTile.transform.position;
         galleryBoard.isPlayer[galleryIndex] = true;
-        //…‘°ŠÙƒXƒ^[ƒgˆÊ’u‚ÉƒZƒbƒg
+        //æ°´æ—é¤¨ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®ã«ã‚»ãƒƒãƒˆ
         aquariumIndex = 0;
         currentAquariumTile = aquariumBoard.aquaTiles[aquariumIndex];
         aquariumPlayer.transform.position = currentAquariumTile.transform.position;
         aquariumBoard.isPlayer[aquariumIndex] = true;
-        //ƒRƒCƒ“‚Ì‰ŠúˆÊ’u‚Í2
+        //ã‚³ã‚¤ãƒ³ã®åˆæœŸä½ç½®ã¯2
         money = 2;
+        preMoney = 2;
         aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
+        //UIã¯æœ€åˆã¯æ¶ˆã™
+        aquariumCanvas.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (preMoney != money)
+        {
+            if (money > 15) money = 15;
+            aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
+            preMoney = money;
+        }
     }
 
     public void StartGallery()
@@ -73,11 +90,15 @@ public class PlayerManager : MonoBehaviour
         if (isActive)
         {
             galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
+            galleryPlayer.GetComponent<Animator>().enabled = true;
         }
     }
 
-    public void MoveGallery(int to)
+    public void MoveGallery(int to, string tile)
     {
+        galleryPlayer.GetComponent<Animator>().enabled = false;
+        galleryPlayer.transform.localScale = Vector2.one;
+
         galleryBoard.isPlayer[galleryIndex] = false;
         galleryIndex = to;
         galleryBoard.isPlayer[galleryIndex] = true;
@@ -85,19 +106,49 @@ public class PlayerManager : MonoBehaviour
         if (0 <= galleryIndex && galleryIndex <= 3)
         {
             isGoal = true;
-            //ƒS[ƒ‹‚µ‚½‚ç‹­§ƒ^[ƒ“ƒGƒ“ƒh
+            //ã‚´ãƒ¼ãƒ«ã—ãŸã‚‰å¼·åˆ¶ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰
             turnManager.EndTurn();
             return;
         }
 
-        phaseManager.EndGallery(playerData);
-        StartAquarium();
+        if (tile != null)
+        {
+            if (tile == "FishTile")
+            {
+                Debug.Log("é­šãƒã‚¹");
+
+                FishTile fishTile = galleryBoard.galleryTiles[to - 4].GetComponent<FishTile>();
+                StartCoroutine(GetPieceCoroutine(fishTile));
+
+                phaseManager.EndGallery(playerData);
+                StartAquarium();
+            }
+            else if (tile == "AdTile")
+            {
+                Debug.Log("åºƒå‘Šãƒã‚¹");
+                StartAd();
+            }
+        }
+    }
+
+    void StartAd()
+    {
+        phaseManager.StartAd(playerData);
+    }
+
+    public void EndAd()
+    {
+        phaseManager.EndAd(playerData);
+        turnManager.EndTurn();
     }
 
     public void StartAquarium()
     {
         if (isActive)
         {
+            aquariumCanvas.SetActive(true);
+
+            aquariumPlayer.GetComponent<Animator>().enabled = true;
             aquariumPlayer.GetComponent<AquariumPlayerController>().movedAquarium = false;
             for (int i = 1; i < 4; i++)
             {
@@ -108,12 +159,31 @@ public class PlayerManager : MonoBehaviour
                 }
                 aquariumBoard.aquaTiles[movableTiles].GetComponent<PolygonCollider2D>().enabled = true;
             }
-            GetPiece();
         }
     }
 
     public void MoveAquarium(int to)
     {
+        aquariumPlayer.GetComponent<Animator>().enabled = false;
+        aquariumPlayer.transform.localScale = Vector2.one;
+
+        bool isFeeding = false;
+
+        int moveTiles = to - aquariumIndex;
+        if (moveTiles < 0) moveTiles += 6;
+
+        for (int i = 0; i < moveTiles; i++)
+        {
+            int indexA = aquariumIndex + i;
+            if (indexA > 5) indexA -= 6;
+            int indexB = indexA + 1;
+
+            if (indexA == 0 && indexB == 1)
+            {
+                isFeeding = true;
+            }
+        }
+
         aquariumBoard.isPlayer[aquariumIndex] = false;
         aquariumIndex = to;
         aquariumBoard.isPlayer[aquariumIndex] = true;
@@ -123,17 +193,78 @@ public class PlayerManager : MonoBehaviour
             aquariumBoard.aquaTiles[i].GetComponent<PolygonCollider2D>().enabled = false;
         }
 
-        EditAquarium();
-        phaseManager.MovedAquarium(playerData);
+        if (isFeeding)
+        {
+            phaseManager.StartFeeding(playerData);
+            StartFeeding();
+            return;
+        }
+        else
+        {
+            EditAquarium();
+            phaseManager.MovedAquarium(playerData);
+            return;
+        }
     }
 
+    //é¤Œã‚„ã‚Šã‚¤ãƒ™ãƒ³ãƒˆ
+    void StartFeeding()
+    {
+        //ç„¡æ¡ä»¶ã§è³‡é‡‘ã‚’1è¿½åŠ 
+        money++;
+
+        int countA = 0;
+        int countB = 0;
+        foreach (GameObject piece in aquariumBoard.aquaSlots[0].GetComponent<AquaSlot>().slotPieces)
+        {
+            string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+            if (name == feedingData.nameA)
+            {
+                Debug.Log("ç™ºè¦‹A");
+                countA++;
+            }
+            if (name == feedingData.nameB)
+            {
+                Debug.Log("ç™ºè¦‹B");
+                countB++;
+            }
+        }
+        foreach (GameObject piece in aquariumBoard.aquaSlots[1].GetComponent<AquaSlot>().slotPieces)
+        {
+            string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+            if (name == feedingData.nameA)
+            {
+                Debug.Log("ç™ºè¦‹A2");
+                countA++;
+            }
+            if (name == feedingData.nameB)
+            {
+                Debug.Log("ç™ºè¦‹B2");
+                countB++;
+            }
+        }
+
+        while (countA > 0 && countB > 0)
+        {
+            money++;
+
+            countA--;
+            countB--;
+        }
+
+        Debug.Log("çµ‚äº†");
+        EditAquarium();
+        phaseManager.EndFeeding(playerData);
+    }
+
+    //æ°´æ—é¤¨ç·¨é›†
     void EditAquarium()
     {
         another = aquariumIndex - 1;
         if (another < 0)
         {
             another = 5;
-            Debug.Log("ƒ}ƒCƒiƒXI");
+            Debug.Log("ãƒã‚¤ãƒŠã‚¹ï¼");
         }
         for (int i = 0; i < 6; i++)
         {
@@ -164,7 +295,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
         {
-            Debug.Log("ƒXƒgƒŒ[ƒW‚ğ‹ó‚É‚µ‚Ä‚­‚¾‚³‚¢I");
+            Debug.Log("ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã‚’ç©ºã«ã—ã¦ãã ã•ã„ï¼");
             return false;
         }
 
@@ -174,20 +305,19 @@ public class PlayerManager : MonoBehaviour
             slot.GetComponent<AquaSlot>().mask.SetActive(false);
         }
 
+        aquariumCanvas.SetActive(false);
         return true;
     }
 
-    public void GetPiece()
+    IEnumerator GetPieceCoroutine(FishTile tile)
     {
-        StartCoroutine(GetPieceCoroutine());
-    }
-
-    IEnumerator GetPieceCoroutine()
-    {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < tile.pieces.Count; i++)
         {
-            aquaPieceManager.CreatePiece(pieceData);
-            yield return new WaitForSeconds(0.1f);
+            PieceData piece = tile.pieces[i].GetComponent<GalleryPiece>().pieceData;
+            Destroy(tile.pieces[i]);
+            aquaPieceManager.CreatePiece(piece);
+            yield return null;
         }
+        tile.pieces.Clear();
     }
 }

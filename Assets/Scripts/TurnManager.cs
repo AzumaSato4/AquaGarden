@@ -2,23 +2,66 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public GameObject currentPlayer;
+    publicã€€static GameObject currentPlayer;
 
     PhaseManager phaseManager;
     public GameObject[] players;
 
-    [SerializeField] int loopCnt = 0;
+    int loopCnt = 0;
+    int roundCnt = 0;
 
-    GalleryBoard galleryBoard;
+    [SerializeField] GalleryBoard galleryBoard;
+    [SerializeField] SeaBoard seaBoard;
+
+    [SerializeField] GalleryPieceManager gPieceManager;
+    [SerializeField] GameObject roundPiece;
 
     private void Start()
     {
         phaseManager = GetComponent<PhaseManager>();
-        galleryBoard = GameObject.Find("Gallery").GetComponent<GalleryBoard>();
         players = new GameObject[GameManager.players];
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        Invoke("StartTrun", 0.1f);
+        seaBoard.Initialize();
+        gPieceManager.Initialize();
+
+        Invoke("StartRound", 0.1f);
+    }
+
+    void StartRound()
+    {
+        roundCnt++;
+
+        if (players.Length == 4)
+        {
+            if (roundCnt > 4)
+            {
+                EndGame();
+                return;
+            }
+        }
+        else
+        {
+            if (roundCnt > 3)
+            {
+                EndGame();
+                return;
+            }
+        }
+
+        gPieceManager.SetPiece();
+
+        loopCnt = 0;
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].GetComponent<PlayerManager>().isGoal = false;
+        }
+        galleryBoard.ResetTile();
+        roundPiece.transform.position = galleryBoard.roundSpots[roundCnt - 1].transform.position;
+
+        Debug.Log("ãƒ©ã‚¦ãƒ³ãƒ‰ã‚¹ã‚¿ãƒ¼ãƒˆï¼");
+        StartTrun();
+
     }
 
     void StartTrun()
@@ -63,21 +106,21 @@ public class TurnManager : MonoBehaviour
             if (galleryBoard.isPlayer[0] && goalplayers == 1)
             {
                 galleryBoard.startSpots[1].GetComponent<CircleCollider2D>().enabled = true;
-                Debug.Log("ƒS[ƒ‹2‰ğ•ú");
+                Debug.Log("ã‚´ãƒ¼ãƒ«2è§£æ”¾");
             }
             else if (galleryBoard.isPlayer[1] && goalplayers == 2)
             {
                 galleryBoard.startSpots[2].GetComponent<CircleCollider2D>().enabled = true;
-                Debug.Log("ƒS[ƒ‹3‰ğ•ú");
+                Debug.Log("ã‚´ãƒ¼ãƒ«3è§£æ”¾");
             }
             else if (galleryBoard.isPlayer[2] && goalplayers == 3)
             {
                 galleryBoard.startSpots[3].GetComponent<CircleCollider2D>().enabled = true;
-                Debug.Log("ƒS[ƒ‹4‰ğ•ú");
+                Debug.Log("ã‚´ãƒ¼ãƒ«4è§£æ”¾");
             }
         }
 
-        //ƒvƒŒƒCƒ„[‚ğs“®‰Â”\‚É‚µˆÚ“®—š—ğ‚ğ‰Šú‰»
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¡Œå‹•å¯èƒ½ã«ã—ç§»å‹•å±¥æ­´ã‚’åˆæœŸåŒ–
         currentPlayer.GetComponent<PlayerManager>().isActive = true;
         currentPlayer.GetComponent<PlayerManager>().StartGallery();
         phaseManager.StartGallery(currentPlayer.GetComponent<PlayerManager>().playerData);
@@ -100,6 +143,12 @@ public class TurnManager : MonoBehaviour
 
     void EndRound()
     {
-        Debug.Log("ƒ‰ƒEƒ“ƒhI—¹I");
+        Debug.Log("ãƒ©ã‚¦ãƒ³ãƒ‰çµ‚äº†ï¼");
+        StartRound();
+    }
+
+    void EndGame()
+    {
+        Debug.Log("ã‚²ãƒ¼ãƒ çµ‚äº†ï¼");
     }
 }

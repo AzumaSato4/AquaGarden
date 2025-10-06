@@ -19,23 +19,23 @@ public class AquariumPlayerController : MonoBehaviour
             return;
         }
 
-        if (!movedAquarium)
+        if (!movedAquarium && PhaseManager.currentPhase == PhaseManager.Phase.aquarium)
         {
-            //ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğæ“¾
+            //ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å–å¾—
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-            //ƒNƒŠƒbƒN‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
             if (hit.collider != null)
             {
                 GameObject selected = hit.collider.gameObject;
 
-                //ƒ}ƒEƒXƒNƒŠƒbƒN‚µ‚½‚ç
+                //ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //‰½‚©ƒIƒuƒWƒFƒNƒg‚ğƒNƒŠƒbƒN‚µ‚½‚ç
+                    //ä½•ã‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                     if (selected != null)
                     {
-                        //…‘°ŠÙ‚ÌƒNƒŠƒbƒN‚µ‚½ƒ}ƒX‚ÉˆÚ“®‚·‚é
+                        //æ°´æ—é¤¨ã®ã‚¯ãƒªãƒƒã‚¯ã—ãŸãƒã‚¹ã«ç§»å‹•ã™ã‚‹
                         if (selected.CompareTag("AquariumTile"))
                         {
                             playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
@@ -44,7 +44,7 @@ public class AquariumPlayerController : MonoBehaviour
                         }
                         if (selected.CompareTag("AquaSlot"))
                         {
-                            Debug.Log("…‘…I");
+                            Debug.Log("æ°´æ§½ï¼");
                         }
                     }
                 }

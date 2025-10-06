@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Storage : MonoBehaviour
 {
-    public GameObject[] pieceSpots;     //‹›‹î‚ğ’u‚­ƒXƒ|ƒbƒg
-    public bool isEmpty = true;     //ƒXƒgƒŒ[ƒW‚É‹›‹î‚ªc‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-    public GameObject mask;   //ƒXƒgƒŒ[ƒW‚ğˆÃ‚­‚·‚é‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg
+    public GameObject[] pieceSpots;     //é­šé§’ã‚’ç½®ãã‚¹ãƒãƒƒãƒˆ
+    public bool isEmpty = true;     //ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã«é­šé§’ãŒæ®‹ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+    public GameObject mask;   //ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã‚’æš—ãã™ã‚‹ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
     private void Update()
     {
@@ -29,7 +29,7 @@ public class Storage : MonoBehaviour
             }
         }
 
-        return null;
+        return pieceSpots[0];
     }
 
     public void CheckSpotEmpty()

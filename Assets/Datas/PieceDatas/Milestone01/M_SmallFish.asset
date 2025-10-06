@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4aa3c0b1e52dbbb4798c362b22258548, type: 3}
-  m_Name: M LargeFish
+  m_Name: M_SmallFish
   m_EditorClassIdentifier: 
-  pieceName: M LargeFish
-  pieceSprite: {fileID: 3845877642813170198, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
-  animation: {fileID: 9100000, guid: 098b16c0eafb45842b7a62635dc69c19, type: 2}
-  oxgen: -1
+  pieceName: M_SmallFish
+  pieceSprite: {fileID: 5573676990539221882, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+  animation: {fileID: 9100000, guid: 97a4cdbe7ba2a2b40bf356173ef11d88, type: 2}
+  oxygen: -1
+  amount: 0
+  pieceType: 0

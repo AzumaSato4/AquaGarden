@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Seaweed
   pieceSprite: {fileID: 4356209697794142861, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: dd1c15515e4e0c141a7f0b759ff427d2, type: 2}
-  oxgen: 2
+  oxygen: 2
+  amount: 0
+  pieceType: 5

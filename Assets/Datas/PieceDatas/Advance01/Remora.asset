@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Remora
   pieceSprite: {fileID: -7451005307300285173, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 8209b1593703ee9438c291cf4af215a0, type: 2}
-  oxgen: 0
+  oxygen: 0
+  amount: 2
+  pieceType: 3

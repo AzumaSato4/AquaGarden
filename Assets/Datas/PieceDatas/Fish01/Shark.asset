@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Shark
   pieceSprite: {fileID: -3248458611773753232, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 4f3dc4234fb055e4f939f111a5d32d30, type: 2}
-  oxgen: -2
+  oxygen: -2
+  amount: 0
+  pieceType: 2

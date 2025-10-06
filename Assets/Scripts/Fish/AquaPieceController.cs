@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,6 +8,13 @@ public class AquaPieceController : MonoBehaviour
     public PlayerManager playerManager;
     public AquaPieceManager aquaPieceManager;
 
+    AquaPiece aquaPiece;
+
+    private void Start()
+    {
+        aquaPiece = GetComponent<AquaPiece>();
+    }
+
     private void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject())
@@ -13,57 +22,165 @@ public class AquaPieceController : MonoBehaviour
             return;
         }
 
-        if (playerManager.isActive && playerManager.phaseManager.currentPhase == PhaseManager.Phase.edit && aquaPieceManager.selectedPiece == this.gameObject)
+        if (playerManager.isActive && PhaseManager.currentPhase == PhaseManager.Phase.edit && aquaPieceManager.selectedPiece == this.gameObject)
         {
-            //ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğæ“¾
+            //ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å–å¾—
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-            //ƒNƒŠƒbƒN‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
             if (hit.collider != null)
             {
                 GameObject target = hit.collider.gameObject;
 
-                //ƒ}ƒEƒXƒNƒŠƒbƒN‚µ‚½‚ç
+                //ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //‰½‚©ƒIƒuƒWƒFƒNƒg‚ğƒNƒŠƒbƒN‚µ‚½‚ç
+                    //ä½•ã‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                     if (target != null)
                     {
-                        //ƒNƒŠƒbƒN‚µ‚½…‘…‚ÉˆÚ“®‚·‚é
+                        //ã‚¯ãƒªãƒƒã‚¯ã—ãŸæ°´æ§½ã«ç§»å‹•ã™ã‚‹
                         if (target.CompareTag("AquaSlot"))
                         {
-                            GameObject current = GetComponent<AquaPiece>().currentPos;
+                            GameObject current = aquaPiece.currentPos;
                             if (current != null)
                             {
                                 if (current == target)
                                 {
-                                    Debug.Log("¡‚¢‚é…‘…‚Å‚·");
+                                    Debug.Log("ä»Šã„ã‚‹æ°´æ§½ã§ã™");
                                     aquaPieceManager.CanselSelect();
                                     return;
                                 }
                                 else if (current.CompareTag("AquaSlot"))
                                 {
-                                    Debug.Log("…‘…‚©‚ç…‘…‚É‚ÍˆÚ“®‚Å‚«‚Ü‚¹‚ñ");
+                                    Debug.Log("æ°´æ§½ã‹ã‚‰æ°´æ§½ã«ã¯ç§»å‹•ã§ãã¾ã›ã‚“");
                                     aquaPieceManager.CanselSelect();
                                     return;
                                 }
                             }
 
-                            GameObject to = target.GetComponent<AquaSlot>().CheckSpot();
+                            AquaSlot slot = target.GetComponent<AquaSlot>();
+                            GameObject to = slot.CheckSpot();
                             if (to != null)
                             {
-                                transform.position = to.transform.position;
-                                GetComponent<AquaPiece>().currentPos = target;
-                                aquaPieceManager.CanselSelect();
+                                if (CheckOxygen(slot))
+                                {
+                                    if (CheckType(slot))
+                                    {
+                                        transform.position = to.transform.position;
+                                        aquaPiece.currentPos = target;
+                                        slot.slotPieces.Add(aquaPieceManager.selectedPiece);
+                                        slot.slotOxygen += aquaPiece.pieceData.oxygen;
+                                        aquaPiece.isiFromSea = false;
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.Log("æ°´æ§½å†…ã®é…¸ç´ é‡ãŒé™ç•Œã§ã™");
+                                }
                             }
                             else
                             {
-                                Debug.Log("…‘…‚É“ü‚ê‚ç‚ê‚Ü‚¹‚ñ");
+                                Debug.Log("æ°´æ§½ãŒã„ã£ã±ã„ã§ã™");
                             }
+                            aquaPieceManager.CanselSelect();
                         }
                     }
                 }
             }
         }
+    }
+
+    bool CheckType(AquaSlot slot)
+    {
+        bool isOK = false;
+
+        PieceData.PieceType[] pieces = new PieceData.PieceType[slot.slotPieces.Count];
+        for (int i = 0; i < pieces.Length; i++)
+        {
+            pieces[i] = slot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceType;
+        }
+
+        PieceData.PieceType type = aquaPiece.pieceData.pieceType;
+        switch (type)
+        {
+            case PieceData.PieceType.fish:
+                if (pieces.Contains(PieceData.PieceType.shark))
+                {
+                    Debug.Log("ã‚µãƒ¡ãŒã„ã‚‹æ°´æ§½ã«ã¯å…¥ã‚Œã‚‰ã‚Œã¾ã›ã‚“");
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+            case PieceData.PieceType.seaTurtle:
+                if (pieces.Contains(PieceData.PieceType.shark))
+                {
+                    Debug.Log("ã‚µãƒ¡ãŒã„ã‚‹æ°´æ§½ã«ã¯å…¥ã‚Œã‚‰ã‚Œã¾ã›ã‚“");
+                }
+                else if (!pieces.Contains(PieceData.PieceType.seaweed))
+                {
+                    Debug.Log("æµ·è—»ãŒãªã„æ°´æ§½ã«ã¯å…¥ã‚Œã‚‰ã‚Œã¾ã›ã‚“");
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+            case PieceData.PieceType.shark:
+                if (pieces.Contains(PieceData.PieceType.fish) ||
+                    pieces.Contains(PieceData.PieceType.seaTurtle)
+                    )
+                {
+                    Debug.Log("ã‚µãƒ¡ã¨ä¸€ç·’ã«æ°´æ§½ã«å…¥ã‚Œã‚‰ã‚Œãªã„ç”Ÿãç‰©ãŒã„ã¾ã™");
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+            case PieceData.PieceType.other:
+                isOK = true;
+                break;
+            case PieceData.PieceType.advance:
+                isOK = true;
+                break;
+            case PieceData.PieceType.seaweed:
+                if (pieces.Contains(PieceData.PieceType.seaweed))
+                {
+                    Debug.Log("æµ·è—»ã¯æ°´æ§½ã«1ã¤ã¾ã§ã§ã™");
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+            case PieceData.PieceType.coral:
+                if (pieces.Contains(PieceData.PieceType.coral))
+                {
+                    Debug.Log("ã‚µãƒ³ã‚´ã¯æ°´æ§½ã«1ã¤ã¾ã§ã§ã™");
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+        }
+
+        return isOK;
+    }
+
+    bool CheckOxygen(AquaSlot slot)
+    {
+        bool isOK = false;
+
+        //ã“ã®é­šé§’ã‚’å…¥ã‚ŒãŸæ°´æ§½å†…ã®é…¸ç´ é‡ãŒ0ä»¥ä¸Šãªã‚‰ture
+        int oxygen = slot.slotOxygen + aquaPiece.pieceData.oxygen;
+        if (oxygen >= 0)
+        {
+            isOK = true;
+        }
+
+        return isOK;
     }
 }

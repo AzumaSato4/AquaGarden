@@ -5,19 +5,26 @@ public class GameManager : MonoBehaviour
 {
     public static int players = 4;
     [SerializeField] PieceData[] aquaPiecesEditor;
+    [SerializeField] PieceData[] adAquaPiecesEditor;
     public static PieceData[] aquaPieces;
-    public static bool[] avalablePieces;
+    public static PieceData[] adAquaPieces;
+    public static bool[] avalableAdPieces;
 
-    private void Awake()
+    private void Start()
     {
+        Application.targetFrameRate = 60;
+
         aquaPieces = new PieceData[aquaPiecesEditor.Length];
         Array.Copy(aquaPiecesEditor, aquaPieces, aquaPiecesEditor.Length);
-        avalablePieces = new bool[aquaPieces.Length];
 
-        //テスト用
-        for (int i = 0; i < avalablePieces.Length; i++)
+        adAquaPieces = new PieceData[adAquaPiecesEditor.Length];
+        Array.Copy(adAquaPiecesEditor, adAquaPieces, adAquaPiecesEditor.Length);
+        avalableAdPieces = new bool[adAquaPieces.Length];
+
+        //繝�繧ｹ繝育畑
+        for (int i = 0; i < avalableAdPieces.Length; i++)
         {
-            avalablePieces[i] = true;
+            avalableAdPieces[i] = true;
         }
     }
 }

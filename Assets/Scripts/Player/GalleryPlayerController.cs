@@ -20,32 +20,41 @@ public class GalleryPlayerController : MonoBehaviour
             return;
         }
 
-        if (!movedGallery)
+        if (!movedGallery && PhaseManager.currentPhase == PhaseManager.Phase.gallery)
         {
-            //ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğæ“¾
+            //ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å–å¾—
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-            //ƒNƒŠƒbƒN‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
             if (hit.collider != null)
             {
                 GameObject selected = hit.collider.gameObject;
 
-                //ƒ}ƒEƒXƒNƒŠƒbƒN‚µ‚½‚ç
+                //ãƒã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //‰½‚©ƒIƒuƒWƒFƒNƒg‚ğƒNƒŠƒbƒN‚µ‚½‚ç
+                    //ä½•ã‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸã‚‰
                     if (selected != null)
                     {
-                        //ƒMƒƒƒ‰ƒŠ[‚ÌƒNƒŠƒbƒN‚µ‚½ƒ}ƒX‚ÉˆÚ“®‚·‚é
+                        //ã‚®ãƒ£ãƒ©ãƒªãƒ¼ã®ã‚¯ãƒªãƒƒã‚¯ã—ãŸãƒã‚¹ã«ç§»å‹•ã™ã‚‹
                         if (selected.CompareTag("GalleryTile"))
                         {
-                            playerManager.MoveGallery(selected.GetComponent<TileManager>().tileIndex);
-                            transform.position = selected.transform.position;
-                            movedGallery = true;
-                            if (selected.GetComponent<BoxCollider2D>() != null)
-                                selected.GetComponent<BoxCollider2D>().enabled = false;
-                            if (selected.GetComponent<CircleCollider2D>() != null)
-                                selected.GetComponent<CircleCollider2D>().enabled = false;
+                            int index = selected.GetComponent<TileManager>().tileIndex;
+                            if (index < playerManager.galleryIndex && 3 < index)
+                            {
+                                Debug.Log("å¾Œã‚ã«ã¯é€²ã‚ã¾ã›ã‚“");
+                                return;
+                            }
+                            else
+                            {
+                                playerManager.MoveGallery(index, selected.name);
+                                transform.position = selected.transform.position;
+                                movedGallery = true;
+                                if (selected.GetComponent<BoxCollider2D>() != null)
+                                    selected.GetComponent<BoxCollider2D>().enabled = false;
+                                if (selected.GetComponent<CircleCollider2D>() != null)
+                                    selected.GetComponent<CircleCollider2D>().enabled = false;
+                            }
                         }
                     }
                 }

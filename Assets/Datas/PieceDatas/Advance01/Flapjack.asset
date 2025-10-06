@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Flapjack
   pieceSprite: {fileID: 8985207975630440998, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 81b9ef82057e24b45a5f867e8abcc72e, type: 2}
-  oxgen: -2
+  oxygen: -2
+  amount: 3
+  pieceType: 3

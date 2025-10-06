@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4638154290604826149}
   - component: {fileID: 6121045415855849198}
   - component: {fileID: -7964455177791523161}
+  - component: {fileID: -1574354517365682661}
   m_Layer: 0
   m_Name: FishTile
   m_TagString: GalleryTile
@@ -124,7 +125,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 823303787904558533, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
   m_Color: {r: 0.8415094, g: 0.8415094, b: 0.8415094, a: 0.39215687}
   m_FlipX: 0
@@ -161,3 +162,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileIndex: 0
+--- !u!114 &-1574354517365682661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3399051936236798429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0890869d442e0740a7f67e2d23f933b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pieces: []
+  galleryPiecePrefab: {fileID: 7658678236018222585, guid: a7fe5d999d9865b4084a6a0342867125, type: 3}

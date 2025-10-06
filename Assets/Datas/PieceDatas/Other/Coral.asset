@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: Coral
   pieceSprite: {fileID: -3495829625013491624, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 9fe2d59412e3d9849b4b946531fe9520, type: 2}
-  oxgen: -1
+  oxygen: -1
+  amount: 0
+  pieceType: 6

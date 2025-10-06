@@ -15,4 +15,6 @@ MonoBehaviour:
   pieceName: LargeFish
   pieceSprite: {fileID: 5195048610334931906, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   animation: {fileID: 9100000, guid: 94fe98248d85f45428c63c57cd2de133, type: 2}
-  oxgen: -1
+  oxygen: -1
+  amount: 0
+  pieceType: 0

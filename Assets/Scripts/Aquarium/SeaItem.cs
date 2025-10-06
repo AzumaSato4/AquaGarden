@@ -32,16 +32,17 @@ public class SeaItem : MonoBehaviour
 
     public void BuyPiece()
     {
-        if (pieceCount > 0)
+        if (TurnManager.currentPlayer.GetComponent<PlayerManager>().money >= 2)
         {
             seaBoard.seaAquaPieces[pieceData.pieceName]--;
 
-            aquaPieceManager.CreatePiece(pieceData);
+            aquaPieceManager.CreatePiece(pieceData, 2, true);
             uiController.OnSeaBoradButton();
         }
         else
         {
-            Debug.Log(pieceData.pieceName + "‚Í‚¢‚Ü‚¹‚ñI");
+            Debug.Log("è³‡é‡‘ãŒè¶³ã‚Šã¾ã›ã‚“ï¼");
+            uiController.OnSeaBoradButton();
         }
     }
 }
