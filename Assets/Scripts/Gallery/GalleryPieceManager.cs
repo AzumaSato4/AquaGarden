@@ -9,60 +9,67 @@ public class GalleryPieceManager : MonoBehaviour
     [SerializeField] GalleryBoard galleryBoard;
     [SerializeField] SeaBoard seaBoard;
 
+    [SerializeField] GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
+    }
+
     public void Initialize()
     {
         if (GameManager.players == 1 || GameManager.players == 4)
         {
             for (int i = 0; i < 23; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[2]);
+                pieceDatas.Add(gameManager.SarchPieceData(0));
             }
             for (int i = 0; i < 16; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[3]);
+                pieceDatas.Add(gameManager.SarchPieceData(1));
             }
             for (int i = 0; i < 9; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[4]);
+                pieceDatas.Add(gameManager.SarchPieceData(2));
             }
             for (int i = 0; i < 5; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[5]);
+                pieceDatas.Add(gameManager.SarchPieceData(3));
             }
             for (int i = 0; i < 9; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[6]);
+                pieceDatas.Add(gameManager.SarchPieceData(4));
             }
             for (int i = 0; i < 3; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[7]);
+                pieceDatas.Add(gameManager.SarchPieceData(5));
             }
         }
         else if (GameManager.players == 2 || GameManager.players == 3)
         {
             for (int i = 0; i < 18; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[2]);
+                pieceDatas.Add(gameManager.SarchPieceData(0));
             }
             for (int i = 0; i < 12; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[3]);
+                pieceDatas.Add(gameManager.SarchPieceData(1));
             }
             for (int i = 0; i < 7; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[4]);
+                pieceDatas.Add(gameManager.SarchPieceData(2));
             }
             for (int i = 0; i < 4; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[5]);
+                pieceDatas.Add(gameManager.SarchPieceData(3));
             }
             for (int i = 0; i < 7; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[6]);
+                pieceDatas.Add(gameManager.SarchPieceData(4));
             }
             for (int i = 0; i < 2; i++)
             {
-                pieceDatas.Add(GameManager.aquaPieces[7]);
+                pieceDatas.Add(gameManager.SarchPieceData(5));
             }
         }
 

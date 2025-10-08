@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PhaseManager : MonoBehaviour
@@ -14,27 +15,52 @@ public class PhaseManager : MonoBehaviour
 
     public static Phase currentPhase;
 
-    UIController uiController; //UIManagerを格納するための変数
+    [SerializeField] TextMeshProUGUI phaseText;
+    bool ischange = false;
 
 
-    private void Start()
+    private void LateUpdate()
     {
-        uiController = GetComponent<UIController>();
+        if (!ischange) return;
+
+        string headerText = null;
+        string name = TurnManager.currentPlayer.GetComponent<PlayerManager>().playerData.playerName;
+        switch (currentPhase)
+        {
+            case Phase.gallery:
+                headerText = ($"ギャラリー　（{name}のターン）");
+                ischange = false;
+                break;
+            case Phase.aquarium:
+                headerText = ($"水族館　（{name}のターン）");
+                ischange = false;
+                break;
+            case Phase.edit:
+                headerText = ($"水族館編集　（{name}のターン）");
+                ischange = false;
+                break;
+            case Phase.ad:
+                headerText = ($"広告　（{name}のターン）");
+                ischange = false;
+                break;
+        }
+
+        phaseText.text = headerText;
     }
 
     public void StartGallery(PlayerData player)
     {
         GetComponent<CameraManager>().ChangeCamera(0);
-        //ターンエンドボタンを押せないようにする
-        uiController.AbledTurnEnd(false);
         currentPhase = Phase.gallery;
         Debug.Log($"ギャラリー（{player.playerName}のターン）開始");
+        ischange = true;
     }
 
     public void StartAd(PlayerData player)
     {
         currentPhase = Phase.ad;
         Debug.Log($"広告イベント（{player.playerName}のターン）開始");
+        ischange = true;
     }
 
     public void EndAd(PlayerData player)
@@ -53,6 +79,7 @@ public class PhaseManager : MonoBehaviour
         GetComponent<CameraManager>().ChangeCamera(player.playerNum);
         currentPhase = Phase.aquarium;
         Debug.Log($"水族館（{player.playerName}のターン）開始");
+        ischange = true;
     }
 
     public void StartFeeding(PlayerData player)
@@ -70,8 +97,6 @@ public class PhaseManager : MonoBehaviour
 
     public void MovedAquarium(PlayerData player)
     {
-        //ターンエンドボタンを押せるようにする
-        uiController.AbledTurnEnd(true);
         StartEdit(player);
     }
 
@@ -79,6 +104,7 @@ public class PhaseManager : MonoBehaviour
     {
         currentPhase = Phase.edit;
         Debug.Log($"レイアウト変更（{player.playerName}のターン）開始");
+        ischange= true;
     }
 
     public void EndTurn(PlayerData player)

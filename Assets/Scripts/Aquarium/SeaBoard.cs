@@ -7,36 +7,34 @@ public class SeaBoard : MonoBehaviour
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject seaItemPrefab;
+    GameManager gameManager;
 
+    private void Start()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
+    }
 
     public void Initialize()
     {
-        for (int i = 0; i < GameManager.aquaPieces.Length; i++)
+        for (int i = 0; i < gameManager.pieceDataCount; i++)
         {
-            seaAquaPieces.Add(GameManager.aquaPieces[i].pieceName, 0);
+            PieceData data = gameManager.SarchPieceData(i);
+            seaAquaPieces.Add(data.pieceName, 0);
 
-            if (GameManager.aquaPieces[i].pieceName == "Seaweed")
+            if (data.pieceName == "Seaweed")
             {
                 seaAquaPieces["Seaweed"] = 16;
             }
-            if (GameManager.aquaPieces[i].pieceName == "Coral")
+            if (data.pieceName == "Coral")
             {
                 seaAquaPieces["Coral"] = 16;
             }
 
-            if (seaAquaPieces[GameManager.aquaPieces[i].pieceName] > 0)
+            if (seaAquaPieces[data.pieceName] > 0)
             {
                 GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
                 seaItem.GetComponent<SeaItem>().seaBoard = this;
-                seaItem.GetComponent<SeaItem>().pieceData = GameManager.aquaPieces[i];
-            }
-        }
-
-        for (int i = 0; i < GameManager.adAquaPieces.Length; i++)
-        {
-            if (GameManager.avalableAdPieces[i])
-            {
-                seaAquaPieces.Add(GameManager.adAquaPieces[i].pieceName, 0);
+                seaItem.GetComponent<SeaItem>().pieceData = data;
             }
         }
     }
@@ -51,7 +49,7 @@ public class SeaBoard : MonoBehaviour
 
     public void AddPiece(PieceData piece)
     {
-        if (seaAquaPieces[piece.pieceName] < 1)
+        if (seaAquaPieces[piece.pieceName] <= 0)
         {
             GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
             seaItem.GetComponent<SeaItem>().seaBoard = this;

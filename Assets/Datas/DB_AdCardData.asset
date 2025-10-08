@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9692f38543eb84682417cebd64040c, type: 3}
+  m_Name: DB_AdCardData
+  m_EditorClassIdentifier: 
+  adCardDatas:
+  - adType: 1
+    nameA: SmallFish
+    nameB: SmallFish
+    sprite: {fileID: 5137291008440622892, guid: 5dbabe007c84bb24683acb09c95a6889, type: 3}
+  - adType: 0
+    nameA: LargeFish
+    nameB: 
+    sprite: {fileID: -7827970541200563647, guid: 0ea37b68e7507854c8e8f9089fd1bdca, type: 3}
+  - adType: 2
+    nameA: Shark
+    nameB: Coral
+    sprite: {fileID: 1463042269878470640, guid: 319d57346c7433e4cb1e740a1b371cc0, type: 3}
+  - adType: 2
+    nameA: SeaTurtle
+    nameB: Coral
+    sprite: {fileID: 4706950523970156598, guid: c673b3fa7070ce3409500902275951b5, type: 3}

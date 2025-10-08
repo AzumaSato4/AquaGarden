@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public　static GameObject currentPlayer;
+    public static GameObject currentPlayer;
 
     PhaseManager phaseManager;
     public GameObject[] players;
@@ -22,8 +22,8 @@ public class TurnManager : MonoBehaviour
         players = new GameObject[GameManager.players];
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        seaBoard.Initialize();
-        gPieceManager.Initialize();
+        seaBoard.Invoke("Initialize", 0.1f);
+        gPieceManager.Invoke("Initialize", 0.1f);
 
         Invoke("StartRound", 0.1f);
     }
@@ -128,12 +128,9 @@ public class TurnManager : MonoBehaviour
 
     public void EndTurn()
     {
-        if (currentPlayer.GetComponent<PlayerManager>().EndAquarium())
-        {
-            currentPlayer.GetComponent<PlayerManager>().isActive = false;
-            phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().playerData);
-            NextTurn();
-        }
+        currentPlayer.GetComponent<PlayerManager>().isActive = false;
+        phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().playerData);
+        NextTurn();
     }
 
     void NextTurn()

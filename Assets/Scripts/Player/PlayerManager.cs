@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -10,15 +11,16 @@ public class PlayerManager : MonoBehaviour
     int preMoney; //ひとつ前時点の所持資金
     public FeedingData feedingData; //餌やりイベント情報
 
-    GameObject aquarium;        //水族館ボード
-    GameObject galleryPlayer;   //ギャラリーのプレイヤー駒
-    GameObject aquariumPlayer;  //水族館のプレイヤー駒
+    [SerializeField] GameObject galleryPlayer;   //ギャラリーのプレイヤー駒
+    [SerializeField] GameObject aquariumPlayer;  //水族館のプレイヤー駒
 
     GameObject currentGalleryTile;  //現在のギャラリーマス
     public int galleryIndex;        //現在のギャラリーマス番号
     GameObject currentAquariumTile; //現在の水族館マス
     int aquariumIndex;              //現在の水族館マス番号
-    GameObject aquariumCanvas; //自分の水族館専用キャンバス
+    [SerializeField] GameObject aquariumCanvas; //自分の水族館専用キャンバス
+    [SerializeField] GameObject turnEnd;  //ターンエンドボタン
+    [SerializeField] GameObject cancel; //キャンセルボタン
 
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
@@ -32,11 +34,6 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        //プレイヤーの駒と水族館ボードを生成
-        aquarium = Instantiate(playerData.aquarium, new Vector3(playerData.playerNum * 30, 0, 0), Quaternion.identity);
-        galleryPlayer = Instantiate(playerData.galleryPlayer);
-        aquariumPlayer = Instantiate(playerData.aquariumPlayer);
-
         //プレイヤー駒の画像をセット
         galleryPlayer.GetComponent<SpriteRenderer>().sprite = playerData.gallerySprite;
         aquariumPlayer.GetComponent<SpriteRenderer>().sprite = playerData.aquariumSprite;
@@ -45,12 +42,12 @@ public class PlayerManager : MonoBehaviour
         galleryPlayer.GetComponent<GalleryPlayerController>().playerManager = this;
         aquariumPlayer.GetComponent<AquariumPlayerController>().playerManager = this;
 
-        //ギャラリーと水族館の情報を取得
+        //ギャラリーの情報を取得
         galleryBoard = GameObject.Find("Gallery").GetComponent<GalleryBoard>();
-        aquariumBoard = aquarium.GetComponent<AquariumBoard>();
 
-        //水族館用キャンバス情報を取得
-        aquariumCanvas = aquariumBoard.canvas;
+        //ターンエンドボタンとキャンセルボタンを最初は選択不可にする
+        turnEnd.GetComponent<Button>().interactable = false;
+        cancel.GetComponent<Button>().interactable = false;
 
         //TurnManagerとPhaseManagerを取得
         turnManager = GameObject.Find("MainManager").GetComponent<TurnManager>();
@@ -260,11 +257,12 @@ public class PlayerManager : MonoBehaviour
     //水族館編集
     void EditAquarium()
     {
+        AbledTurnEnd(true);
+
         another = aquariumIndex - 1;
         if (another < 0)
         {
             another = 5;
-            Debug.Log("マイナス！");
         }
         for (int i = 0; i < 6; i++)
         {
@@ -291,12 +289,12 @@ public class PlayerManager : MonoBehaviour
         aquariumBoard.aquaSlots[another].GetComponent<AquaSlot>().selectable = false;
     }
 
-    public bool EndAquarium()
+    public void EndAquarium()
     {
         if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
         {
             Debug.Log("ストレージを空にしてください！");
-            return false;
+            return;
         }
 
         foreach (GameObject slot in aquariumBoard.aquaSlots)
@@ -305,8 +303,10 @@ public class PlayerManager : MonoBehaviour
             slot.GetComponent<AquaSlot>().mask.SetActive(false);
         }
 
+        AbledTurnEnd(false);
+        AbledCancel(false);
         aquariumCanvas.SetActive(false);
-        return true;
+        turnManager.EndTurn();
     }
 
     IEnumerator GetPieceCoroutine(FishTile tile)
@@ -319,5 +319,20 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         }
         tile.pieces.Clear();
+    }
+
+    public void OnCancelButton()
+    {
+        aquaPieceManager.CanselSelect();
+    }
+
+    public void AbledTurnEnd(bool isAble)
+    {
+        turnEnd.GetComponent<Button>().interactable = isAble;
+    }
+
+    public void AbledCancel(bool isAble)
+    {
+        cancel.GetComponent<Button>().interactable = isAble;
     }
 }

@@ -14,6 +14,7 @@ public class AdCard : MonoBehaviour
     private void Start()
     {
         adCard = Instantiate(adCardPrefab, transform.position, Quaternion.identity);
+        adData = GameManager.instance.SarchAdCardData(spotNum - 1);
         adCard.GetComponent<SpriteRenderer>().sprite = adData.sprite;
     }
 
@@ -42,18 +43,15 @@ public class AdCard : MonoBehaviour
     void StartAd()
     {
         adMoney = 0;
-        switch (adData.adID)
+        switch (adData.adType)
         {
-            case 1: //SmallFish
+            case AdCardData.AdType.pair: //ペア
                 SelectPairAd();
                 break;
-            case 2: //LargeFish
+            case AdCardData.AdType.solo: //ソロ
                 SelectSoloAd();
                 break;
-            case 3: //Shark + Coral
-                SelectAd();
-                break;
-            case 4: //SeaTurtle + Coral
+            case AdCardData.AdType.count: //個数
                 SelectAd();
                 break;
         }
@@ -92,10 +90,12 @@ public class AdCard : MonoBehaviour
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
 
         string nameA = adData.nameA;
+        string nameB = adData.nameB;
 
         for (int i = 0; i < 6; i++)
         {
             int countA = 0;
+            int countB = 0;
 
             foreach (GameObject piece in current.aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().slotPieces)
             {
@@ -105,14 +105,21 @@ public class AdCard : MonoBehaviour
                     Debug.Log("発見A");
                     countA++;
                 }
+                if (name == nameB)
+                {
+                    Debug.Log("発見B");
+                    countB++;
+                }
             }
 
-            while (countA >= 2)
+            int count = countA + countB;
+
+            while (count >= 2)
             {
                 adMoney++;
                 Debug.Log(adMoney + "資金獲得");
 
-                countA -= 2;
+                count -= 2;
             }
         }
 

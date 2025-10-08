@@ -19,8 +19,10 @@ public class AquaPieceManager : MonoBehaviour
     {
         selectedPiece = selected;
         selectedPiece.GetComponent<Animator>().enabled = true;
-        uiController.AbledCancel(true);
-        TurnManager.currentPlayer.GetComponent<PlayerManager>().Invoke("SelectSlot", 0.1f);
+
+        PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
+        current.AbledCancel(true);
+        current.Invoke("SelectSlot", 0.1f);
     }
 
     public void CanselSelect()
@@ -28,14 +30,18 @@ public class AquaPieceManager : MonoBehaviour
         selectedPiece.GetComponent<Animator>().enabled = false;
         selectedPiece.transform.localScale = new Vector2(1.5f, 1.5f);
         selectedPiece = null;
-        uiController.AbledCancel(false);
-        TurnManager.currentPlayer.GetComponent<PlayerManager>().DontSelectSlot();
-        TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
+
+        PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
+        current.AbledCancel(false);
+        current.DontSelectSlot();
+        current.aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
     }
 
     public void CreatePiece(PieceData pieceData, int amount = 0, bool isFromSea = false)
     {
-        GameObject spot = TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().Instorage();
+        PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
+
+        GameObject spot = current.aquariumBoard.storage.GetComponent<Storage>().Instorage();
         if (spot != null)
         {
             GameObject piece = Instantiate(
@@ -46,11 +52,14 @@ public class AquaPieceManager : MonoBehaviour
 
             if (piece != null)
             {
-                piece.GetComponent<AquaPiece>().pieceData = pieceData;
-                piece.GetComponent<AquaPiece>().isiFromSea = isFromSea;
-                piece.GetComponent<AquaPieceController>().playerManager = TurnManager.currentPlayer.GetComponent<PlayerManager>();
-                piece.GetComponent<AquaPieceController>().aquaPieceManager = this;
-                TurnManager.currentPlayer.GetComponent<PlayerManager>().money -= amount;
+                AquaPiece aquaPiece = piece.GetComponent<AquaPiece>();
+                AquaPieceController pieceController = piece.GetComponent<AquaPieceController>();
+
+                aquaPiece.pieceData = pieceData;
+                aquaPiece.isiFromSea = isFromSea;
+                pieceController.playerManager = current;
+                pieceController.aquaPieceManager = this;
+                current.money -= amount;
             }
         }
 

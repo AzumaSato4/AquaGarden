@@ -4,12 +4,10 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] GameObject turnEnd;  //ƒ^[ƒ“ƒGƒ“ƒhƒ{ƒ^ƒ“
-    [SerializeField] GameObject cancel; //ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“
-    [SerializeField] GameObject seaBoard; //ŠCƒ{[ƒh
-    [SerializeField] GameObject messagePanel; //ƒƒbƒZ[ƒWƒpƒlƒ‹
+    [SerializeField] GameObject seaBoard; //æµ·ãƒœãƒ¼ãƒ‰
+    [SerializeField] GameObject messagePanel; //ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‘ãƒãƒ«
 
-    public bool isActiveUI = false; //UI‚ª•\¦‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    public bool isActiveUI = false; //UIãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
     public bool isOK;
 
     AquaPieceManager aquaPieceManager;
@@ -18,20 +16,8 @@ public class UIController : MonoBehaviour
     {
         aquaPieceManager = GetComponent<AquaPieceManager>();
 
-        turnEnd.GetComponent<Button>().interactable = false;
-        cancel.GetComponent<Button>().interactable = false;
         seaBoard.SetActive(false);
         messagePanel.SetActive(false);
-    }
-
-    public void AbledTurnEnd(bool isAble)
-    {
-        turnEnd.GetComponent<Button>().interactable = isAble;
-    }
-
-    public void AbledCancel(bool isAble)
-    {
-        cancel.GetComponent<Button>().interactable = isAble;
     }
 
     public void OnSeaBoradButton()

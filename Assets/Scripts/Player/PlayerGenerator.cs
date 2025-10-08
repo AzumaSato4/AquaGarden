@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class PlayerGenerator : MonoBehaviour
 {
-    public PlayerData[] playerData; //ƒvƒŒƒCƒ„[î•ñ
-    [SerializeField] GameObject playerPrefab; //ƒvƒŒƒCƒ„[‚ÌƒvƒŒƒnƒu
+    [SerializeField] GameObject playerPrefab; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ—ãƒ¬ãƒãƒ–
+    GameManager gameManager;
 
-    void Awake()
+    void Start()
     {
-        //Q‰ÁƒvƒŒƒCƒ„[‚Ì”‚¾‚¯ŒJ‚è•Ô‚·
+        gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
+
+        //å‚åŠ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ•°ã ã‘ç¹°ã‚Šè¿”ã™
         for (int i = 0; i < GameManager.players; i++)
         {
-            //ƒvƒŒƒCƒ„[‚ğ¶¬
-            GameObject player = Instantiate(playerPrefab);
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç”Ÿæˆ
+            GameObject player = Instantiate(playerPrefab, new Vector3(i * 30, 0, 0), Quaternion.identity);
 
-            //¶¬‚µ‚½ƒvƒŒƒCƒ„[‚ÉƒvƒŒƒCƒ„[î•ñ‚ğƒZƒbƒg
-            player.GetComponent<PlayerManager>().playerData = playerData[i];
-            player.GetComponent<PlayerManager>().aquaPieceManager = GetComponent<AquaPieceManager>();
+            //ç”Ÿæˆã—ãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
+            PlayerManager playerManager = player.GetComponent<PlayerManager>();
+            playerManager.playerData = gameManager.SarchPlayerData(i);
+            playerManager.feedingData = gameManager.SarchFeedingData(i);
+            playerManager.aquaPieceManager = GetComponent<AquaPieceManager>();
         }
     }
 }

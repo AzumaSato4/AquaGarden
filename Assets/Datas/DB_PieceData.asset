@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa3c0b1e52dbbb4798c362b22258548, type: 3}
+  m_Name: DB_PieceData
+  m_EditorClassIdentifier: 
+  pieceDatas:
+  - pieceName: SmallFish
+    pieceSprite: {fileID: -9003448877997200467, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 186c7861245278f4ba3923118128f1e9, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 0
+  - pieceName: LargelFish
+    pieceSprite: {fileID: 5195048610334931906, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 94fe98248d85f45428c63c57cd2de133, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 0
+  - pieceName: SeaTurtle
+    pieceSprite: {fileID: 546946437161220337, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: c3714833acd9dce41ace45b7b405bdd5, type: 2}
+    oxygen: -2
+    amount: 0
+    pieceType: 1
+  - pieceName: Seahorse
+    pieceSprite: {fileID: -4834764474788953298, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 9050555c8f92d5d4794b92647a5defa2, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 4
+  - pieceName: Shark
+    pieceSprite: {fileID: -3248458611773753232, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 4f3dc4234fb055e4f939f111a5d32d30, type: 2}
+    oxygen: -2
+    amount: 0
+    pieceType: 2
+  - pieceName: WhaleShark
+    pieceSprite: {fileID: -1430698281648099139, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 76e55969c838db84ea2771a9a13f43a6, type: 2}
+    oxygen: -4
+    amount: 0
+    pieceType: 4
+  - pieceName: Seaweed
+    pieceSprite: {fileID: 4356209697794142861, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: dd1c15515e4e0c141a7f0b759ff427d2, type: 2}
+    oxygen: 2
+    amount: 0
+    pieceType: 5
+  - pieceName: Coral
+    pieceSprite: {fileID: -3495829625013491624, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 9fe2d59412e3d9849b4b946531fe9520, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 6
+  - pieceName: MSmallFish
+    pieceSprite: {fileID: 5573676990539221882, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 97a4cdbe7ba2a2b40bf356173ef11d88, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 0
+  - pieceName: MLargeFish
+    pieceSprite: {fileID: 3845877642813170198, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 098b16c0eafb45842b7a62635dc69c19, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 0
+  - pieceName: MSeaTurtle
+    pieceSprite: {fileID: 4884913219653482509, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 8ec9c35d3f649f540a40f65fd3bc7399, type: 2}
+    oxygen: -2
+    amount: 0
+    pieceType: 1
+  - pieceName: MSeahorse
+    pieceSprite: {fileID: -290646914117554870, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: f86483094a9aef1408ff15d7dfbc9472, type: 2}
+    oxygen: -1
+    amount: 0
+    pieceType: 4
+  - pieceName: MShark
+    pieceSprite: {fileID: 2823308625058232896, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 26a73186fb945d04eb1162875880cfb9, type: 2}
+    oxygen: -2
+    amount: 0
+    pieceType: 2
+  - pieceName: Flapjack
+    pieceSprite: {fileID: 8985207975630440998, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 81b9ef82057e24b45a5f867e8abcc72e, type: 2}
+    oxygen: -2
+    amount: 0
+    pieceType: 3
+  - pieceName: Manta
+    pieceSprite: {fileID: 8379077576387906512, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: e3a7b247cd2030c478447f2b9833ebfe, type: 2}
+    oxygen: -3
+    amount: 0
+    pieceType: 3
+  - pieceName: Remora
+    pieceSprite: {fileID: -7451005307300285173, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+    animationController: {fileID: 9100000, guid: 8209b1593703ee9438c291cf4af215a0, type: 2}
+    oxygen: 0
+    amount: 0
+    pieceType: 3

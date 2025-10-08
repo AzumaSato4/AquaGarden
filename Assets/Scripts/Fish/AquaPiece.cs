@@ -13,7 +13,7 @@ public class AquaPiece : MonoBehaviour
         //駒が生成されたら必要なコンポーネントを代入
         aquaPieceController = GetComponent<AquaPieceController>();
         GetComponent<SpriteRenderer>().sprite = pieceData.pieceSprite;
-        GetComponent<Animator>().runtimeAnimatorController = pieceData.animation;
+        GetComponent<Animator>().runtimeAnimatorController = pieceData.animationController;
         Debug.Log("生成");
     }
 
