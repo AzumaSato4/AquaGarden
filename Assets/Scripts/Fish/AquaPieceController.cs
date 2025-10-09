@@ -22,7 +22,7 @@ public class AquaPieceController : MonoBehaviour
             return;
         }
 
-        if (playerManager.isActive && PhaseManager.currentPhase == PhaseManager.Phase.edit && aquaPieceManager.selectedPiece == this.gameObject)
+        if (playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit) && aquaPieceManager.selectedPiece == this.gameObject)
         {
             //カーソルの位置を取得
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -47,12 +47,14 @@ public class AquaPieceController : MonoBehaviour
                                 if (current == target)
                                 {
                                     Debug.Log("今いる水槽です");
+                                    ShowMessage("今いる水槽です");
                                     aquaPieceManager.CanselSelect();
                                     return;
                                 }
                                 else if (current.CompareTag("AquaSlot"))
                                 {
                                     Debug.Log("水槽から水槽には移動できません");
+                                    ShowMessage("水槽から水槽には移動できません");
                                     aquaPieceManager.CanselSelect();
                                     return;
                                 }
@@ -76,11 +78,13 @@ public class AquaPieceController : MonoBehaviour
                                 else
                                 {
                                     Debug.Log("水槽内の酸素量が限界です");
+                                    ShowMessage("水槽内の酸素量が限界です");
                                 }
                             }
                             else
                             {
                                 Debug.Log("水槽がいっぱいです");
+                                ShowMessage("水槽がいっぱいです");
                             }
                             aquaPieceManager.CanselSelect();
                         }
@@ -107,6 +111,7 @@ public class AquaPieceController : MonoBehaviour
                 if (pieces.Contains(PieceData.PieceType.shark))
                 {
                     Debug.Log("サメがいる水槽には入れられません");
+                    ShowMessage("サメがいる水槽には入れられません");
                 }
                 else
                 {
@@ -117,10 +122,12 @@ public class AquaPieceController : MonoBehaviour
                 if (pieces.Contains(PieceData.PieceType.shark))
                 {
                     Debug.Log("サメがいる水槽には入れられません");
+                    ShowMessage("サメがいる水槽には入れられません");
                 }
                 else if (!pieces.Contains(PieceData.PieceType.seaweed))
                 {
                     Debug.Log("海藻がない水槽には入れられません");
+                    ShowMessage("海藻がない水槽には入れられません");
                 }
                 else
                 {
@@ -133,6 +140,7 @@ public class AquaPieceController : MonoBehaviour
                     )
                 {
                     Debug.Log("サメと一緒に水槽に入れられない生き物がいます");
+                    ShowMessage("サメと一緒に水槽に入れられない生き物がいます");
                 }
                 else
                 {
@@ -149,6 +157,7 @@ public class AquaPieceController : MonoBehaviour
                 if (pieces.Contains(PieceData.PieceType.seaweed))
                 {
                     Debug.Log("海藻は水槽に1つまでです");
+                    ShowMessage("海藻は水槽に1つまでです");
                 }
                 else
                 {
@@ -159,6 +168,7 @@ public class AquaPieceController : MonoBehaviour
                 if (pieces.Contains(PieceData.PieceType.coral))
                 {
                     Debug.Log("サンゴは水槽に1つまでです");
+                    ShowMessage("サンゴは水槽に1つまでです");
                 }
                 else
                 {
@@ -182,5 +192,11 @@ public class AquaPieceController : MonoBehaviour
         }
 
         return isOK;
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

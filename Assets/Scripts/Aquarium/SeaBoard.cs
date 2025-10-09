@@ -3,31 +3,27 @@ using UnityEngine;
 
 public class SeaBoard : MonoBehaviour
 {
-    public Dictionary<string, int> seaAquaPieces = new Dictionary<string, int>();
+    public Dictionary<PieceData.PieceName, int> seaAquaPieces = new Dictionary<PieceData.PieceName, int>();
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject seaItemPrefab;
-    GameManager gameManager;
-
-    private void Start()
-    {
-        gameManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
-    }
+    [SerializeField] GameManager gameManager;
 
     public void Initialize()
     {
         for (int i = 0; i < gameManager.pieceDataCount; i++)
         {
-            PieceData data = gameManager.SarchPieceData(i);
+            PieceData data = gameManager.GetPieceData(i);
+            if (seaAquaPieces.ContainsKey(data.pieceName)) continue;
             seaAquaPieces.Add(data.pieceName, 0);
 
-            if (data.pieceName == "Seaweed")
+            if (data.pieceName == PieceData.PieceName.Seaweed)
             {
-                seaAquaPieces["Seaweed"] = 16;
+                seaAquaPieces[PieceData.PieceName.Seaweed] = 16;
             }
-            if (data.pieceName == "Coral")
+            if (data.pieceName == PieceData.PieceName.Coral)
             {
-                seaAquaPieces["Coral"] = 16;
+                seaAquaPieces[PieceData.PieceName.Coral] = 16;
             }
 
             if (seaAquaPieces[data.pieceName] > 0)

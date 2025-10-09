@@ -14,7 +14,6 @@ public class AquaPiece : MonoBehaviour
         aquaPieceController = GetComponent<AquaPieceController>();
         GetComponent<SpriteRenderer>().sprite = pieceData.pieceSprite;
         GetComponent<Animator>().runtimeAnimatorController = pieceData.animationController;
-        Debug.Log("生成");
     }
 
     //マウスを重ねたらアニメーション開始
@@ -43,7 +42,7 @@ public class AquaPiece : MonoBehaviour
         }
 
         //他の駒が選択されていない、自分の番、編集フェーズならこの駒を選択中にする
-        if (aquaPieceController.aquaPieceManager.selectedPiece == null && aquaPieceController.playerManager.isActive && PhaseManager.currentPhase == PhaseManager.Phase.edit)
+        if (aquaPieceController.aquaPieceManager.selectedPiece == null && aquaPieceController.playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit))
         {
             transform.localScale = new Vector2(2.5f, 2.5f);
             aquaPieceController.aquaPieceManager.SelectedPiece(this.gameObject);

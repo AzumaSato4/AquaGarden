@@ -1,4 +1,7 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class AdCard : MonoBehaviour
 {
@@ -14,7 +17,7 @@ public class AdCard : MonoBehaviour
     private void Start()
     {
         adCard = Instantiate(adCardPrefab, transform.position, Quaternion.identity);
-        adData = GameManager.instance.SarchAdCardData(spotNum - 1);
+        adData = GameManager.instance.GetAdCardData(spotNum - 1);
         adCard.GetComponent<SpriteRenderer>().sprite = adData.sprite;
     }
 
@@ -34,6 +37,7 @@ public class AdCard : MonoBehaviour
     {
         if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
 
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         Debug.Log("広告カード" + spotNum + "番を選択");
         adCard.transform.localScale = defSize;
 
@@ -61,7 +65,7 @@ public class AdCard : MonoBehaviour
     {
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
 
-        string nameA = adData.nameA;
+        PieceData.PieceName nameA = adData.nameA;
 
         for (int i = 0; i < 6; i++)
         {
@@ -69,7 +73,7 @@ public class AdCard : MonoBehaviour
 
             foreach (GameObject piece in current.aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().slotPieces)
             {
-                string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+                PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
                 if (name == nameA)
                 {
                     Debug.Log("発見A");
@@ -81,16 +85,17 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
+        ShowMessage("合計獲得資金" + adMoney);
 
-        current.EndAd();
+        StartCoroutine(EndAdCoroutine(current));
     }
 
     void SelectPairAd()
     {
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
 
-        string nameA = adData.nameA;
-        string nameB = adData.nameB;
+        PieceData.PieceName nameA = adData.nameA;
+        PieceData.PieceName nameB = adData.nameB;
 
         for (int i = 0; i < 6; i++)
         {
@@ -99,7 +104,7 @@ public class AdCard : MonoBehaviour
 
             foreach (GameObject piece in current.aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().slotPieces)
             {
-                string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+                PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
                 if (name == nameA)
                 {
                     Debug.Log("発見A");
@@ -125,16 +130,17 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
+        ShowMessage("合計獲得資金" + adMoney);
 
-        current.EndAd();
+        StartCoroutine(EndAdCoroutine(current));
     }
 
     void SelectAd()
     {
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
 
-        string nameA = adData.nameA;
-        string nameB = adData.nameB;
+        PieceData.PieceName nameA = adData.nameA;
+        PieceData.PieceName nameB = adData.nameB;
 
         for (int i = 0; i < 6; i++)
         {
@@ -143,7 +149,7 @@ public class AdCard : MonoBehaviour
 
             foreach (GameObject piece in current.aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().slotPieces)
             {
-                string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+                PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
                 if (name == nameA)
                 {
                     Debug.Log("発見A");
@@ -161,7 +167,20 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
+        ShowMessage("合計獲得資金" + adMoney);
 
+        StartCoroutine(EndAdCoroutine(current));
+    }
+
+    IEnumerator EndAdCoroutine(PlayerManager current)
+    {
+        yield return new WaitForSeconds(2.0f);
         current.EndAd();
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

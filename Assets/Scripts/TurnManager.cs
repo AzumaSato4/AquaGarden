@@ -1,10 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
     public static GameObject currentPlayer;
 
-    PhaseManager phaseManager;
+    [SerializeField] PhaseManager phaseManager;
     public GameObject[] players;
 
     int loopCnt = 0;
@@ -12,20 +15,28 @@ public class TurnManager : MonoBehaviour
 
     [SerializeField] GalleryBoard galleryBoard;
     [SerializeField] SeaBoard seaBoard;
+    [SerializeField] AdvanceBoard advanceBoard;
 
     [SerializeField] GalleryPieceManager gPieceManager;
     [SerializeField] GameObject roundPiece;
 
+    public static List<int> scores = new List<int>();
+
     private void Start()
     {
-        phaseManager = GetComponent<PhaseManager>();
+        StartCoroutine(Initialize()); //動作を安定させるために1フレーム待つコルーチン
+    }
+
+    IEnumerator Initialize()
+    {
+        yield return null;
         players = new GameObject[GameManager.players];
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        seaBoard.Invoke("Initialize", 0.1f);
-        gPieceManager.Invoke("Initialize", 0.1f);
-
-        Invoke("StartRound", 0.1f);
+        seaBoard.Initialize();
+        advanceBoard.Initialize();
+        gPieceManager.Initialize();
+        StartRound();
     }
 
     void StartRound()
@@ -71,14 +82,15 @@ public class TurnManager : MonoBehaviour
         int minIndex = 23;
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i].GetComponent<PlayerManager>().isGoal)
+            PlayerManager pManager = players[i].GetComponent<PlayerManager>();
+            if (pManager.isGoal)
             {
                 continue;
             }
 
-            if ((minIndex - players[i].GetComponent<PlayerManager>().galleryIndex) > 0)
+            if ((minIndex - pManager.galleryIndex) > 0)
             {
-                minIndex = players[i].GetComponent<PlayerManager>().galleryIndex;
+                minIndex = pManager.galleryIndex;
                 currentPlayer = players[i];
             }
         }
@@ -121,15 +133,17 @@ public class TurnManager : MonoBehaviour
         }
 
         //プレイヤーを行動可能にし移動履歴を初期化
-        currentPlayer.GetComponent<PlayerManager>().isActive = true;
-        currentPlayer.GetComponent<PlayerManager>().StartGallery();
-        phaseManager.StartGallery(currentPlayer.GetComponent<PlayerManager>().playerData);
+        PlayerManager currentPlayerManager = currentPlayer.GetComponent<PlayerManager>();
+
+        currentPlayerManager.isActive = true;
+        currentPlayerManager.StartGallery();
+        phaseManager.StartGallery(currentPlayerManager.player);
     }
 
     public void EndTurn()
     {
         currentPlayer.GetComponent<PlayerManager>().isActive = false;
-        phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().playerData);
+        phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().player);
         NextTurn();
     }
 
@@ -147,5 +161,21 @@ public class TurnManager : MonoBehaviour
     void EndGame()
     {
         Debug.Log("ゲーム終了！");
+        GetResult();
+    }
+
+    void GetResult()
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            scores.Add(players[i].GetComponent<PlayerManager>().GetScore());
+        }
+
+        foreach (int i in scores)
+        {
+            Debug.Log(i);
+        }
+
+        SceneManager.LoadScene("Result");
     }
 }

@@ -39,4 +39,15 @@ public class AquaSlot : MonoBehaviour
 
         return null;
     }
+
+    public List<PieceData.PieceName> GetSlotPiece()
+    {
+        List<PieceData.PieceName> pieces = new List<PieceData.PieceName>();
+        foreach (GameObject piece in slotPieces)
+        {
+            pieces.Add(piece.GetComponent<AquaPiece>().pieceData.pieceName);
+        }
+
+        return pieces;
+    }
 }

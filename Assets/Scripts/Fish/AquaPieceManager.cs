@@ -72,7 +72,7 @@ public class AquaPieceManager : MonoBehaviour
 
     IEnumerator SelectCoroutine()
     {
-        uiController.ShowMassagePanel("海ボードに移動させますか？", selectedPiece.GetComponent<AquaPiece>().pieceData.pieceSprite);
+        uiController.ShowAttentionPanel("海ボードに移動させますか？", selectedPiece.GetComponent<AquaPiece>().pieceData.pieceSprite);
 
         while (uiController.isActiveUI)
         {

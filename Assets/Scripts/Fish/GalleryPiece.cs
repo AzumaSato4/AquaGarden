@@ -8,7 +8,6 @@ public class GalleryPiece : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = pieceData.pieceSprite;
         GetComponent<Animator>().runtimeAnimatorController = pieceData.animationController;
-        Debug.Log("生成");
     }
 
     private void OnMouseEnter()

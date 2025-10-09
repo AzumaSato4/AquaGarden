@@ -6,9 +6,10 @@ public class SeaItem : MonoBehaviour
 {
     public SeaBoard seaBoard;
     public PieceData pieceData;
-    public GameObject pieceNameText;
+    public TextMeshProUGUI pieceNameText;
     public Image pieceImg;
-    public GameObject pieceCountText;
+    public TextMeshProUGUI pieceCountText;
+    [SerializeField] Button buyButton;
     int pieceCount;
 
     UIController uiController;
@@ -16,16 +17,24 @@ public class SeaItem : MonoBehaviour
 
     private void Start()
     {
-        pieceNameText.GetComponent<TextMeshProUGUI>().text = pieceData.pieceName;
+        pieceNameText.text = pieceData.pieceName.ToString();
         pieceImg.sprite = pieceData.pieceSprite;
         pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
-        pieceCountText.GetComponent<TextMeshProUGUI>().text = pieceCount.ToString();
+        pieceCountText.text = pieceCount.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
     }
 
     private void Update()
     {
+        if (PhaseManager.currentPhase == PhaseManager.Phase.edit)
+        {
+            buyButton.interactable = true;
+        }
+        else
+        {
+            buyButton.interactable = false;
+        }
         pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
         pieceCountText.GetComponent<TextMeshProUGUI>().text = pieceCount.ToString();
     }
@@ -38,11 +47,19 @@ public class SeaItem : MonoBehaviour
 
             aquaPieceManager.CreatePiece(pieceData, 2, true);
             uiController.OnSeaBoradButton();
+            if (seaBoard.seaAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
         }
         else
         {
-            Debug.Log("資金が足りません！");
             uiController.OnSeaBoradButton();
+            Debug.Log("資金が足りません！");
+            ShowMessage("資金が足りません！");
         }
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

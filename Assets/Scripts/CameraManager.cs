@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
     public GameObject[] cameras;
     [SerializeField] GameObject aquariumCameraPrefab;
     [SerializeField] GameObject galleryCamera;
+    [SerializeField] Button changeButton;
 
     public int currentIndex;
+
+    bool isActive = false;
 
     private void Start()
     {
@@ -26,5 +30,21 @@ public class CameraManager : MonoBehaviour
         cameras[currentIndex].SetActive(false);
         currentIndex = index;
         cameras[currentIndex].SetActive(true);
+    }
+
+    public void OnChangeButton()
+    {
+        if (PhaseManager.currentPhase == PhaseManager.Phase.gallery ||
+            PhaseManager.currentPhase == PhaseManager.Phase.ad)
+        {
+            cameras[0].SetActive(isActive);
+            cameras[TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerNum].SetActive(!isActive);
+        }
+        else
+        {
+            cameras[currentIndex].SetActive(isActive);
+            cameras[0].SetActive(!isActive);
+        }
+        isActive = !isActive;
     }
 }

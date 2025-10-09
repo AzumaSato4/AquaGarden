@@ -1,10 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    public PlayerData playerData; //プレイヤー情報
+    public Player player; //プレイヤー情報
     GalleryBoard galleryBoard; //ギャラリータイル情報を取得するための変数
     public AquariumBoard aquariumBoard; //水族館ボード情報を取得するための変数
     public int money; //所持資金
@@ -21,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject aquariumCanvas; //自分の水族館専用キャンバス
     [SerializeField] GameObject turnEnd;  //ターンエンドボタン
     [SerializeField] GameObject cancel; //キャンセルボタン
+    TextMeshProUGUI moneyCountText; //所持資金テキスト
 
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
@@ -35,8 +39,8 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         //プレイヤー駒の画像をセット
-        galleryPlayer.GetComponent<SpriteRenderer>().sprite = playerData.gallerySprite;
-        aquariumPlayer.GetComponent<SpriteRenderer>().sprite = playerData.aquariumSprite;
+        galleryPlayer.GetComponent<SpriteRenderer>().sprite = player.gallerySprite;
+        aquariumPlayer.GetComponent<SpriteRenderer>().sprite = player.aquariumSprite;
 
         //playerManagerに自分自身をセット
         galleryPlayer.GetComponent<GalleryPlayerController>().playerManager = this;
@@ -50,12 +54,13 @@ public class PlayerManager : MonoBehaviour
         cancel.GetComponent<Button>().interactable = false;
 
         //TurnManagerとPhaseManagerを取得
-        turnManager = GameObject.Find("MainManager").GetComponent<TurnManager>();
-        phaseManager = GameObject.Find("MainManager").GetComponent<PhaseManager>();
+        GameObject manager = GameObject.Find("MainManager");
+        turnManager = manager.GetComponent<TurnManager>();
+        phaseManager = manager.GetComponent<PhaseManager>();
 
         //初期位置にセット
         //ギャラリースタート位置にセット
-        galleryIndex = playerData.playerNum - 1;
+        galleryIndex = player.playerNum - 1;
         currentGalleryTile = galleryBoard.startSpots[galleryIndex];
         galleryPlayer.transform.position = currentGalleryTile.transform.position;
         galleryBoard.isPlayer[galleryIndex] = true;
@@ -68,6 +73,7 @@ public class PlayerManager : MonoBehaviour
         money = 2;
         preMoney = 2;
         aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
+        moneyCountText = GameObject.Find("MoneyCountText").GetComponent<TextMeshProUGUI>();
         //UIは最初は消す
         aquariumCanvas.SetActive(false);
     }
@@ -80,6 +86,8 @@ public class PlayerManager : MonoBehaviour
             aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
             preMoney = money;
         }
+
+        if (isActive) moneyCountText.text = money.ToString();
     }
 
     public void StartGallery()
@@ -117,7 +125,7 @@ public class PlayerManager : MonoBehaviour
                 FishTile fishTile = galleryBoard.galleryTiles[to - 4].GetComponent<FishTile>();
                 StartCoroutine(GetPieceCoroutine(fishTile));
 
-                phaseManager.EndGallery(playerData);
+                phaseManager.EndGallery(player);
                 StartAquarium();
             }
             else if (tile == "AdTile")
@@ -130,12 +138,12 @@ public class PlayerManager : MonoBehaviour
 
     void StartAd()
     {
-        phaseManager.StartAd(playerData);
+        phaseManager.StartAd(player);
     }
 
     public void EndAd()
     {
-        phaseManager.EndAd(playerData);
+        phaseManager.EndAd(player);
         turnManager.EndTurn();
     }
 
@@ -192,14 +200,13 @@ public class PlayerManager : MonoBehaviour
 
         if (isFeeding)
         {
-            phaseManager.StartFeeding(playerData);
+            phaseManager.StartFeeding(player);
             StartFeeding();
             return;
         }
         else
         {
             EditAquarium();
-            phaseManager.MovedAquarium(playerData);
             return;
         }
     }
@@ -214,7 +221,7 @@ public class PlayerManager : MonoBehaviour
         int countB = 0;
         foreach (GameObject piece in aquariumBoard.aquaSlots[0].GetComponent<AquaSlot>().slotPieces)
         {
-            string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+            PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
             if (name == feedingData.nameA)
             {
                 Debug.Log("発見A");
@@ -228,7 +235,7 @@ public class PlayerManager : MonoBehaviour
         }
         foreach (GameObject piece in aquariumBoard.aquaSlots[1].GetComponent<AquaSlot>().slotPieces)
         {
-            string name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+            PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
             if (name == feedingData.nameA)
             {
                 Debug.Log("発見A2");
@@ -251,12 +258,13 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log("終了");
         EditAquarium();
-        phaseManager.EndFeeding(playerData);
+        phaseManager.EndFeeding(player);
     }
 
     //水族館編集
     void EditAquarium()
     {
+        phaseManager.MovedAquarium(player);
         AbledTurnEnd(true);
 
         another = aquariumIndex - 1;
@@ -277,6 +285,23 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public void AdEditAquarium()
+    {
+        phaseManager.StartAdEdit(player);
+        AbledTurnEnd(true);
+
+        if (isActive)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                AquaSlot aquaSlot = aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>();
+                aquaSlot.mask.SetActive(false);
+                aquaSlot.selectable = true;
+            }
+            aquariumCanvas.SetActive(true);
+        }
+    }
+
     public void SelectSlot()
     {
         aquariumBoard.aquaSlots[aquariumIndex].GetComponent<AquaSlot>().selectable = true;
@@ -294,6 +319,8 @@ public class PlayerManager : MonoBehaviour
         if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
         {
             Debug.Log("ストレージを空にしてください！");
+            UIController.messageText.text = "ストレージを空にしてください！";
+            UIController.isMessageChanged = true;
             return;
         }
 
@@ -315,8 +342,8 @@ public class PlayerManager : MonoBehaviour
         {
             PieceData piece = tile.pieces[i].GetComponent<GalleryPiece>().pieceData;
             Destroy(tile.pieces[i]);
+            yield return new WaitForSeconds(0.1f);
             aquaPieceManager.CreatePiece(piece);
-            yield return null;
         }
         tile.pieces.Clear();
     }
@@ -334,5 +361,126 @@ public class PlayerManager : MonoBehaviour
     public void AbledCancel(bool isAble)
     {
         cancel.GetComponent<Button>().interactable = isAble;
+    }
+
+    public int GetScore()
+    {
+        int score = 0;
+        List<PieceData.PieceName> totalPiece = new List<PieceData.PieceName>();
+
+        for (int i = 0; i < aquariumBoard.aquaSlots.Length; i++)
+        {
+            //1つの水槽内のすべての魚駒のリスト
+            List<PieceData.PieceName> pieces = new List<PieceData.PieceName>(aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().GetSlotPiece());
+            //1つの水槽内の魚駒の種類
+            List<PieceData.PieceName> type = new List<PieceData.PieceName>(pieces.Distinct());
+            //海藻とサンゴは種類から除外
+            if (type.Contains(PieceData.PieceName.Seaweed)) type.Remove(PieceData.PieceName.Seaweed);
+            if (type.Contains(PieceData.PieceName.Coral)) type.Remove(PieceData.PieceName.Coral);
+
+            //すべての水槽内の魚駒リストに追加
+            totalPiece.AddRange(pieces);
+
+            //水槽別で計算
+            //小型魚と大型魚
+            if (pieces.Contains(PieceData.PieceName.SmallFish))
+            {
+                if (pieces.Contains(PieceData.PieceName.LargeFish))
+                {
+                    int countS = pieces.Count(item => item == PieceData.PieceName.SmallFish);
+                    int countL = pieces.Count(item => item == PieceData.PieceName.LargeFish);
+
+                    while (countS > 0 && countL > 0)
+                    {
+                        score += 3;
+                        countS--;
+                        countL--;
+                    }
+                }
+            }
+            //ウミガメ
+            if (pieces.Contains(PieceData.PieceName.SeaTurtle))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.SeaTurtle);
+
+                score += (count * 2);
+            }
+            //タツノオトシゴ
+            if (pieces.Contains(PieceData.PieceName.Seahorse))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.Seahorse);
+
+                score += (count * 2);
+            }
+            //サメ
+            if (pieces.Contains(PieceData.PieceName.Shark))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.Shark);
+
+                score += (count * 2);
+            }
+            //ジンベエザメ
+            if (pieces.Contains(PieceData.PieceName.WhaleShark))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.WhaleShark);
+
+                score += (count * 4);
+            }
+            //サンゴ
+            if (pieces.Contains(PieceData.PieceName.Coral))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.Coral);
+
+                score += (count * 1);
+            }
+            //メンダコ
+            if (pieces.Contains(PieceData.PieceName.Flapjack))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.Flapjack);
+                score += type.Count * count;
+            }
+            //コバンザメ
+            if (pieces.Contains(PieceData.PieceName.Remora))
+            {
+                int count = pieces.Count(item => item == PieceData.PieceName.Remora);
+                int countS = pieces.Count(item => item == PieceData.PieceName.Shark);
+                int countW = pieces.Count(item => item == PieceData.PieceName.WhaleShark);
+
+                if (countS > 0 && countW > 0) score += 4 * count;
+                else if (countS > 0 || countW > 0) score += 2 * count;
+            }
+        }
+
+        //水槽全体で計算
+        //マンタ
+        if (totalPiece.Contains(PieceData.PieceName.Manta))
+        {
+            int count = totalPiece.Count(item => item == PieceData.PieceName.Manta);
+            //各要素の出現回数をカウントする,出現回数が最大の要素を取得する,最頻値を取得する
+            int modeCount = totalPiece.GroupBy(x => x).OrderByDescending(g => g.Count()).First().Count();
+            score += modeCount * count;
+        }
+
+        //資金3つで1点
+        score += money / 3;
+
+        //最終ラウンドでのゴール順によって得点
+        switch (galleryIndex)
+        {
+            case 0:
+                score += 3;
+                break;
+            case 1:
+                score += 2;
+                break;
+            case 2:
+                score += 1;
+                break;
+            case 3:
+                score += 0;
+                break;
+        }
+
+        return score;
     }
 }

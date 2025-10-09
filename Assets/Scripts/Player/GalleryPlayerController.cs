@@ -43,6 +43,7 @@ public class GalleryPlayerController : MonoBehaviour
                             if (index < playerManager.galleryIndex && 3 < index)
                             {
                                 Debug.Log("後ろには進めません");
+                                ShowMessage("後ろには進めません");
                                 return;
                             }
                             else
@@ -62,5 +63,11 @@ public class GalleryPlayerController : MonoBehaviour
         }
 
 
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }
