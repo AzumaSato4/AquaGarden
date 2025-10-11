@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject message; //メッセージ
     public static TextMeshProUGUI messageText; //メッセージパネルのテキスト
 
-    public bool isActiveUI = false; //UIが表示されているかどうか
+    public static bool isActiveUI = false; //UIが表示されているかどうか
     public bool isOK;
     public static bool isMessageChanged = false;
 
@@ -97,7 +97,7 @@ public class UIController : MonoBehaviour
     public  void ShowMessagePanel()
     {
         messagePanel.SetActive(true);
-
+        isActiveUI = true;
         StartCoroutine(DestroyCoroutine());
     }
 

@@ -16,7 +16,7 @@ public class PhaseManager : MonoBehaviour
 
     public static Phase currentPhase;
 
-    [SerializeField] CameraManager cameraManager;
+    public CameraManager cameraManager;
     [SerializeField] TextMeshProUGUI phaseText;
     bool ischange = false;
 

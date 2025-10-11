@@ -44,11 +44,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179e536977bf6d44592c63e6f8027a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: 2605e291b617c034a839a92ee6abca0b, type: 2}
-  playerData: {fileID: 11400000, guid: 8e97430aa7203e842b3201c7003ea0a9, type: 2}
-  adCardData: {fileID: 11400000, guid: c82334d6ba43b654ebc2a3ae65ceb2b1, type: 2}
-  feedingData: {fileID: 11400000, guid: 32f084b5ff5ba4644937a7d9efd3545f, type: 2}
+  pieceData: {fileID: 11400000, guid: 32ab0bc5ac6368c45ba68965f082b8c4, type: 2}
+  adCardData: {fileID: 11400000, guid: 9fdcf196020c8d04fa945cee7574bac0, type: 2}
+  feedingData: {fileID: 11400000, guid: 17add3368611ae74ca9d06285f42c805, type: 2}
   pieceDataCount: 0
-  playerDataLength: 0
   adCardDataCount: 0
   feedingDataCount: 0
+  pName:
+  - "\u30D7\u30EC\u30A4\u30E4\u30FC1"
+  - "\u30D7\u30EC\u30A4\u30E4\u30FC2"
+  - "\u30D7\u30EC\u30A4\u30E4\u30FC3"
+  - "\u30D7\u30EC\u30A4\u30E4\u30FC4"
+  gColor:
+  - {fileID: 6140079778940132729, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: -5199397063279452783, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: 1268342033539389855, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: 823303787904558533, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  aColor:
+  - {fileID: -5287584587367298933, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: -2513683408918025286, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: 1234483194365296693, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: -2053059728, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}

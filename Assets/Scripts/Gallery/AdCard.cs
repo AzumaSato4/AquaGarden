@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
 public class AdCard : MonoBehaviour
 {
@@ -21,6 +20,11 @@ public class AdCard : MonoBehaviour
         adCard.GetComponent<SpriteRenderer>().sprite = adData.sprite;
     }
 
+    private void Update()
+    {
+        if (PhaseManager.currentPhase != PhaseManager.Phase.ad) adCard.transform.localScale = defSize;
+    }
+
     private void OnMouseEnter()
     {
         if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
@@ -32,12 +36,12 @@ public class AdCard : MonoBehaviour
         if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
         adCard.transform.localScale = defSize;
     }
-
+    
     private void OnMouseDown()
     {
         if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
+        if (EventSystem.current.IsPointerOverGameObject() || UIController.isActiveUI) return;
 
-        if (EventSystem.current.IsPointerOverGameObject()) return;
         Debug.Log("広告カード" + spotNum + "番を選択");
         adCard.transform.localScale = defSize;
 
@@ -49,11 +53,11 @@ public class AdCard : MonoBehaviour
         adMoney = 0;
         switch (adData.adType)
         {
-            case AdCardData.AdType.pair: //ペア
-                SelectPairAd();
-                break;
             case AdCardData.AdType.solo: //ソロ
                 SelectSoloAd();
+                break;
+            case AdCardData.AdType.pair: //ペア
+                SelectPairAd();
                 break;
             case AdCardData.AdType.count: //個数
                 SelectAd();
@@ -110,7 +114,7 @@ public class AdCard : MonoBehaviour
                     Debug.Log("発見A");
                     countA++;
                 }
-                if (name == nameB)
+                else if (name == nameB)
                 {
                     Debug.Log("発見B");
                     countB++;
@@ -175,6 +179,7 @@ public class AdCard : MonoBehaviour
     IEnumerator EndAdCoroutine(PlayerManager current)
     {
         yield return new WaitForSeconds(2.0f);
+        adCard.transform.localScale = defSize;
         current.EndAd();
     }
 

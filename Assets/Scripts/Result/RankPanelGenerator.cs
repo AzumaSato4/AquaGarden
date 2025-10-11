@@ -4,6 +4,7 @@ public class RankPanelGenerator : MonoBehaviour
 {
     [SerializeField] GameObject panelPrefab;
     [SerializeField] GameObject resultPanel;
+    [SerializeField] ResultCameraController cameraController;
 
     private void Start()
     {
@@ -11,8 +12,10 @@ public class RankPanelGenerator : MonoBehaviour
         {
             GameObject panel = Instantiate(panelPrefab, resultPanel.transform);
             RankPanel rankPanel = panel.GetComponent<RankPanel>();
+            rankPanel.index = i + 1;
             rankPanel.nameText.text = GameManager.playerName[i];
             rankPanel.scoreText.text = TurnManager.scores[i].ToString();
+            rankPanel.cameraController = this.cameraController;
         }
     }
 }

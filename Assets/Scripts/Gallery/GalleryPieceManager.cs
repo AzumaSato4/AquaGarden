@@ -8,9 +8,12 @@ public class GalleryPieceManager : MonoBehaviour
 
     [SerializeField] GalleryBoard galleryBoard;
     [SerializeField] SeaBoard seaBoard;
+    GameManager gameManager;
 
-    [SerializeField] GameManager gameManager;
-
+    private void Start()
+    {
+        gameManager = GameManager.instance;
+    }
 
     public void Initialize()
     {

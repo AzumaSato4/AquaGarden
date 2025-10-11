@@ -8,7 +8,7 @@ public class AquariumBoard : MonoBehaviour
     public GameObject storage;
     public GameObject[] CoinSpots;
     public GameObject coin;
-    public GameObject canvas;
+    public Canvas canvas;
 
     public bool[] isPlayer;
 
@@ -20,5 +20,12 @@ public class AquariumBoard : MonoBehaviour
         {
             isPlayer[i] = false;
         }
+    }
+
+    private void Update()
+    {
+        if (canvas == null) return;
+        if (UIController.isActiveUI) canvas.enabled = false;
+        else canvas.enabled = true;
     }
 }

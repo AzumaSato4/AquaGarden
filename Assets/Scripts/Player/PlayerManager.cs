@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] GameObject galleryPlayer;   //ギャラリーのプレイヤー駒
     [SerializeField] GameObject aquariumPlayer;  //水族館のプレイヤー駒
+    public GameObject myCamera; //水族館用カメラ
 
     GameObject currentGalleryTile;  //現在のギャラリーマス
     public int galleryIndex;        //現在のギャラリーマス番号
@@ -35,6 +37,10 @@ public class PlayerManager : MonoBehaviour
 
     int another;    //選択可能なもう一つの水槽を記録するための変数
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
@@ -76,10 +82,15 @@ public class PlayerManager : MonoBehaviour
         moneyCountText = GameObject.Find("MoneyCountText").GetComponent<TextMeshProUGUI>();
         //UIは最初は消す
         aquariumCanvas.SetActive(false);
+        //水族館用カメラをカメラの配列に追加
+        phaseManager.cameraManager.cameras[player.playerNum] = myCamera;
+        myCamera.SetActive(false);
     }
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name == "Title") Destroy(gameObject);
+
         if (preMoney != money)
         {
             if (money > 15) money = 15;
@@ -92,8 +103,10 @@ public class PlayerManager : MonoBehaviour
 
     public void StartGallery()
     {
+            Debug.Log("初期化開始");
         if (isActive)
         {
+            Debug.Log("初期化完了");
             galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
             galleryPlayer.GetComponent<Animator>().enabled = true;
         }
@@ -316,6 +329,7 @@ public class PlayerManager : MonoBehaviour
 
     public void EndAquarium()
     {
+        if (aquaPieceManager.selectedPiece != null) aquaPieceManager.CanselSelect();
         if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
         {
             Debug.Log("ストレージを空にしてください！");
@@ -480,7 +494,6 @@ public class PlayerManager : MonoBehaviour
                 score += 0;
                 break;
         }
-
         return score;
     }
 }

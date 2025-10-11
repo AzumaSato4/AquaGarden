@@ -3,8 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    public void LoadScene()
+    public void SelectPlayers(int menber)
     {
-        SceneManager.LoadScene("Main");
+        GameManager.players = menber;
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

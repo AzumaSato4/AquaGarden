@@ -18,11 +18,6 @@ public class CameraManager : MonoBehaviour
 
         cameras[0] = galleryCamera;
         currentIndex = 0;
-
-        for (int i = 1; i < cameras.Length; i++)
-        {
-            cameras[i] = Instantiate(aquariumCameraPrefab, new Vector3(i * 30, 0, -10), Quaternion.identity);
-        }
     }
 
     public void ChangeCamera(int index)

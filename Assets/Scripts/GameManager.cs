@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Sprite[] gColor;
     [SerializeField] Sprite[] aColor;
 
+    public static bool isMobile = false; //モバイルモードのON,OFF
+
     private void Awake()
     {
         if (instance == null)
@@ -38,12 +40,7 @@ public class GameManager : MonoBehaviour
 
         instance = this;
 
-        Application.targetFrameRate = 60;
-#if UNITY_WEBGL
-        Application.targetFrameRate = 59;
-#endif
 
-        //テスト用
         playerName = new string[players];
         galleryColor = new Sprite[players];
         aquariumColor = new Sprite[players];

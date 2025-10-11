@@ -9,6 +9,10 @@ public class AquaPieceManager : MonoBehaviour
     public PhaseManager phaseManager;
     [SerializeField] SeaBoard seaBoard;
 
+    private void Update()
+    {
+    }
+
     private void Start()
     {
         uiController = GetComponent<UIController>();
@@ -74,7 +78,7 @@ public class AquaPieceManager : MonoBehaviour
     {
         uiController.ShowAttentionPanel("海ボードに移動させますか？", selectedPiece.GetComponent<AquaPiece>().pieceData.pieceSprite);
 
-        while (uiController.isActiveUI)
+        while (UIController.isActiveUI)
         {
             yield return null;
         }

@@ -36,7 +36,7 @@ public class AquaPiece : MonoBehaviour
     private void OnMouseDown()
     {
         //UIが表示中は反応しない
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || UIController.isActiveUI)
         {
             return;
         }

@@ -7,10 +7,11 @@ public class SeaBoard : MonoBehaviour
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject seaItemPrefab;
-    [SerializeField] GameManager gameManager;
+    GameManager gameManager;
 
     public void Initialize()
     {
+        gameManager = GameManager.instance;
         for (int i = 0; i < gameManager.pieceDataCount; i++)
         {
             PieceData data = gameManager.GetPieceData(i);

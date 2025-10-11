@@ -7,7 +7,12 @@ public class AdvanceBoard : MonoBehaviour
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject advanceItemPrefab;
-    [SerializeField] GameManager gameManager;
+    GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameManager.instance;
+    }
 
     public void Initialize()
     {

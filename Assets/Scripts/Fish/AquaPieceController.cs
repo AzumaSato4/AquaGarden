@@ -17,13 +17,27 @@ public class AquaPieceController : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || UIController.isActiveUI)
         {
             return;
         }
 
         if (playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit) && aquaPieceManager.selectedPiece == this.gameObject)
         {
+            Vector3 mousePos = Input.mousePosition;
+            //マウス座標が無限値・NaNならスキップ
+            if (float.IsNaN(mousePos.x) || float.IsNaN(mousePos.y) ||
+                float.IsInfinity(mousePos.x) || float.IsInfinity(mousePos.y))
+            {
+                return;
+            }
+            //画面外チェック (負の値や画面解像度を超えた場合)
+            if (mousePos.x < 0 || mousePos.y < 0 ||
+                mousePos.x > Screen.width || mousePos.y > Screen.height)
+            {
+                return;
+            }
+
             //カーソルの位置を取得
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
@@ -70,6 +84,7 @@ public class AquaPieceController : MonoBehaviour
                                     {
                                         transform.position = to.transform.position;
                                         aquaPiece.currentPos = target;
+                                        transform.parent = slot.transform;
                                         slot.slotPieces.Add(aquaPieceManager.selectedPiece);
                                         slot.slotOxygen += aquaPiece.pieceData.oxygen;
                                         aquaPiece.isiFromSea = false;

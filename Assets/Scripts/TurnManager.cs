@@ -22,6 +22,17 @@ public class TurnManager : MonoBehaviour
 
     public static List<int> scores = new List<int>();
 
+    private void Awake()
+    {
+        if (SceneManager.sceneCount == 0)
+        {
+            foreach (GameObject obj in players)
+            {
+                Destroy(obj);
+            }
+        }
+    }
+
     private void Start()
     {
         StartCoroutine(Initialize()); //動作を安定させるために1フレーム待つコルーチン
@@ -95,11 +106,11 @@ public class TurnManager : MonoBehaviour
             }
         }
 
-        if (loopCnt == players.Length)
+        if (loopCnt == players.Length + 1)
         {
-            galleryBoard.startSpots[0].GetComponent<CircleCollider2D>().enabled = true;
+            galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = true;
         }
-        else if (loopCnt > players.Length)
+        else if (loopCnt > players.Length + 1)
         {
             int goalplayers = 0;
             for (int i = 0; i < players.Length; i++)
@@ -117,17 +128,20 @@ public class TurnManager : MonoBehaviour
 
             if (galleryBoard.isPlayer[0] && goalplayers == 1)
             {
-                galleryBoard.startSpots[1].GetComponent<CircleCollider2D>().enabled = true;
+                galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = false;
+                galleryBoard.startSpots[1].GetComponent<BoxCollider2D>().enabled = true;
                 Debug.Log("ゴール2解放");
             }
             else if (galleryBoard.isPlayer[1] && goalplayers == 2)
             {
-                galleryBoard.startSpots[2].GetComponent<CircleCollider2D>().enabled = true;
+                galleryBoard.startSpots[1].GetComponent<BoxCollider2D>().enabled = false;
+                galleryBoard.startSpots[2].GetComponent<BoxCollider2D>().enabled = true;
                 Debug.Log("ゴール3解放");
             }
             else if (galleryBoard.isPlayer[2] && goalplayers == 3)
             {
-                galleryBoard.startSpots[3].GetComponent<CircleCollider2D>().enabled = true;
+                galleryBoard.startSpots[2].GetComponent<BoxCollider2D>().enabled = false;
+                galleryBoard.startSpots[3].GetComponent<BoxCollider2D>().enabled = true;
                 Debug.Log("ゴール4解放");
             }
         }
@@ -149,7 +163,7 @@ public class TurnManager : MonoBehaviour
 
     void NextTurn()
     {
-        StartTrun();
+        Invoke(nameof(StartTrun), 0.1f);
     }
 
     void EndRound()

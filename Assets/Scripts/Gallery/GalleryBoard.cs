@@ -22,7 +22,7 @@ public class GalleryBoard : MonoBehaviour
     {
         foreach (GameObject spot in startSpots)
         {
-            spot.GetComponent<CircleCollider2D>().enabled = false;
+            spot.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
 
@@ -34,7 +34,7 @@ public class GalleryBoard : MonoBehaviour
         }
         for (int i = 0; i < startSpots.Length;i++)
         {
-            startSpots[i].GetComponent <CircleCollider2D>().enabled = false;
+            startSpots[i].GetComponent <BoxCollider2D>().enabled = false;
         }
     }
 }

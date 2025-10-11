@@ -3,15 +3,17 @@ using UnityEngine;
 public class PlayerGenerator : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab; //プレイヤーのプレハブ
-    [SerializeField] GameManager gameManager;
+    GameManager gameManager;
 
     void Start()
     {
+        gameManager = GameManager.instance;
+
         //参加プレイヤーの数だけ繰り返す
         for (int i = 0; i < GameManager.players; i++)
         {
             //プレイヤーを生成
-            GameObject obj = Instantiate(playerPrefab, new Vector3(i * 30, 0, 0), Quaternion.identity);
+            GameObject obj = Instantiate(playerPrefab, new Vector3(i * 40, 0, 0), Quaternion.identity);
 
 
             //生成したプレイヤーにプレイヤー情報をセット
