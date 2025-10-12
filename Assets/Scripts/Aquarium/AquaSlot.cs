@@ -17,7 +17,7 @@ public class AquaSlot : MonoBehaviour
     {
         oxygenText.text = slotOxygen.ToString();
 
-        if (selectable)
+        if (selectable && AquaPieceManager.selectedPiece != null)
         {
             GetComponent<PolygonCollider2D>().enabled = true;
         }

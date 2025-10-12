@@ -27,7 +27,7 @@ public class SeaItem : MonoBehaviour
 
     private void Update()
     {
-        if (PhaseManager.currentPhase == PhaseManager.Phase.edit)
+        if (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.mileEdit)
         {
             buyButton.interactable = true;
         }

@@ -26,7 +26,7 @@ public class AquaPiece : MonoBehaviour
     private void OnMouseExit()
     {
         //この駒が選ばれていたらアニメーションを止めない
-        if (aquaPieceController.aquaPieceManager.selectedPiece != this.gameObject)
+        if (AquaPieceManager.selectedPiece != this.gameObject)
         {
             GetComponent<Animator>().enabled = false;
         }
@@ -42,7 +42,7 @@ public class AquaPiece : MonoBehaviour
         }
 
         //他の駒が選択されていない、自分の番、編集フェーズならこの駒を選択中にする
-        if (aquaPieceController.aquaPieceManager.selectedPiece == null && aquaPieceController.playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit))
+        if (AquaPieceManager.selectedPiece == null && aquaPieceController.playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit || PhaseManager.currentPhase == PhaseManager.Phase.mileEdit))
         {
             transform.localScale = new Vector2(2.5f, 2.5f);
             aquaPieceController.aquaPieceManager.SelectedPiece(this.gameObject);

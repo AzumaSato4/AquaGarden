@@ -9,6 +9,7 @@ public class PhaseManager : MonoBehaviour
         aquarium,
         edit,
         adEdit,
+        mileEdit,
         ad,
         feeding,
         end
@@ -42,6 +43,10 @@ public class PhaseManager : MonoBehaviour
                 ischange = false;
                 break;
             case Phase.adEdit:
+                headerText = ($"水族館特別編集　（{name}のターン）");
+                ischange = false;
+                break;
+            case Phase.mileEdit:
                 headerText = ($"水族館特別編集　（{name}のターン）");
                 ischange = false;
                 break;
@@ -123,6 +128,14 @@ public class PhaseManager : MonoBehaviour
     {
         cameraManager.ChangeCamera(player.playerNum);
         currentPhase = Phase.adEdit;
+        Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
+        ischange= true;
+    }
+
+    public void StartMileEdit(Player player)
+    {
+        cameraManager.ChangeCamera(player.playerNum);
+        currentPhase = Phase.mileEdit;
         Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
         ischange= true;
     }

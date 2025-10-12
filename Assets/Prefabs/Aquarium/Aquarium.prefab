@@ -4172,6 +4172,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7194552541653054573, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
+      propertyPath: available
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921740723209530883, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
+      propertyPath: m_Radius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921740723209530883, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7964418044358755124, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
       propertyPath: mask
       value: 
@@ -5915,6 +5927,10 @@ PrefabInstance:
     - target: {fileID: 3043949241043299333, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
       propertyPath: m_Name
       value: AquaSlot2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093267147826543561, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3093267147826543561, guid: a379ec6f6700ed34eb6a9a96ad08cdfb, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x

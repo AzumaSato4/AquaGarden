@@ -1,10 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
+    GameManager gameManager;
+
     public static GameObject currentPlayer;
 
     [SerializeField] PhaseManager phaseManager;
@@ -19,6 +22,11 @@ public class TurnManager : MonoBehaviour
 
     [SerializeField] GalleryPieceManager gPieceManager;
     [SerializeField] GameObject roundPiece;
+
+    public MilestoneData[] milestones;
+    List<MilestoneData.MilestoneType> mileTypes;
+    //マイルストーン達成状況（0：未達成　1：達成済み）
+    public int[,] achivements;
 
     public static List<int> scores = new List<int>();
 
@@ -35,12 +43,37 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Initialize()); //動作を安定させるために1フレーム待つコルーチン
+        gameManager = GameManager.instance;
+        milestones = new MilestoneData[4];
+        mileTypes = new List<MilestoneData.MilestoneType>();
+        achivements = new int[milestones.Length, GameManager.players];
+        for (int i = 0; i < milestones.Length; i++)
+        {
+            //マイルストーンの種類がかぶらないようにする
+            int rand;
+            do
+            {
+                rand = UnityEngine.Random.Range(0, gameManager.milestoneDataCount);
+            } while (mileTypes.Contains(gameManager.GetMilestoneData(rand).type));
+            //かぶっていなければ確定
+            milestones[i] = gameManager.GetMilestoneData(rand);
+            mileTypes.Add(milestones[i].type);
+
+            //テスト用
+            Debug.Log(milestones[i]);
+
+            //マイルストーン達成状況をリセット
+            for (int j = 0; j < GameManager.players; j++)
+            {
+                achivements[i, j] = 0;
+            }
+        }
+        //動作を安定させるために遅らせる
+        Invoke("Initialize", 0.1f);
     }
 
-    IEnumerator Initialize()
+    void Initialize()
     {
-        yield return null;
         players = new GameObject[GameManager.players];
         players = GameObject.FindGameObjectsWithTag("Player");
 

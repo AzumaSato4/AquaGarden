@@ -57,7 +57,7 @@ PolygonCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: -1
   m_ForceSendLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -113,6 +113,10 @@ MonoBehaviour:
   - {fileID: 6985925359109879879}
   - {fileID: 268468270113954615}
   selectable: 0
+  mask: {fileID: 0}
+  slotPieces: []
+  slotOxygen: 4
+  oxygenText: {fileID: 0}
 --- !u!1001 &938299327242405197
 PrefabInstance:
   m_ObjectHideFlags: 0

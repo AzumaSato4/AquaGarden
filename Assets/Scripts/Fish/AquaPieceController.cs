@@ -9,7 +9,7 @@ public class AquaPieceController : MonoBehaviour
     public AquaPieceManager aquaPieceManager;
 
     AquaPiece aquaPiece;
-
+    
     private void Start()
     {
         aquaPiece = GetComponent<AquaPiece>();
@@ -22,7 +22,7 @@ public class AquaPieceController : MonoBehaviour
             return;
         }
 
-        if (playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit) && aquaPieceManager.selectedPiece == this.gameObject)
+        if (playerManager.isActive && (PhaseManager.currentPhase == PhaseManager.Phase.edit || PhaseManager.currentPhase == PhaseManager.Phase.adEdit || PhaseManager.currentPhase == PhaseManager.Phase.mileEdit) && AquaPieceManager.selectedPiece == this.gameObject)
         {
             Vector3 mousePos = Input.mousePosition;
             //マウス座標が無限値・NaNならスキップ
@@ -82,12 +82,27 @@ public class AquaPieceController : MonoBehaviour
                                 {
                                     if (CheckType(slot))
                                     {
+                                        //水槽hへの移動確定
                                         transform.position = to.transform.position;
                                         aquaPiece.currentPos = target;
                                         transform.parent = slot.transform;
-                                        slot.slotPieces.Add(aquaPieceManager.selectedPiece);
+                                        slot.slotPieces.Add(AquaPieceManager.selectedPiece);
                                         slot.slotOxygen += aquaPiece.pieceData.oxygen;
                                         aquaPiece.isiFromSea = false;
+
+                                        
+                                        if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit && !playerManager.isMoveMilestone)
+                                        {
+                                            foreach (GameObject aquaSlot in playerManager.aquariumBoard.aquaSlots)
+                                            {
+                                                AquaSlot aSlot = aquaSlot.GetComponent<AquaSlot>();
+                                                aSlot.selectable = false;
+                                                aSlot.mask.SetActive(true);
+                                            }
+                                            slot.selectable = true;
+                                            slot.mask.SetActive(false);
+                                            playerManager.isMoveMilestone = true;
+                                        }
                                     }
                                 }
                                 else
@@ -109,21 +124,27 @@ public class AquaPieceController : MonoBehaviour
         }
     }
 
+    //水槽内の駒相性チェック
     bool CheckType(AquaSlot slot)
     {
         bool isOK = false;
 
-        PieceData.PieceType[] pieces = new PieceData.PieceType[slot.slotPieces.Count];
+        PieceData[] pieces = new PieceData[slot.slotPieces.Count];
+        PieceData.PieceType[] types = new PieceData.PieceType[slot.slotPieces.Count];
+        PieceData.PieceName[] names = new PieceData.PieceName[slot.slotPieces.Count];
         for (int i = 0; i < pieces.Length; i++)
         {
-            pieces[i] = slot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceType;
+            pieces[i] = slot.slotPieces[i].GetComponent<AquaPiece>().pieceData;
+            types[i] = pieces[i].pieceType;
+            names[i] = pieces[i].pieceName;
         }
 
+        //タイプ指定
         PieceData.PieceType type = aquaPiece.pieceData.pieceType;
         switch (type)
         {
             case PieceData.PieceType.fish:
-                if (pieces.Contains(PieceData.PieceType.shark))
+                if (types.Contains(PieceData.PieceType.shark))
                 {
                     Debug.Log("サメがいる水槽には入れられません");
                     ShowMessage("サメがいる水槽には入れられません");
@@ -134,12 +155,12 @@ public class AquaPieceController : MonoBehaviour
                 }
                 break;
             case PieceData.PieceType.seaTurtle:
-                if (pieces.Contains(PieceData.PieceType.shark))
+                if (types.Contains(PieceData.PieceType.shark))
                 {
                     Debug.Log("サメがいる水槽には入れられません");
                     ShowMessage("サメがいる水槽には入れられません");
                 }
-                else if (!pieces.Contains(PieceData.PieceType.seaweed))
+                else if (!types.Contains(PieceData.PieceType.seaweed))
                 {
                     Debug.Log("海藻がない水槽には入れられません");
                     ShowMessage("海藻がない水槽には入れられません");
@@ -150,8 +171,8 @@ public class AquaPieceController : MonoBehaviour
                 }
                 break;
             case PieceData.PieceType.shark:
-                if (pieces.Contains(PieceData.PieceType.fish) ||
-                    pieces.Contains(PieceData.PieceType.seaTurtle)
+                if (types.Contains(PieceData.PieceType.fish) ||
+                    types.Contains(PieceData.PieceType.seaTurtle)
                     )
                 {
                     Debug.Log("サメと一緒に水槽に入れられない生き物がいます");
@@ -166,10 +187,18 @@ public class AquaPieceController : MonoBehaviour
                 isOK = true;
                 break;
             case PieceData.PieceType.advance:
-                isOK = true;
+                if (types.Contains(PieceData.PieceType.advance))
+                {
+                    Debug.Log("すでに上級駒があります");
+                    ShowMessage("すでに上級駒があります");
+                }
+                else
+                {
+                    isOK = true;
+                }
                 break;
             case PieceData.PieceType.seaweed:
-                if (pieces.Contains(PieceData.PieceType.seaweed))
+                if (types.Contains(PieceData.PieceType.seaweed))
                 {
                     Debug.Log("海藻は水槽に1つまでです");
                     ShowMessage("海藻は水槽に1つまでです");
@@ -180,7 +209,7 @@ public class AquaPieceController : MonoBehaviour
                 }
                 break;
             case PieceData.PieceType.coral:
-                if (pieces.Contains(PieceData.PieceType.coral))
+                if (types.Contains(PieceData.PieceType.coral))
                 {
                     Debug.Log("サンゴは水槽に1つまでです");
                     ShowMessage("サンゴは水槽に1つまでです");
@@ -192,9 +221,28 @@ public class AquaPieceController : MonoBehaviour
                 break;
         }
 
+        //名前指定
+        PieceData.PieceName name = aquaPiece.pieceData.pieceName;
+        switch (name)
+        {
+            case PieceData.PieceName.Remora:
+                if (!names.Contains(PieceData.PieceName.Shark) && !names.Contains(PieceData.PieceName.WhaleShark))
+                {
+                    Debug.Log("水槽内にサメがいません");
+                    ShowMessage("水槽内にサメがいません");
+                    isOK = false;
+                }
+                else
+                {
+                    isOK = true;
+                }
+                break;
+        }
+
         return isOK;
     }
 
+    //水槽内の酸素量チェック
     bool CheckOxygen(AquaSlot slot)
     {
         bool isOK = false;
@@ -209,6 +257,7 @@ public class AquaPieceController : MonoBehaviour
         return isOK;
     }
 
+    //メッセージを表示
     void ShowMessage(string message)
     {
         UIController.messageText.text = message;

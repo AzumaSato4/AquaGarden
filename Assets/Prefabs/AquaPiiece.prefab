@@ -81,15 +81,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -9003448877997200467, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.796875, y: 0.453125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &8034728363481711124
@@ -109,7 +109,7 @@ CircleCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 1
   m_ForceSendLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -125,7 +125,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
-  m_CompositeOrder: 0
+  m_CompositeOrder: 1
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
 --- !u!50 &284014403829732097
@@ -136,7 +136,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5661824458229865636}
-  m_BodyType: 1
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceData: {fileID: 0}
   currentPos: {fileID: 0}
+  isiFromSea: 0
   aquaPieceController: {fileID: 0}
 --- !u!114 &-4855224164723229009
 MonoBehaviour:

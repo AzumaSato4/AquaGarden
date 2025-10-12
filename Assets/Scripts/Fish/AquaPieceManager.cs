@@ -1,17 +1,14 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class AquaPieceManager : MonoBehaviour
 {
     [SerializeField] GameObject piecePrefab;
-    public GameObject selectedPiece;
+    public static GameObject selectedPiece;
     UIController uiController;
     public PhaseManager phaseManager;
     [SerializeField] SeaBoard seaBoard;
-
-    private void Update()
-    {
-    }
 
     private void Start()
     {
@@ -19,14 +16,25 @@ public class AquaPieceManager : MonoBehaviour
         phaseManager = GetComponent<PhaseManager>();
     }
 
+    private void Update()
+    {
+        if (selectedPiece != null)
+        {
+            Debug.Log(selectedPiece);
+        }
+    }
+
+
+
     public void SelectedPiece(GameObject selected)
     {
+        Debug.Log("選択");
         selectedPiece = selected;
         selectedPiece.GetComponent<Animator>().enabled = true;
 
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
         current.AbledCancel(true);
-        current.Invoke("SelectSlot", 0.1f);
+        current.SelectSlot();
     }
 
     public void CanselSelect()
@@ -41,6 +49,7 @@ public class AquaPieceManager : MonoBehaviour
         current.aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
     }
 
+    //魚駒を現在のプレイヤーのストレージに生成
     public void CreatePiece(PieceData pieceData, int amount = 0, bool isFromSea = false)
     {
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
@@ -85,10 +94,28 @@ public class AquaPieceManager : MonoBehaviour
 
         if (uiController.isOK)
         {
+
             GameObject currentPos = selectedPiece.GetComponent<AquaPiece>().currentPos;
             if (currentPos != null && currentPos.CompareTag("AquaSlot"))
             {
                 AquaSlot aquaSlot = currentPos.GetComponent<AquaSlot>();
+                PieceData.PieceName name = selectedPiece.GetComponent<AquaPiece>().pieceData.pieceName;
+                if (name == PieceData.PieceName.Shark || name == PieceData.PieceName.WhaleShark)
+                {
+                    PieceData.PieceName[] names = new PieceData.PieceName[aquaSlot.slotPieces.Count];
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        names[i] = aquaSlot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceName;
+                    }
+                    if (names.Contains(PieceData.PieceName.Remora))
+                    {
+                        Debug.Log("水槽内にサメが必要です");
+                        ShowMessage("水槽内にサメが必要です");
+
+                        CanselSelect();
+                        yield break;
+                    }
+                }
                 aquaSlot.slotPieces.Remove(selectedPiece);
                 aquaSlot.slotOxygen -= selectedPiece.GetComponent<AquaPiece>().pieceData.oxygen;
             }
@@ -101,5 +128,11 @@ public class AquaPieceManager : MonoBehaviour
             Destroy(selectedPiece);
         }
         CanselSelect();
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

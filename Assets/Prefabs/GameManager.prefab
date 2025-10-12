@@ -47,9 +47,11 @@ MonoBehaviour:
   pieceData: {fileID: 11400000, guid: 32ab0bc5ac6368c45ba68965f082b8c4, type: 2}
   adCardData: {fileID: 11400000, guid: 9fdcf196020c8d04fa945cee7574bac0, type: 2}
   feedingData: {fileID: 11400000, guid: 17add3368611ae74ca9d06285f42c805, type: 2}
+  milestoneData: {fileID: 11400000, guid: 6b724c6e9367b534a9e5a62f792dd35e, type: 2}
   pieceDataCount: 0
   adCardDataCount: 0
   feedingDataCount: 0
+  milestoneDataCount: 0
   pName:
   - "\u30D7\u30EC\u30A4\u30E4\u30FC1"
   - "\u30D7\u30EC\u30A4\u30E4\u30FC2"

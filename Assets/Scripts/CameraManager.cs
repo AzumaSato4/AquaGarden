@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,12 @@ public class CameraManager : MonoBehaviour
 
     public void ChangeCamera(int index)
     {
+        StartCoroutine(ChangeCoroutine(index));
+    }
+
+    IEnumerator ChangeCoroutine(int index)
+    {
+        yield return new WaitForSeconds(1.0f);
         cameras[currentIndex].SetActive(false);
         currentIndex = index;
         cameras[currentIndex].SetActive(true);
@@ -29,15 +36,18 @@ public class CameraManager : MonoBehaviour
 
     public void OnChangeButton()
     {
+        PlayerManager playerManager = TurnManager.currentPlayer.GetComponent<PlayerManager>();
         if (PhaseManager.currentPhase == PhaseManager.Phase.gallery ||
             PhaseManager.currentPhase == PhaseManager.Phase.ad)
         {
             cameras[0].SetActive(isActive);
-            cameras[TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerNum].SetActive(!isActive);
+            cameras[playerManager.player.playerNum].SetActive(!isActive);
+            playerManager.aquariumCanvas.SetActive(!isActive);
         }
         else
         {
             cameras[currentIndex].SetActive(isActive);
+            playerManager.aquariumCanvas.SetActive(isActive);
             cameras[0].SetActive(!isActive);
         }
         isActive = !isActive;

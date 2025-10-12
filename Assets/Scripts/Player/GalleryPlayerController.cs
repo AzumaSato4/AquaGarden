@@ -47,7 +47,7 @@ public class GalleryPlayerController : MonoBehaviour
                     if (selected != null)
                     {
                         clickCount++;
-                        Invoke("CheckDouble", 0.3f);
+                        Invoke("CheckDouble", 0.4f);
                     }
                 }
             }

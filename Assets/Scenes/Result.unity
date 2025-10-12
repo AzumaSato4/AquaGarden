@@ -452,6 +452,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 2140052279660164218, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4485357623120432009, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: cameraController
       value: 

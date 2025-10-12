@@ -40,7 +40,7 @@ public class UIController : MonoBehaviour
 
     public void OnSeaBoradButton()
     {
-        if (aquaPieceManager.selectedPiece != null)
+        if (AquaPieceManager.selectedPiece != null)
         {
             aquaPieceManager.MoveToSeaBoard();
             return;
@@ -55,7 +55,7 @@ public class UIController : MonoBehaviour
 
     public void OnAdvanceBoradButton()
     {
-        if (aquaPieceManager.selectedPiece != null)
+        if (AquaPieceManager.selectedPiece != null)
         {
             aquaPieceManager.CanselSelect();
         }

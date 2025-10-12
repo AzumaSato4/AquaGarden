@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     public int galleryIndex;        //現在のギャラリーマス番号
     GameObject currentAquariumTile; //現在の水族館マス
     int aquariumIndex;              //現在の水族館マス番号
-    [SerializeField] GameObject aquariumCanvas; //自分の水族館専用キャンバス
+    public GameObject aquariumCanvas; //自分の水族館専用キャンバス
     [SerializeField] GameObject turnEnd;  //ターンエンドボタン
     [SerializeField] GameObject cancel; //キャンセルボタン
     TextMeshProUGUI moneyCountText; //所持資金テキスト
@@ -31,9 +31,12 @@ public class PlayerManager : MonoBehaviour
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
+    GameManager gameManager; //GameManagerを格納するための変数
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
+    int[] playerAchievement; //マイルストーン達成状況
+    public bool isMoveMilestone = false; //マイルストーン駒を動かしたかどうか
 
     int another;    //選択可能なもう一つの水槽を記録するための変数
 
@@ -44,6 +47,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        gameManager = GameManager.instance;
+
         //プレイヤー駒の画像をセット
         galleryPlayer.GetComponent<SpriteRenderer>().sprite = player.gallerySprite;
         aquariumPlayer.GetComponent<SpriteRenderer>().sprite = player.aquariumSprite;
@@ -85,6 +90,12 @@ public class PlayerManager : MonoBehaviour
         //水族館用カメラをカメラの配列に追加
         phaseManager.cameraManager.cameras[player.playerNum] = myCamera;
         myCamera.SetActive(false);
+        //マイルストーンの達成状況を初期化
+        playerAchievement = new int[turnManager.achivements.Length];
+        for (int i = 0; i < turnManager.achivements.Length; i++)
+        {
+            playerAchievement[i] = 0;
+        }
     }
 
     private void Update()
@@ -103,10 +114,8 @@ public class PlayerManager : MonoBehaviour
 
     public void StartGallery()
     {
-            Debug.Log("初期化開始");
         if (isActive)
         {
-            Debug.Log("初期化完了");
             galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
             galleryPlayer.GetComponent<Animator>().enabled = true;
         }
@@ -147,6 +156,18 @@ public class PlayerManager : MonoBehaviour
                 StartAd();
             }
         }
+    }
+
+    IEnumerator GetPieceCoroutine(FishTile tile)
+    {
+        for (int i = 0; i < tile.pieces.Count; i++)
+        {
+            PieceData piece = tile.pieces[i].GetComponent<GalleryPiece>().pieceData;
+            Destroy(tile.pieces[i]);
+            yield return new WaitForSeconds(0.1f);
+            aquaPieceManager.CreatePiece(piece);
+        }
+        tile.pieces.Clear();
     }
 
     void StartAd()
@@ -206,7 +227,7 @@ public class PlayerManager : MonoBehaviour
         aquariumIndex = to;
         aquariumBoard.isPlayer[aquariumIndex] = true;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < aquariumBoard.aquaSlots.Length; i++)
         {
             aquariumBoard.aquaTiles[i].GetComponent<PolygonCollider2D>().enabled = false;
         }
@@ -315,21 +336,42 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void MileEditAquarium()
+    {
+        phaseManager.StartMileEdit(player);
+        AbledTurnEnd(true);
+
+        if (isActive)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                AquaSlot aquaSlot = aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>();
+                aquaSlot.mask.SetActive(false);
+                aquaSlot.selectable = true;
+            }
+            aquariumCanvas.SetActive(true);
+        }
+    }
+
+    //選択可能にする
     public void SelectSlot()
     {
+        if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit) return;
         aquariumBoard.aquaSlots[aquariumIndex].GetComponent<AquaSlot>().selectable = true;
         aquariumBoard.aquaSlots[another].GetComponent<AquaSlot>().selectable = true;
     }
 
+    //選択不可にする
     public void DontSelectSlot()
     {
         aquariumBoard.aquaSlots[aquariumIndex].GetComponent<AquaSlot>().selectable = false;
         aquariumBoard.aquaSlots[another].GetComponent<AquaSlot>().selectable = false;
     }
 
+    //ターンエンドボタンを押してて番を終わらせる
     public void EndAquarium()
     {
-        if (aquaPieceManager.selectedPiece != null) aquaPieceManager.CanselSelect();
+        if (AquaPieceManager.selectedPiece != null) aquaPieceManager.CanselSelect();
         if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
         {
             Debug.Log("ストレージを空にしてください！");
@@ -340,8 +382,40 @@ public class PlayerManager : MonoBehaviour
 
         foreach (GameObject slot in aquariumBoard.aquaSlots)
         {
-            slot.GetComponent<AquaSlot>().selectable = false;
-            slot.GetComponent<AquaSlot>().mask.SetActive(false);
+            AquaSlot aquaSlot = slot.GetComponent<AquaSlot>();
+            aquaSlot.selectable = false;
+            aquaSlot.mask.SetActive(false);
+            //マイルストーン判定
+            int mileIndex = CheckMilestone(aquaSlot);
+
+            //マイルストーン達成
+            if (mileIndex >= 0)
+            {
+                //全体に記録
+                for (int i = 0; i < GameManager.players; i++)
+                {
+                    if (turnManager.achivements[mileIndex, i] == 0)
+                    {
+                        Debug.Log("記録");
+                        turnManager.achivements[mileIndex, i] = 1;
+                        //自分用に記録
+                        playerAchievement[mileIndex] = i + 1;
+                        break;
+
+                    }
+                }
+
+                //一番最初に達成したら駒を獲得
+                if (playerAchievement[mileIndex] == 1)
+                {
+                    Debug.Log("一番乗り");
+                    CreateMilePiece(mileIndex);
+                    MileEditAquarium();
+                    isMoveMilestone = false;
+                    return;
+                }
+            }
+
         }
 
         AbledTurnEnd(false);
@@ -350,33 +424,78 @@ public class PlayerManager : MonoBehaviour
         turnManager.EndTurn();
     }
 
-    IEnumerator GetPieceCoroutine(FishTile tile)
+    //マイルストーンチェック
+    int CheckMilestone(AquaSlot slot)
     {
-        for (int i = 0; i < tile.pieces.Count; i++)
+        int index = -1;
+
+        for (int i = 0; i < turnManager.milestones.Length; i++)
         {
-            PieceData piece = tile.pieces[i].GetComponent<GalleryPiece>().pieceData;
-            Destroy(tile.pieces[i]);
-            yield return new WaitForSeconds(0.1f);
-            aquaPieceManager.CreatePiece(piece);
+            //すでに達成していたらスキップ
+            if (playerAchievement[i] != 0)
+            {
+                Debug.Log("スキップ");
+                continue;
+            }
+
+            //条件の名前リストを作成
+            List<PieceData.PieceName> conditionName = new List<PieceData.PieceName>(turnManager.milestones[i].conditions);
+            foreach (GameObject piece in slot.slotPieces)
+            {
+                PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
+                //条件と同じ名前の駒があったらリストから削除
+                if (conditionName.Contains(name))
+                {
+                    conditionName.Remove(name);
+                }
+
+                //条件のリストが空になったら達成
+                if (conditionName.Count == 0)
+                {
+                    return i;
+                }
+            }
         }
-        tile.pieces.Clear();
+
+        return index;
     }
 
+    //マイルストーン駒を生成
+    void CreateMilePiece(int index)
+    {
+        Debug.Log("生成");
+        StartCoroutine(CreateMileCoroutine(turnManager.milestones[index].rewards));
+    }
+
+    //重ならないように駒を間隔をあけて生成
+    IEnumerator CreateMileCoroutine(List<PieceData> pieces)
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            aquaPieceManager.CreatePiece(pieces[i]);
+        }
+    }
+
+    //キャンセルボタンを押した
     public void OnCancelButton()
     {
         aquaPieceManager.CanselSelect();
     }
 
+    //ターンエンドを押せるかどうか変更
     public void AbledTurnEnd(bool isAble)
     {
         turnEnd.GetComponent<Button>().interactable = isAble;
     }
 
+    //キャンセルボタンを押せるかどうか変更
     public void AbledCancel(bool isAble)
     {
         cancel.GetComponent<Button>().interactable = isAble;
     }
 
+    //最終スコア計算
     public int GetScore()
     {
         int score = 0;

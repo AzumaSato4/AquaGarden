@@ -28,8 +28,10 @@ public class PlayerGenerator : MonoBehaviour
 
             PlayerManager playerManager = obj.GetComponent<PlayerManager>();
             playerManager.player = playerData;
-            playerManager.feedingData = gameManager.GetFeedingData(i);
             playerManager.aquaPieceManager = GetComponent<AquaPieceManager>();
+
+            int rand = Random.Range(0, gameManager.feedingDataCount);
+            playerManager.feedingData = gameManager.GetFeedingData(rand);
         }
     }
 }

@@ -3,18 +3,22 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+    //プレイヤー基本情報
     public static int players = 4;
     public static string[] playerName;
     public static Sprite[] galleryColor;
     public static Sprite[] aquariumColor;
+    //データ元
     [SerializeField] DB_PieceData pieceData;
     [SerializeField] DB_AdCardData adCardData;
     [SerializeField] DB_FeedingData feedingData;
+    [SerializeField] DB_MilestoneData milestoneData;
 
+    //データの数
     public int pieceDataCount;
     public int adCardDataCount;
     public int feedingDataCount;
+    public int milestoneDataCount;
 
     public static bool[] avalableAdPieces;
 
@@ -22,8 +26,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] string[] pName;
     [SerializeField] Sprite[] gColor;
     [SerializeField] Sprite[] aColor;
-
-    public static bool isMobile = false; //モバイルモードのON,OFF
 
     private void Awake()
     {
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour
         pieceDataCount = pieceData.pieceDatas.Count;
         adCardDataCount = adCardData.adCardDatas.Count;
         feedingDataCount = feedingData.feedingDatas.Count;
+        milestoneDataCount = milestoneData.milestoneDatas.Count;
     }
 
     public PieceData GetPieceData(int id)
@@ -71,6 +74,12 @@ public class GameManager : MonoBehaviour
     public FeedingData GetFeedingData(int id)
     {
         FeedingData data = feedingData.feedingDatas[id];
+        return data;
+    }
+
+    public MilestoneData GetMilestoneData(int id)
+    {
+        MilestoneData data = milestoneData.milestoneDatas[id];
         return data;
     }
 }
