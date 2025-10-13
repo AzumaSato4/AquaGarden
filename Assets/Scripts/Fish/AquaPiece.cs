@@ -7,6 +7,8 @@ public class AquaPiece : MonoBehaviour
     public GameObject currentPos; //今いる場所
     public bool isiFromSea; //海から購入したかどうか
     public AquaPieceController aquaPieceController; //駒の動きを制御
+    public int spotIndex; //水槽内のスポット番号を保存するための変数
+    public int storageIndex; //ストレージのスポット番号を保存するための変数
 
     private void Start()
     {

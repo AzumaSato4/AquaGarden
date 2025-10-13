@@ -9,14 +9,24 @@ public class AquaPieceController : MonoBehaviour
     public AquaPieceManager aquaPieceManager;
 
     AquaPiece aquaPiece;
-    
+    Storage storage;
+
     private void Start()
     {
         aquaPiece = GetComponent<AquaPiece>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
+        if (AquaPieceManager.selectedPiece != null)
+        {
+            gameObject.layer = 2;
+        }
+        else
+        {
+            gameObject.layer = 0;
+        }
+
         if (EventSystem.current.IsPointerOverGameObject() || UIController.isActiveUI)
         {
             return;
@@ -38,17 +48,17 @@ public class AquaPieceController : MonoBehaviour
                 return;
             }
 
-            //カーソルの位置を取得
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
-            //クリックしたオブジェクトを取得
-            if (hit.collider != null)
+            //マウスクリックしたら
+            if (Input.GetMouseButtonDown(0))
             {
-                GameObject target = hit.collider.gameObject;
-
-                //マウスクリックしたら
-                if (Input.GetMouseButtonDown(0))
+                //カーソルの位置を取得
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+                //クリックしたオブジェクトを取得
+                if (hit.collider != null)
                 {
+                    GameObject target = hit.collider.gameObject;
+
                     //何かオブジェクトをクリックしたら
                     if (target != null)
                     {
@@ -75,22 +85,25 @@ public class AquaPieceController : MonoBehaviour
                             }
 
                             AquaSlot slot = target.GetComponent<AquaSlot>();
-                            GameObject to = slot.CheckSpot();
+                            (GameObject to, int index) = slot.CheckSpot();
                             if (to != null)
                             {
                                 if (CheckOxygen(slot))
                                 {
                                     if (CheckType(slot))
                                     {
-                                        //水槽hへの移動確定
+                                        //水槽への移動確定
                                         transform.position = to.transform.position;
                                         aquaPiece.currentPos = target;
                                         transform.parent = slot.transform;
                                         slot.slotPieces.Add(AquaPieceManager.selectedPiece);
                                         slot.slotOxygen += aquaPiece.pieceData.oxygen;
+                                        slot.isPiece[index] = true;
                                         aquaPiece.isiFromSea = false;
+                                        TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
+                                        aquaPiece.spotIndex = index;
 
-                                        
+                                        //マイルストーンの特別編集中なら水槽を最初に選んだものに限定する
                                         if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit && !playerManager.isMoveMilestone)
                                         {
                                             foreach (GameObject aquaSlot in playerManager.aquariumBoard.aquaSlots)

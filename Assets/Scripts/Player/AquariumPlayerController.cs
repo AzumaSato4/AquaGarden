@@ -34,7 +34,7 @@ public class AquariumPlayerController : MonoBehaviour
 
             //カーソルの位置を取得
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction);
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
             //クリックしたオブジェクトを取得
             if (hit.collider != null)
             {
@@ -75,10 +75,6 @@ public class AquariumPlayerController : MonoBehaviour
                 playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
                 transform.position = selected.transform.position;
                 movedAquarium = true;
-            }
-            if (selected.CompareTag("AquaSlot"))
-            {
-                Debug.Log("水槽！");
             }
             selected = null;
         }

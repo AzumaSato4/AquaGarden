@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGenerator : MonoBehaviour
@@ -5,9 +6,12 @@ public class PlayerGenerator : MonoBehaviour
     [SerializeField] GameObject playerPrefab; //プレイヤーのプレハブ
     GameManager gameManager;
 
+    List<int> feedingDatas = new List<int>(); //餌やりカードがかぶらないようにするために記録
+
     void Start()
     {
         gameManager = GameManager.instance;
+        feedingDatas.Clear();
 
         //参加プレイヤーの数だけ繰り返す
         for (int i = 0; i < GameManager.players; i++)
@@ -19,10 +23,10 @@ public class PlayerGenerator : MonoBehaviour
             //生成したプレイヤーにプレイヤー情報をセット
             Player playerData = new Player()
             {
-                playerNum = i + 1,               //プレイヤー番号
-                playerName = GameManager.playerName[i],           //プレイヤー名
-                gallerySprite = GameManager.galleryColor[i],        //ギャラリーのプレイヤー駒画像
-                aquariumSprite = GameManager.aquariumColor[i]       //水族館のプレイヤー駒画像
+                playerNum = i + 1,  //プレイヤー番号
+                playerName = GameManager.playerName[i], //プレイヤー名
+                gallerySprite = GameManager.galleryColor[i],    //ギャラリーのプレイヤー駒画像
+                aquariumSprite = GameManager.aquariumColor[i]   //水族館のプレイヤー駒画像
             };
             PlayerData.players.Add(playerData);
 
@@ -30,8 +34,13 @@ public class PlayerGenerator : MonoBehaviour
             playerManager.player = playerData;
             playerManager.aquaPieceManager = GetComponent<AquaPieceManager>();
 
-            int rand = Random.Range(0, gameManager.feedingDataCount);
+            int rand;
+            do
+            {
+                rand = Random.Range(0, gameManager.feedingDataCount);
+            } while (feedingDatas.Contains(rand));
             playerManager.feedingData = gameManager.GetFeedingData(rand);
+            feedingDatas.Add(rand);
         }
     }
 }

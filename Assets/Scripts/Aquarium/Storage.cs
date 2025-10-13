@@ -3,8 +3,14 @@ using UnityEngine;
 public class Storage : MonoBehaviour
 {
     public GameObject[] pieceSpots;     //魚駒を置くスポット
+    bool[] isPiece; //スポットに駒が置かれているかどうか
     public bool isEmpty = true;     //ストレージに魚駒が残っているかどうか
     public GameObject mask;   //ストレージを暗くするためのオブジェクト
+
+    private void Start()
+    {
+        isPiece = new bool[pieceSpots.Length];
+    }
 
     private void Update()
     {
@@ -18,34 +24,37 @@ public class Storage : MonoBehaviour
         }
     }
 
-    public GameObject Instorage()
+    public (GameObject,int) Instorage()
     {
-        foreach (GameObject spot in pieceSpots)
+        for (int i = 0; i < isPiece.Length; i++)
         {
-            if (spot.GetComponent<PieceSpot>().available)
+            if (isPiece[i] == false)
             {
-                isEmpty = false;
-                return spot;
+                isPiece[i] = true;
+                return (pieceSpots[i], i);
             }
         }
+        //どこも空いてなかったら一番左
+        return (pieceSpots[0], 0);
+    }
 
-        return pieceSpots[0];
+    public void ReleasePiece()
+    {
+        AquaPiece piece = AquaPieceManager.selectedPiece.GetComponent<AquaPiece>();
+        isPiece[piece.storageIndex] = false;
     }
 
     public void CheckSpotEmpty()
     {
-        foreach (GameObject spot in pieceSpots)
+        for (int i = 0; i < isPiece.Length; i++)
         {
-            if (!spot.GetComponent<PieceSpot>().available)
+            if (isPiece[i] == true)
             {
                 isEmpty = false;
                 return;
             }
         }
-
         isEmpty = true;
         return;
     }
-
-
 }

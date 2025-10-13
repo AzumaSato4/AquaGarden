@@ -5,6 +5,7 @@ using UnityEngine;
 public class AquaSlot : MonoBehaviour
 {
     public GameObject[] pieceSpots;     //魚駒を置くスポット
+    public bool[] isPiece; //スポットに駒が置かれているかどうか
     public bool selectable = false;     //この水槽が選択可能かどうか
     public GameObject mask;   //水槽を暗くするためのオブジェクト
 
@@ -13,31 +14,48 @@ public class AquaSlot : MonoBehaviour
     //テスト用
     [SerializeField] TextMeshProUGUI oxygenText; //水槽内の酸素量を表示するテキスト
 
+    private void Start()
+    {
+        isPiece = new bool[pieceSpots.Length];
+    }
+
     private void Update()
     {
         oxygenText.text = slotOxygen.ToString();
 
-        if (selectable && AquaPieceManager.selectedPiece != null)
+        if (AquaPieceManager.selectedPiece != null)
         {
-            GetComponent<PolygonCollider2D>().enabled = true;
+            Invoke("ChengeLayer", 0.5f);
         }
         else
         {
-            GetComponent<PolygonCollider2D>().enabled = false;
+            gameObject.layer = 2;
         }
     }
 
-    public GameObject CheckSpot()
+    void ChengeLayer()
     {
-        foreach (GameObject spot in pieceSpots)
+        gameObject.layer = 0;
+    }
+
+    public (GameObject,int) CheckSpot()
+    {
+        for (int i = 0; i < isPiece.Length; i++)
         {
-            if (spot.GetComponent<PieceSpot>().available)
+            if (isPiece[i] == false)
             {
-                return spot;
+                return (pieceSpots[i], i);
             }
         }
+        return (null, 0);
+    }
 
-        return null;
+    public void ReleasePiece()
+    {
+        slotPieces.Remove(AquaPieceManager.selectedPiece);
+        AquaPiece piece = AquaPieceManager.selectedPiece.GetComponent<AquaPiece>();
+        slotOxygen -= piece.pieceData.oxygen;
+        isPiece[piece.spotIndex] = false;
     }
 
     public List<PieceData.PieceName> GetSlotPiece()

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 6354802431615212553}
   - component: {fileID: 3093267147826543561}
   - component: {fileID: 7964418044358755124}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AquaSlot
   m_TagString: AquaSlot
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

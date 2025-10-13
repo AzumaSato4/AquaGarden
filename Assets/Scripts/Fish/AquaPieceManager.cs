@@ -16,19 +16,8 @@ public class AquaPieceManager : MonoBehaviour
         phaseManager = GetComponent<PhaseManager>();
     }
 
-    private void Update()
-    {
-        if (selectedPiece != null)
-        {
-            Debug.Log(selectedPiece);
-        }
-    }
-
-
-
     public void SelectedPiece(GameObject selected)
     {
-        Debug.Log("選択");
         selectedPiece = selected;
         selectedPiece.GetComponent<Animator>().enabled = true;
 
@@ -54,7 +43,7 @@ public class AquaPieceManager : MonoBehaviour
     {
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
 
-        GameObject spot = current.aquariumBoard.storage.GetComponent<Storage>().Instorage();
+        (GameObject spot, int index) = current.aquariumBoard.storage.GetComponent<Storage>().Instorage();
         if (spot != null)
         {
             GameObject piece = Instantiate(
@@ -70,6 +59,7 @@ public class AquaPieceManager : MonoBehaviour
 
                 aquaPiece.pieceData = pieceData;
                 aquaPiece.isiFromSea = isFromSea;
+                aquaPiece.storageIndex = index;
                 pieceController.playerManager = current;
                 pieceController.aquaPieceManager = this;
                 current.money -= amount;
@@ -100,6 +90,7 @@ public class AquaPieceManager : MonoBehaviour
             {
                 AquaSlot aquaSlot = currentPos.GetComponent<AquaSlot>();
                 PieceData.PieceName name = selectedPiece.GetComponent<AquaPiece>().pieceData.pieceName;
+                //サメ、ジンベエザメ
                 if (name == PieceData.PieceName.Shark || name == PieceData.PieceName.WhaleShark)
                 {
                     PieceData.PieceName[] names = new PieceData.PieceName[aquaSlot.slotPieces.Count];
@@ -107,6 +98,7 @@ public class AquaPieceManager : MonoBehaviour
                     {
                         names[i] = aquaSlot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceName;
                     }
+                    //コバンザメ
                     if (names.Contains(PieceData.PieceName.Remora))
                     {
                         Debug.Log("水槽内にサメが必要です");
@@ -116,8 +108,21 @@ public class AquaPieceManager : MonoBehaviour
                         yield break;
                     }
                 }
-                aquaSlot.slotPieces.Remove(selectedPiece);
-                aquaSlot.slotOxygen -= selectedPiece.GetComponent<AquaPiece>().pieceData.oxygen;
+                //海藻
+                if (name == PieceData.PieceName.Seaweed)
+                {
+                    //海藻を抜いて水槽内の酸素量が0未満ならNG
+                    int oxygen = aquaSlot.slotOxygen - selectedPiece.GetComponent<AquaPiece>().pieceData.oxygen;
+                    if (oxygen < 0)
+                    {
+                        Debug.Log("水槽の酸素量が足りなくなります");
+                        ShowMessage("水槽の酸素量が足りなくなります");
+
+                        CanselSelect();
+                        yield break;
+                    }
+                }
+                aquaSlot.ReleasePiece();
             }
 
             if (selectedPiece.GetComponent<AquaPiece>().isiFromSea)

@@ -140,9 +140,9 @@ public class PlayerManager : MonoBehaviour
 
         if (tile != null)
         {
+            //魚マス
             if (tile == "FishTile")
             {
-                Debug.Log("魚マス");
 
                 FishTile fishTile = galleryBoard.galleryTiles[to - 4].GetComponent<FishTile>();
                 StartCoroutine(GetPieceCoroutine(fishTile));
@@ -150,9 +150,9 @@ public class PlayerManager : MonoBehaviour
                 phaseManager.EndGallery(player);
                 StartAquarium();
             }
+            //広告マス
             else if (tile == "AdTile")
             {
-                Debug.Log("広告マス");
                 StartAd();
             }
         }
@@ -258,12 +258,10 @@ public class PlayerManager : MonoBehaviour
             PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
             if (name == feedingData.nameA)
             {
-                Debug.Log("発見A");
                 countA++;
             }
             if (name == feedingData.nameB)
             {
-                Debug.Log("発見B");
                 countB++;
             }
         }
@@ -272,12 +270,10 @@ public class PlayerManager : MonoBehaviour
             PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
             if (name == feedingData.nameA)
             {
-                Debug.Log("発見A2");
                 countA++;
             }
             if (name == feedingData.nameB)
             {
-                Debug.Log("発見B2");
                 countB++;
             }
         }
@@ -290,7 +286,6 @@ public class PlayerManager : MonoBehaviour
             countB--;
         }
 
-        Debug.Log("終了");
         EditAquarium();
         phaseManager.EndFeeding(player);
     }
@@ -396,7 +391,6 @@ public class PlayerManager : MonoBehaviour
                 {
                     if (turnManager.achivements[mileIndex, i] == 0)
                     {
-                        Debug.Log("記録");
                         turnManager.achivements[mileIndex, i] = 1;
                         //自分用に記録
                         playerAchievement[mileIndex] = i + 1;
@@ -408,7 +402,6 @@ public class PlayerManager : MonoBehaviour
                 //一番最初に達成したら駒を獲得
                 if (playerAchievement[mileIndex] == 1)
                 {
-                    Debug.Log("一番乗り");
                     CreateMilePiece(mileIndex);
                     MileEditAquarium();
                     isMoveMilestone = false;
@@ -434,7 +427,6 @@ public class PlayerManager : MonoBehaviour
             //すでに達成していたらスキップ
             if (playerAchievement[i] != 0)
             {
-                Debug.Log("スキップ");
                 continue;
             }
 
