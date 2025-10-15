@@ -163,7 +163,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5661824458229865636}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
@@ -193,6 +193,8 @@ MonoBehaviour:
   currentPos: {fileID: 0}
   isiFromSea: 0
   aquaPieceController: {fileID: 0}
+  spotIndex: 0
+  storageIndex: 0
 --- !u!114 &-4855224164723229009
 MonoBehaviour:
   m_ObjectHideFlags: 0

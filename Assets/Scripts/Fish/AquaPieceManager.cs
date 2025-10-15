@@ -19,7 +19,6 @@ public class AquaPieceManager : MonoBehaviour
     public void SelectedPiece(GameObject selected)
     {
         selectedPiece = selected;
-        selectedPiece.GetComponent<Animator>().enabled = true;
 
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
         current.AbledCancel(true);
@@ -28,7 +27,6 @@ public class AquaPieceManager : MonoBehaviour
 
     public void CanselSelect()
     {
-        selectedPiece.GetComponent<Animator>().enabled = false;
         selectedPiece.transform.localScale = new Vector2(1.5f, 1.5f);
         selectedPiece = null;
 
@@ -68,11 +66,13 @@ public class AquaPieceManager : MonoBehaviour
 
     }
 
+    //海ボードへの移動
     public void MoveToSeaBoard()
     {
         StartCoroutine(SelectCoroutine());
     }
 
+    //確定ボタンを押すまで停止
     IEnumerator SelectCoroutine()
     {
         uiController.ShowAttentionPanel("海ボードに移動させますか？", selectedPiece.GetComponent<AquaPiece>().pieceData.pieceSprite);
@@ -82,10 +82,12 @@ public class AquaPieceManager : MonoBehaviour
             yield return null;
         }
 
+        //確定ボタンが押されたら
         if (uiController.isOK)
         {
-
+            PlayerManager player = TurnManager.currentPlayer.GetComponent<PlayerManager>();
             GameObject currentPos = selectedPiece.GetComponent<AquaPiece>().currentPos;
+            //水槽からだったら
             if (currentPos != null && currentPos.CompareTag("AquaSlot"))
             {
                 AquaSlot aquaSlot = currentPos.GetComponent<AquaSlot>();
@@ -124,10 +126,15 @@ public class AquaPieceManager : MonoBehaviour
                 }
                 aquaSlot.ReleasePiece();
             }
-
+            //ストレージからだったら
+            else
+            {
+                player.aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
+            }
+            //海からだったら
             if (selectedPiece.GetComponent<AquaPiece>().isiFromSea)
             {
-                TurnManager.currentPlayer.GetComponent<PlayerManager>().money += 2;
+                player.money += 2;
             }
             seaBoard.ReleasePiece(selectedPiece);
             Destroy(selectedPiece);

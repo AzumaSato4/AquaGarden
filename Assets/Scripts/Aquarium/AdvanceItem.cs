@@ -49,7 +49,7 @@ public class AdvanceItem : MonoBehaviour
             advanceBoard.advanceAquaPieces[pieceData.pieceName]--;
 
             aquaPieceManager.CreatePiece(pieceData, pieceData.amount, true);
-            uiController.OnAdvanceBoradButton();
+            uiController.ChangeUI(UIController.PanelType.none);
             if (advanceBoard.advanceAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
 
             //購入後水族館編集フェーズへ
@@ -57,7 +57,7 @@ public class AdvanceItem : MonoBehaviour
         }
         else
         {
-            uiController.OnAdvanceBoradButton();
+            uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");
         }

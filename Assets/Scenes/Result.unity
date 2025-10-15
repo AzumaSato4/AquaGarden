@@ -464,6 +464,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 519420033}
+    - target: {fileID: 5333116910484214369, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333116910484214369, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3016102
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333116910484214369, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3016102
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333116910484214369, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3016102
+      objectReference: {fileID: 0}
     - target: {fileID: 5691721507873419415, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: m_Pivot.x
       value: 0

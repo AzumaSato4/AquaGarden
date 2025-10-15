@@ -4,24 +4,10 @@ public class Storage : MonoBehaviour
 {
     public GameObject[] pieceSpots;     //魚駒を置くスポット
     bool[] isPiece; //スポットに駒が置かれているかどうか
-    public bool isEmpty = true;     //ストレージに魚駒が残っているかどうか
-    public GameObject mask;   //ストレージを暗くするためのオブジェクト
 
     private void Start()
     {
         isPiece = new bool[pieceSpots.Length];
-    }
-
-    private void Update()
-    {
-        if (isEmpty)
-        {
-            mask.SetActive(true);
-        }
-        else
-        {
-            mask.SetActive(false);
-        }
     }
 
     public (GameObject,int) Instorage()
@@ -44,17 +30,15 @@ public class Storage : MonoBehaviour
         isPiece[piece.storageIndex] = false;
     }
 
-    public void CheckSpotEmpty()
+    public bool CheckSpotEmpty()
     {
         for (int i = 0; i < isPiece.Length; i++)
         {
             if (isPiece[i] == true)
             {
-                isEmpty = false;
-                return;
+                return false;
             }
         }
-        isEmpty = true;
-        return;
+        return true;
     }
 }

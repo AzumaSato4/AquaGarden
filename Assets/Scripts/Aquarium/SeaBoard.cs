@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SeaBoard : MonoBehaviour
 {
-    public Dictionary<PieceData.PieceName, int> seaAquaPieces = new Dictionary<PieceData.PieceName, int>();
+    public Dictionary<PieceData, int> seaAquaPieces = new Dictionary<PieceData, int>();
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject seaItemPrefab;
@@ -15,19 +15,19 @@ public class SeaBoard : MonoBehaviour
         for (int i = 0; i < gameManager.pieceDataCount; i++)
         {
             PieceData data = gameManager.GetPieceData(i);
-            if (seaAquaPieces.ContainsKey(data.pieceName)) continue;
-            seaAquaPieces.Add(data.pieceName, 0);
+            if (seaAquaPieces.ContainsKey(data)) continue;
+            seaAquaPieces.Add(data, 0);
 
             if (data.pieceName == PieceData.PieceName.Seaweed)
             {
-                seaAquaPieces[PieceData.PieceName.Seaweed] = 16;
+                seaAquaPieces[data] = 16;
             }
             if (data.pieceName == PieceData.PieceName.Coral)
             {
-                seaAquaPieces[PieceData.PieceName.Coral] = 16;
+                seaAquaPieces[data] = 16;
             }
 
-            if (seaAquaPieces[data.pieceName] > 0)
+            if (seaAquaPieces[data] > 0)
             {
                 GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
                 seaItem.GetComponent<SeaItem>().seaBoard = this;
@@ -46,12 +46,12 @@ public class SeaBoard : MonoBehaviour
 
     public void AddPiece(PieceData piece)
     {
-        if (seaAquaPieces[piece.pieceName] <= 0)
+        if (seaAquaPieces[piece] <= 0)
         {
             GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
             seaItem.GetComponent<SeaItem>().seaBoard = this;
             seaItem.GetComponent<SeaItem>().pieceData = piece;
         }
-        seaAquaPieces[piece.pieceName]++;
+        seaAquaPieces[piece]++;
     }
 }

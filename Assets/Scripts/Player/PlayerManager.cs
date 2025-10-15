@@ -31,7 +31,6 @@ public class PlayerManager : MonoBehaviour
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
-    GameManager gameManager; //GameManagerを格納するための変数
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
@@ -47,8 +46,6 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        gameManager = GameManager.instance;
-
         //プレイヤー駒の画像をセット
         galleryPlayer.GetComponent<SpriteRenderer>().sprite = player.gallerySprite;
         aquariumPlayer.GetComponent<SpriteRenderer>().sprite = player.aquariumSprite;
@@ -87,8 +84,9 @@ public class PlayerManager : MonoBehaviour
         moneyCountText = GameObject.Find("MoneyCountText").GetComponent<TextMeshProUGUI>();
         //UIは最初は消す
         aquariumCanvas.SetActive(false);
-        //水族館用カメラをカメラの配列に追加
+        //水族館用カメラとキャンバスを配列に追加
         phaseManager.cameraManager.cameras[player.playerNum] = myCamera;
+        phaseManager.cameraManager.canvases[player.playerNum - 1] = aquariumCanvas;
         myCamera.SetActive(false);
         //マイルストーンの達成状況を初期化
         playerAchievement = new int[turnManager.achivements.Length];
@@ -148,7 +146,8 @@ public class PlayerManager : MonoBehaviour
                 StartCoroutine(GetPieceCoroutine(fishTile));
 
                 phaseManager.EndGallery(player);
-                StartAquarium();
+                //UIが変に表示されないように遅らせる
+                Invoke("StartMyAquarium", 1.0f);
             }
             //広告マス
             else if (tile == "AdTile")
@@ -181,7 +180,7 @@ public class PlayerManager : MonoBehaviour
         turnManager.EndTurn();
     }
 
-    public void StartAquarium()
+    public void StartMyAquarium()
     {
         if (isActive)
         {
@@ -248,8 +247,9 @@ public class PlayerManager : MonoBehaviour
     //餌やりイベント
     void StartFeeding()
     {
+        int getMoney = 0;
         //無条件で資金を1追加
-        money++;
+        getMoney++;
 
         int countA = 0;
         int countB = 0;
@@ -280,14 +280,16 @@ public class PlayerManager : MonoBehaviour
 
         while (countA > 0 && countB > 0)
         {
-            money++;
+            getMoney++;
 
             countA--;
             countB--;
         }
 
-        EditAquarium();
-        phaseManager.EndFeeding(player);
+        money += getMoney;
+
+        ShowMessage("えさやりイベント\n合計資金獲得" + getMoney);
+        Invoke("EditAquarium", 2.1f);
     }
 
     //水族館編集
@@ -367,7 +369,7 @@ public class PlayerManager : MonoBehaviour
     public void EndAquarium()
     {
         if (AquaPieceManager.selectedPiece != null) aquaPieceManager.CanselSelect();
-        if (!aquariumBoard.storage.GetComponent<Storage>().isEmpty)
+        if (!aquariumBoard.storage.GetComponent<Storage>().CheckSpotEmpty())
         {
             Debug.Log("ストレージを空にしてください！");
             UIController.messageText.text = "ストレージを空にしてください！";
@@ -406,6 +408,10 @@ public class PlayerManager : MonoBehaviour
                     MileEditAquarium();
                     isMoveMilestone = false;
                     return;
+                }
+                else
+                {
+                    ShowMessage("マイルストーン達成");
                 }
             }
 
@@ -586,6 +592,31 @@ public class PlayerManager : MonoBehaviour
             score += modeCount * count;
         }
 
+        //マイルストーン達成状況に応じて得点
+        int mileScore = 0;
+        for (int i = 0; i < playerAchievement.Length; i++)
+        {
+            switch (playerAchievement[i])
+            {
+                case 1:
+                    mileScore += 5;
+                    break;
+                case 2:
+                    mileScore += 4;
+                    break;
+                case 3:
+                    mileScore += 3;
+                    break;
+                case 4:
+                    mileScore += 3;
+                    break;
+                default:
+                    mileScore += 0;
+                    break;
+            }
+        }
+        score += mileScore;
+
         //資金3つで1点
         score += money / 3;
 
@@ -606,5 +637,12 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
         return score;
+    }
+
+    //メッセージを表示
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

@@ -31,31 +31,31 @@ public class PhaseManager : MonoBehaviour
         switch (currentPhase)
         {
             case Phase.gallery:
-                headerText = ($"ギャラリー　（{name}のターン）");
+                headerText = ($"ギャラリー　{name}");
                 ischange = false;
                 break;
             case Phase.aquarium:
-                headerText = ($"水族館　（{name}のターン）");
+                headerText = ($"水族館　{name}");
                 ischange = false;
                 break;
             case Phase.edit:
-                headerText = ($"水族館編集　（{name}のターン）");
+                headerText = ($"水族館編集　{name}");
                 ischange = false;
                 break;
             case Phase.adEdit:
-                headerText = ($"水族館特別編集　（{name}のターン）");
+                headerText = ($"水族館特別編集　{name}");
                 ischange = false;
                 break;
             case Phase.mileEdit:
-                headerText = ($"水族館特別編集　（{name}のターン）");
+                headerText = ($"水族館特別編集　{name}");
                 ischange = false;
                 break;
             case Phase.ad:
-                headerText = ($"広告選択　（{name}のターン）");
+                headerText = ($"広告選択　{name}");
                 ischange = false;
                 break;
             case Phase.feeding:
-                headerText = ($"餌やりイベント　（{name}のターン）");
+                headerText = ($"餌やりイベント　{name}");
                 ischange = false;
                 break;
         }
@@ -67,7 +67,7 @@ public class PhaseManager : MonoBehaviour
 
     public void StartGallery(Player player)
     {
-        cameraManager.ChangeCamera(0);
+        cameraManager.ChangeMainCamera(0);
         currentPhase = Phase.gallery;
         Debug.Log($"ギャラリー（{player.playerName}のターン）開始");
         ischange = true;
@@ -93,7 +93,7 @@ public class PhaseManager : MonoBehaviour
 
     void StartAquarium(Player player)
     {
-        cameraManager.ChangeCamera(player.playerNum);
+        cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.aquarium;
         Debug.Log($"水族館（{player.playerName}のターン）開始");
         ischange = true;
@@ -103,13 +103,6 @@ public class PhaseManager : MonoBehaviour
     {
         currentPhase = Phase.feeding;
         Debug.Log($"餌やりイベント（{player.playerName}のターン）開始");
-    }
-
-    public void EndFeeding(Player player)
-    {
-        Debug.Log($"餌やりイベント（{player.playerName}のターン）終了");
-        currentPhase = Phase.aquarium;
-        MovedAquarium(player);
     }
 
     public void MovedAquarium(Player player)
@@ -126,7 +119,7 @@ public class PhaseManager : MonoBehaviour
     
     public void StartAdEdit(Player player)
     {
-        cameraManager.ChangeCamera(player.playerNum);
+        cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.adEdit;
         Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
         ischange= true;
@@ -134,7 +127,7 @@ public class PhaseManager : MonoBehaviour
 
     public void StartMileEdit(Player player)
     {
-        cameraManager.ChangeCamera(player.playerNum);
+        cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.mileEdit;
         Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
         ischange= true;

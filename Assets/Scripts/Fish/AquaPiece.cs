@@ -18,22 +18,6 @@ public class AquaPiece : MonoBehaviour
         GetComponent<Animator>().runtimeAnimatorController = pieceData.animationController;
     }
 
-    //マウスを重ねたらアニメーション開始
-    private void OnMouseEnter()
-    {
-        GetComponent<Animator>().enabled = true;
-    }
-
-    //マウスが離れたらアニメーション停止
-    private void OnMouseExit()
-    {
-        //この駒が選ばれていたらアニメーションを止めない
-        if (AquaPieceManager.selectedPiece != this.gameObject)
-        {
-            GetComponent<Animator>().enabled = false;
-        }
-    }
-
     //押したら選択中にする
     private void OnMouseDown()
     {

@@ -19,7 +19,7 @@ public class SeaItem : MonoBehaviour
     {
         pieceNameText.text = pieceData.pieceName.ToString();
         pieceImg.sprite = pieceData.pieceSprite;
-        pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
+        pieceCount = seaBoard.seaAquaPieces[pieceData];
         pieceCountText.text = pieceCount.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
@@ -35,7 +35,7 @@ public class SeaItem : MonoBehaviour
         {
             buyButton.interactable = false;
         }
-        pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
+        pieceCount = seaBoard.seaAquaPieces[pieceData];
         pieceCountText.GetComponent<TextMeshProUGUI>().text = pieceCount.ToString();
     }
 
@@ -43,11 +43,11 @@ public class SeaItem : MonoBehaviour
     {
         if (TurnManager.currentPlayer.GetComponent<PlayerManager>().money >= 2)
         {
-            seaBoard.seaAquaPieces[pieceData.pieceName]--;
+            seaBoard.seaAquaPieces[pieceData]--;
 
             aquaPieceManager.CreatePiece(pieceData, 2, true);
             uiController.OnSeaBoradButton();
-            if (seaBoard.seaAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
+            if (seaBoard.seaAquaPieces[pieceData] <= 0) Destroy(this.gameObject);
         }
         else
         {

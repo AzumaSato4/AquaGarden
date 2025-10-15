@@ -5,23 +5,30 @@ using UnityEngine.UI;
 public class CameraManager : MonoBehaviour
 {
     public GameObject[] cameras;
+    public GameObject[] canvases; //それぞれのキャンバスを格納
     [SerializeField] GameObject aquariumCameraPrefab;
     [SerializeField] GameObject galleryCamera;
     [SerializeField] Button changeButton;
 
     public int currentIndex;
-
-    bool isActive = false;
+    [SerializeField] GameObject maskPanel; //他のカメラからの操作をさせないためのパネル
 
     private void Start()
     {
         cameras = new GameObject[GameManager.players + 1];
+        canvases = new GameObject[GameManager.players];
 
         cameras[0] = galleryCamera;
         currentIndex = 0;
     }
 
-    public void ChangeCamera(int index)
+    private void Update()
+    {
+        //メインカメラに戻ったらマスクを非表示
+        if (cameras[currentIndex].activeSelf) maskPanel.SetActive(false);
+    }
+
+    public void ChangeMainCamera(int index)
     {
         StartCoroutine(ChangeCoroutine(index));
     }
@@ -34,22 +41,62 @@ public class CameraManager : MonoBehaviour
         cameras[currentIndex].SetActive(true);
     }
 
-    public void OnChangeButton()
+    //カメラチェンジボタンが押されたらカメラを変更
+    public void OnChangeButton(int index)
     {
-        PlayerManager playerManager = TurnManager.currentPlayer.GetComponent<PlayerManager>();
-        if (PhaseManager.currentPhase == PhaseManager.Phase.gallery ||
-            PhaseManager.currentPhase == PhaseManager.Phase.ad)
+        //画面操作できないようにマスクを表示
+        maskPanel.SetActive(true);
+
+        //今と別のカメラを選んだら
+        if (!cameras[index].activeSelf)
         {
-            cameras[0].SetActive(isActive);
-            cameras[playerManager.player.playerNum].SetActive(!isActive);
-            playerManager.aquariumCanvas.SetActive(!isActive);
+            //すべてオフにする
+            for (int i = 0; i < cameras.Length; i++)
+            {
+                cameras[i].SetActive(false);
+                if (i < GameManager.players) canvases[i].SetActive(false);
+            }
+
+            //indexのカメラだけをオンにする
+            //キャンバスもオンにする
+            cameras[index].SetActive(true);
+            canvases[index - 1].SetActive(true);
+            return;
+        }
+
+        //もしすでにオンなら
+        //メインカメラがindex番号のプレイヤーカメラならギャラリーを映す
+        if (currentIndex == index)
+        {
+            ChangeCamera(true);
+        }
+        //メインカメラがindex番号のプレイヤーカメラでないならメインカメラに戻す
+        else
+        {
+            ChangeCamera(false);
+        }
+    }
+
+    public void ChangeCamera(bool isCurrentPlayerCam)
+    {
+        //すべてオフにする
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].SetActive(false);
+            if (i < GameManager.players) canvases[i].SetActive(false);
+        }
+        //今のメインカメラがどのプレイヤーかで戻るカメラを変える
+        if (isCurrentPlayerCam)
+        {
+            cameras[0].SetActive(true); //メインプレイヤーのカメラにする
         }
         else
         {
-            cameras[currentIndex].SetActive(isActive);
-            playerManager.aquariumCanvas.SetActive(isActive);
-            cameras[0].SetActive(!isActive);
+            cameras[currentIndex].SetActive(true); //メインプレイヤーのカメラにする
+            if (currentIndex != 0)
+            {
+                canvases[currentIndex - 1].SetActive(true); //キャンバスもオン
+            }
         }
-        isActive = !isActive;
     }
 }
