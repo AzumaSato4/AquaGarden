@@ -44,25 +44,16 @@ public class PhaseManager : MonoBehaviour
     {
         cameraManager.ChangeMainCamera(0);
         currentPhase = Phase.gallery;
-        Debug.Log($"ギャラリー（{player.playerName}のターン）開始");
         ischange = true;
     }
 
     public void StartAd(Player player)
     {
         currentPhase = Phase.ad;
-        Debug.Log($"広告イベント（{player.playerName}のターン）開始");
-        //ischange = true;
-    }
-
-    public void EndAd(Player player)
-    {
-        Debug.Log($"広告イベント（{player.playerName}のターン）終了");
     }
 
     public void EndGallery(Player player)
     {
-        Debug.Log($"ギャラリー（{player.playerName}のターン）終了");
         StartAquarium(player);
     }
 
@@ -71,48 +62,32 @@ public class PhaseManager : MonoBehaviour
         uiController.ActiveCameraChangeImage();
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.aquarium;
-        Debug.Log($"水族館（{player.playerName}のターン）開始");
-        //ischange = true;
     }
 
-    public void StartFeeding(Player player)
+    public void StartFeeding()
     {
         currentPhase = Phase.feeding;
-        Debug.Log($"餌やりイベント（{player.playerName}のターン）開始");
     }
 
-    public void MovedAquarium(Player player)
-    {
-        StartEdit(player);
-    }
-
-    void StartEdit(Player player)
+    public void StartEdit()
     {
         currentPhase = Phase.edit;
-        Debug.Log($"レイアウト変更（{player.playerName}のターン）開始");
-        //ischange= true;
     }
     
     public void StartAdEdit(Player player)
     {
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.adEdit;
-        Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
-        //ischange= true;
     }
 
     public void StartMileEdit(Player player)
     {
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.mileEdit;
-        Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
-        //ischange= true;
     }
 
-
-    public void EndTurn(Player player)
+    public void EndTurn()
     {
         currentPhase = Phase.end;
-        Debug.Log($"{player.playerName}のターン終了");
     }
 }

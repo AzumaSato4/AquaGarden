@@ -9,6 +9,7 @@ public class AdCard : MonoBehaviour
 
     [SerializeField] GameObject adCardPrefab;
     GameObject adCard;
+    Animator cardAnimator;
     Vector2 defSize = new Vector2(2.0f, 2.0f);
 
     int adMoney = 0;
@@ -18,25 +19,22 @@ public class AdCard : MonoBehaviour
         adCard = Instantiate(adCardPrefab, transform.position, Quaternion.identity);
         adData = GameManager.instance.GetAdCardData(spotNum - 1);
         adCard.GetComponent<SpriteRenderer>().sprite = adData.sprite;
+        cardAnimator = adCard.GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (PhaseManager.currentPhase != PhaseManager.Phase.ad) adCard.transform.localScale = defSize;
+        if (PhaseManager.currentPhase == PhaseManager.Phase.ad)
+        {
+            cardAnimator.enabled = true;
+        }
+        else
+        {
+            cardAnimator.enabled = false;
+            adCard.transform.localScale = defSize;
+        }
     }
 
-    private void OnMouseEnter()
-    {
-        if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
-        adCard.transform.localScale = new Vector2 (2.5f, 2.5f);
-    }
-
-    private void OnMouseExit()
-    {
-        if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
-        adCard.transform.localScale = defSize;
-    }
-    
     private void OnMouseDown()
     {
         if (PhaseManager.currentPhase != PhaseManager.Phase.ad) return;
@@ -89,9 +87,8 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
-        ShowMessage("合計獲得資金" + adMoney);
 
-        StartCoroutine(EndAdCoroutine(current));
+        EndAd();
     }
 
     void SelectPairAd()
@@ -134,9 +131,8 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
-        ShowMessage("合計獲得資金" + adMoney);
 
-        StartCoroutine(EndAdCoroutine(current));
+        EndAd();
     }
 
     void SelectAd()
@@ -171,21 +167,13 @@ public class AdCard : MonoBehaviour
 
         current.money += adMoney;
         Debug.Log("合計獲得資金" + adMoney);
-        ShowMessage("合計獲得資金" + adMoney);
 
-        StartCoroutine(EndAdCoroutine(current));
+        EndAd();
     }
 
-    IEnumerator EndAdCoroutine(PlayerManager current)
+    //広告終了
+    void EndAd()
     {
-        yield return new WaitForSeconds(2.0f);
-        adCard.transform.localScale = defSize;
-        current.EndAd();
-    }
-
-    void ShowMessage(string message)
-    {
-        UIController.messageText.text = message;
-        UIController.isMessageChanged = true;
+        TurnManager.currentPlayer.GetComponent<PlayerManager>().EndAd();
     }
 }

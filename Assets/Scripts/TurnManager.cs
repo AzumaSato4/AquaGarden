@@ -192,7 +192,7 @@ public class TurnManager : MonoBehaviour
     public void EndTurn()
     {
         currentPlayer.GetComponent<PlayerManager>().isActive = false;
-        phaseManager.EndTurn(currentPlayer.GetComponent<PlayerManager>().player);
+        phaseManager.EndTurn();
         NextTurn();
     }
 

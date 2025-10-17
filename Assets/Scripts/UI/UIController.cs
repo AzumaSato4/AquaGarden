@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
         message,
         hint,
         card,
+        achieve,
         none //非表示
     }
 
@@ -23,6 +24,7 @@ public class UIController : MonoBehaviour
     public static bool isActiveUI = false; //UIが表示されているかどうか
     public bool isOK;
     public static bool isMessageChanged = false;
+    public static bool isAchieved; //マイルストーンを達成したかどうか
 
     AquaPieceManager aquaPieceManager;
     AttentionPanel attentionPanel;
@@ -48,6 +50,13 @@ public class UIController : MonoBehaviour
             isMessageChanged = false;
             ShowMessagePanel();
         }
+
+        if (isAchieved)
+        {
+            isAchieved = false;
+            ShowAchievePanel();
+        }
+
     }
 
     //パネルを表示
@@ -139,14 +148,15 @@ public class UIController : MonoBehaviour
     {
         isActiveUI = true;
         panels[(int)PanelType.message].SetActive(true);
-        StartCoroutine(DestroyCoroutine());
+        Invoke("HidePanel", 2.0f);
     }
 
-    IEnumerator DestroyCoroutine()
+    void ShowAchievePanel()
     {
-        yield return new WaitForSeconds(2.0f);
-        panels[(int)PanelType.message].SetActive(false);
-        isActiveUI = false;
+        isActiveUI = true;
+        panels[(int)PanelType.achieve].SetActive(true);
+        Invoke("HidePanel", 2.0f);
+        
     }
 
     //カメラ変更時の画面遷移画像

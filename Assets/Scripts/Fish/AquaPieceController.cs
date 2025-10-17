@@ -76,8 +76,6 @@ public class AquaPieceController : MonoBehaviour
                     {
                         if (current == target)
                         {
-                            Debug.Log("今いる水槽です");
-                            ShowMessage("今いる水槽です");
                             aquaPieceManager.CanselSelect();
                             return;
                         }

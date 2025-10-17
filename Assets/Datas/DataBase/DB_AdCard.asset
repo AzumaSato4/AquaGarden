@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DB_AdCard
   m_EditorClassIdentifier: 
   adCardDatas:
-  - {fileID: 11400000, guid: ce785feb1e75904489cf0ee2f7b40e09, type: 2}
-  - {fileID: 11400000, guid: d8263beb6678fac48b18ac369d3df3ca, type: 2}
-  - {fileID: 11400000, guid: 2a1f4b8919398b14ab5488afca102c4e, type: 2}
   - {fileID: 11400000, guid: 33fa4070f32bd6b47a47be1033d4c67c, type: 2}
+  - {fileID: 11400000, guid: ce785feb1e75904489cf0ee2f7b40e09, type: 2}
+  - {fileID: 11400000, guid: 2a1f4b8919398b14ab5488afca102c4e, type: 2}
+  - {fileID: 11400000, guid: d8263beb6678fac48b18ac369d3df3ca, type: 2}

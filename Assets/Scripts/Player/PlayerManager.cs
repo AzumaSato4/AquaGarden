@@ -176,8 +176,8 @@ public class PlayerManager : MonoBehaviour
 
     public void EndAd()
     {
-        phaseManager.EndAd(player);
-        turnManager.EndTurn();
+        phaseManager.EndTurn();
+        turnManager.Invoke("EndTurn", 2.0f);
     }
 
     public void StartMyAquarium()
@@ -233,7 +233,7 @@ public class PlayerManager : MonoBehaviour
 
         if (isFeeding)
         {
-            phaseManager.StartFeeding(player);
+            phaseManager.StartFeeding();
             StartFeeding();
             return;
         }
@@ -296,7 +296,7 @@ public class PlayerManager : MonoBehaviour
     //水族館編集
     void EditAquarium()
     {
-        phaseManager.MovedAquarium(player);
+        phaseManager.StartEdit();
         AbledTurnEnd(true);
 
         another = aquariumIndex - 1;
@@ -362,6 +362,7 @@ public class PlayerManager : MonoBehaviour
     //選択不可にする
     public void DontSelectSlot()
     {
+        if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit) return;
         aquariumBoard.aquaSlots[aquariumIndex].GetComponent<AquaSlot>().selectable = false;
         aquariumBoard.aquaSlots[another].GetComponent<AquaSlot>().selectable = false;
     }
@@ -372,9 +373,7 @@ public class PlayerManager : MonoBehaviour
         if (AquaPieceManager.selectedPiece != null) aquaPieceManager.CanselSelect();
         if (!aquariumBoard.storage.GetComponent<Storage>().CheckSpotEmpty())
         {
-            Debug.Log("ストレージを空にしてください！");
-            UIController.messageText.text = "ストレージを空にしてください！";
-            UIController.isMessageChanged = true;
+            ShowMessage("ストレージを空にしてください！");
             return;
         }
 
@@ -389,7 +388,7 @@ public class PlayerManager : MonoBehaviour
             //マイルストーン達成
             if (mileIndex >= 0)
             {
-                ShowMessage("マイルストーン達成");
+                Celebrate();
 
                 for (int i = 0; i < GameManager.players; i++)
                 {
@@ -409,6 +408,7 @@ public class PlayerManager : MonoBehaviour
                 //一番最初に達成したら駒を獲得
                 if (playerAchievement[mileIndex] == 1)
                 {
+                    AchievePanel.isReward = true;
                     CreateMilePiece(mileIndex);
                     MileEditAquarium();
                     isMoveMilestone = false;
@@ -461,7 +461,6 @@ public class PlayerManager : MonoBehaviour
     //マイルストーン魚駒を生成
     void CreateMilePiece(int index)
     {
-        Debug.Log("生成");
         StartCoroutine(CreateMileCoroutine(TurnManager.milestones[index].rewards));
     }
 
@@ -644,5 +643,10 @@ public class PlayerManager : MonoBehaviour
     {
         UIController.messageText.text = message;
         UIController.isMessageChanged = true;
+    }
+
+    void Celebrate()
+    {
+        UIController.isAchieved = true;
     }
 }
