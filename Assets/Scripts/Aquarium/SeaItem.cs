@@ -46,12 +46,12 @@ public class SeaItem : MonoBehaviour
             seaBoard.seaAquaPieces[pieceData]--;
 
             aquaPieceManager.CreatePiece(pieceData, 2, true);
-            uiController.OnSeaBoradButton();
+            uiController.ChangeUI(UIController.PanelType.none);
             if (seaBoard.seaAquaPieces[pieceData] <= 0) Destroy(this.gameObject);
         }
         else
         {
-            uiController.OnSeaBoradButton();
+            uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");
         }

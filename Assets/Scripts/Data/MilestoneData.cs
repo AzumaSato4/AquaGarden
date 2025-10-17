@@ -15,4 +15,5 @@ public class MilestoneData : ScriptableObject
     public MilestoneType type;
     public List<PieceData> rewards;
     public List<PieceData.PieceName> conditions;
+    public Sprite sprite;
 }

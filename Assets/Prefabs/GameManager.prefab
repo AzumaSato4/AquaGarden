@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1379015665415969214}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Manager
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,3 +67,8 @@ MonoBehaviour:
   - {fileID: -2513683408918025286, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
   - {fileID: 1234483194365296693, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
   - {fileID: -2053059728, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  mColor:
+  - {fileID: 1894292640, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: -373943478, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: -2084010057, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}
+  - {fileID: 319240941, guid: ffefe0706a3727a4784ee883d491dbe3, type: 3}

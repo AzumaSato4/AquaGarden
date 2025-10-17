@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
@@ -8,7 +7,6 @@ public class CameraManager : MonoBehaviour
     public GameObject[] canvases; //それぞれのキャンバスを格納
     [SerializeField] GameObject aquariumCameraPrefab;
     [SerializeField] GameObject galleryCamera;
-    [SerializeField] Button changeButton;
 
     public int currentIndex;
     [SerializeField] GameObject maskPanel; //他のカメラからの操作をさせないためのパネル

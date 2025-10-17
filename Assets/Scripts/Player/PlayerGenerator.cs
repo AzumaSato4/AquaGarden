@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PlayerGenerator : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab; //プレイヤーのプレハブ
+    [SerializeField] GameObject playerPrefab;
     GameManager gameManager;
+    [SerializeField] FeedingCardPanel feedingCardPanel;
 
-    List<int> feedingDatas = new List<int>(); //餌やりカードがかぶらないようにするために記録
+    public List<int> feedingDatas = new List<int>(); //餌やりカードがかぶらないようにするために記録
 
     void Start()
     {
@@ -26,7 +27,8 @@ public class PlayerGenerator : MonoBehaviour
                 playerNum = i + 1,  //プレイヤー番号
                 playerName = GameManager.playerName[i], //プレイヤー名
                 gallerySprite = GameManager.galleryColor[i],    //ギャラリーのプレイヤー駒画像
-                aquariumSprite = GameManager.aquariumColor[i]   //水族館のプレイヤー駒画像
+                aquariumSprite = GameManager.aquariumColor[i],   //水族館のプレイヤー駒画像
+                milestoneChecker = GameManager.milestoneColor[i]   //マイルストーンのプレイヤー駒画像
             };
             PlayerData.players.Add(playerData);
 
@@ -39,8 +41,11 @@ public class PlayerGenerator : MonoBehaviour
             {
                 rand = Random.Range(0, gameManager.feedingDataCount);
             } while (feedingDatas.Contains(rand));
-            playerManager.feedingData = gameManager.GetFeedingData(rand);
+            FeedingData data = gameManager.GetFeedingData(rand);
+            playerManager.feedingData = data;
             feedingDatas.Add(rand);
+
+            feedingCardPanel.Initialize(data, GameManager.playerName[i]);
         }
     }
 }

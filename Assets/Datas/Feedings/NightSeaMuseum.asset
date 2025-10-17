@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameA: 2
   nameB: 1
-  sprite: {fileID: 0}
+  sprite: {fileID: 6759104641175133919, guid: fe83b55d25ad8294395a4db3962b2b3f, type: 3}

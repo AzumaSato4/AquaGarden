@@ -8,6 +8,7 @@ public class Player
     public string playerName;           //プレイヤー名
     public Sprite gallerySprite;        //ギャラリーのプレイヤー駒画像
     public Sprite aquariumSprite;       //水族館のプレイヤー駒画像
+    public Sprite milestoneChecker;     //マイルストーン達成駒画像
 }
 
 

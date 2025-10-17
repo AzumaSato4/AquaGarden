@@ -9,7 +9,6 @@ public class AquaPieceController : MonoBehaviour
     public AquaPieceManager aquaPieceManager;
 
     AquaPiece aquaPiece;
-    Storage storage;
 
     private void Start()
     {
@@ -59,79 +58,85 @@ public class AquaPieceController : MonoBehaviour
                 {
                     GameObject target = hit.collider.gameObject;
 
-                    //何かオブジェクトをクリックしたら
-                    if (target != null)
+                    //何かオブジェクトをクリックしていなければ何もしない
+                    if (target == null)
                     {
-                        //クリックした水槽に移動する
-                        if (target.CompareTag("AquaSlot"))
+                        aquaPieceManager.CanselSelect();
+                        return;
+                    }
+                    //クリックは水槽限定
+                    if (!target.CompareTag("AquaSlot"))
+                    {
+                        aquaPieceManager.CanselSelect();
+                        return;
+                    }
+
+                    GameObject current = aquaPiece.currentPos;
+                    if (current != null)
+                    {
+                        if (current == target)
                         {
-                            GameObject current = aquaPiece.currentPos;
-                            if (current != null)
-                            {
-                                if (current == target)
-                                {
-                                    Debug.Log("今いる水槽です");
-                                    ShowMessage("今いる水槽です");
-                                    aquaPieceManager.CanselSelect();
-                                    return;
-                                }
-                                else if (current.CompareTag("AquaSlot"))
-                                {
-                                    Debug.Log("水槽から水槽には移動できません");
-                                    ShowMessage("水槽から水槽には移動できません");
-                                    aquaPieceManager.CanselSelect();
-                                    return;
-                                }
-                            }
-
-                            AquaSlot slot = target.GetComponent<AquaSlot>();
-                            (GameObject to, int index) = slot.CheckSpot();
-                            if (to != null)
-                            {
-                                if (CheckOxygen(slot))
-                                {
-                                    if (CheckType(slot))
-                                    {
-                                        //水槽への移動確定
-                                        transform.position = to.transform.position;
-                                        aquaPiece.currentPos = target;
-                                        transform.parent = slot.transform;
-                                        slot.slotPieces.Add(AquaPieceManager.selectedPiece);
-                                        slot.slotOxygen += aquaPiece.pieceData.oxygen;
-                                        slot.isPiece[index] = true;
-                                        aquaPiece.isiFromSea = false;
-                                        TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
-                                        aquaPiece.spotIndex = index;
-
-                                        //マイルストーンの特別編集中なら水槽を最初に選んだものに限定する
-                                        if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit && !playerManager.isMoveMilestone)
-                                        {
-                                            foreach (GameObject aquaSlot in playerManager.aquariumBoard.aquaSlots)
-                                            {
-                                                AquaSlot aSlot = aquaSlot.GetComponent<AquaSlot>();
-                                                aSlot.selectable = false;
-                                                aSlot.mask.SetActive(true);
-                                            }
-                                            slot.selectable = true;
-                                            slot.mask.SetActive(false);
-                                            playerManager.isMoveMilestone = true;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Debug.Log("水槽内の酸素量が限界です");
-                                    ShowMessage("水槽内の酸素量が限界です");
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("水槽がいっぱいです");
-                                ShowMessage("水槽がいっぱいです");
-                            }
+                            Debug.Log("今いる水槽です");
+                            ShowMessage("今いる水槽です");
                             aquaPieceManager.CanselSelect();
+                            return;
+                        }
+                        else if (current.CompareTag("AquaSlot"))
+                        {
+                            Debug.Log("水槽から水槽には移動できません");
+                            ShowMessage("水槽から水槽には移動できません");
+                            aquaPieceManager.CanselSelect();
+                            return;
                         }
                     }
+
+                    //空き確認
+                    AquaSlot slot = target.GetComponent<AquaSlot>();
+                    (GameObject to, int index) = slot.CheckSpot();
+                    if (to == null)
+                    {
+                        Debug.Log("水槽がいっぱいです");
+                        ShowMessage("水槽がいっぱいです");
+                        aquaPieceManager.CanselSelect();
+                        return;
+                    }
+                    //酸素計算
+                    if (!CheckOxygen(slot))
+                    {
+                        aquaPieceManager.CanselSelect();
+                        return;
+                    }
+                    //相性チェック
+                    if (!CheckType(slot))
+                    {
+                        aquaPieceManager.CanselSelect();
+                        return;
+                    }
+                    //水槽への移動確定
+                    transform.position = to.transform.position;
+                    aquaPiece.currentPos = target;
+                    transform.parent = slot.transform;
+                    slot.slotPieces.Add(AquaPieceManager.selectedPiece);
+                    slot.slotOxygen += aquaPiece.pieceData.oxygen;
+                    slot.isPiece[index] = true;
+                    aquaPiece.isiFromSea = false;
+                    TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
+                    aquaPiece.spotIndex = index;
+
+                    //マイルストーンの特別編集中なら水槽を最初に選んだものに限定する
+                    if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit && !playerManager.isMoveMilestone)
+                    {
+                        foreach (GameObject aquaSlot in playerManager.aquariumBoard.aquaSlots)
+                        {
+                            AquaSlot aSlot = aquaSlot.GetComponent<AquaSlot>();
+                            aSlot.selectable = false;
+                            aSlot.mask.SetActive(true);
+                        }
+                        slot.selectable = true;
+                        slot.mask.SetActive(false);
+                        playerManager.isMoveMilestone = true;
+                    }
+                    aquaPieceManager.CanselSelect();
                 }
             }
         }
@@ -265,6 +270,11 @@ public class AquaPieceController : MonoBehaviour
         if (oxygen >= 0)
         {
             isOK = true;
+        }
+        else
+        {
+            Debug.Log("水槽内の酸素量が限界です");
+            ShowMessage("水槽内の酸素量が限界です");
         }
 
         return isOK;

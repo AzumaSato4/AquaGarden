@@ -398,11 +398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1743203585249516048, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -770
+      value: -740
       objectReference: {fileID: 0}
     - target: {fileID: 1743203585249516048, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -385
+      value: -370
       objectReference: {fileID: 0}
     - target: {fileID: 2121096790881752354, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
       propertyPath: m_Name
@@ -831,7 +831,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4386537261034317266, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5191011720405205519}
+      addedObject: {fileID: 4558077613927474863}
+    - targetCorrespondingSourceObject: {fileID: 4386537261034317266, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6829393922583545896}
   m_SourcePrefab: {fileID: 100100000, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
 --- !u!4 &1080338350098742039 stripped
 Transform:
@@ -848,7 +851,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4386537261034317266, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}
   m_PrefabInstance: {fileID: 2424235275582947192}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5191011720405205519
+--- !u!114 &4558077613927474863
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -857,7 +860,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108952665057696426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -865,15 +868,26 @@ MonoBehaviour:
     m_Right: 20
     m_Top: 20
     m_Bottom: 20
-  m_ChildAlignment: 1
-  m_Spacing: 20
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 1
+  m_StartAxis: 0
+  m_CellSize: {x: 160, y: 140}
+  m_Spacing: {x: 20, y: 20}
+  m_Constraint: 1
+  m_ConstraintCount: 1
+--- !u!114 &6829393922583545896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108952665057696426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c90eaffc5049847945417dba15cad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLayoutGroup: {fileID: 4558077613927474863}
 --- !u!1 &3925720085208166489 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1719927271535759137, guid: fd1d0ef1a9bdb57498231685b174bc47, type: 3}

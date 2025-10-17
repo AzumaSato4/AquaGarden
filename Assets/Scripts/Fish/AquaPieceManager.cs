@@ -6,15 +6,9 @@ public class AquaPieceManager : MonoBehaviour
 {
     [SerializeField] GameObject piecePrefab;
     public static GameObject selectedPiece;
-    UIController uiController;
+    [SerializeField] UIController uiController;
     public PhaseManager phaseManager;
     [SerializeField] SeaBoard seaBoard;
-
-    private void Start()
-    {
-        uiController = GetComponent<UIController>();
-        phaseManager = GetComponent<PhaseManager>();
-    }
 
     public void SelectedPiece(GameObject selected)
     {

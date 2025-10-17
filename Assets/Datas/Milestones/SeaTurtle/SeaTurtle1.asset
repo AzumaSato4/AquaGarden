@@ -17,3 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 40ba33cb4911102458f473f9f5925849, type: 2}
   - {fileID: 11400000, guid: fad7001907da08b4abcf46017087e393, type: 2}
   conditions: 020000000200000007000000
+  sprite: {fileID: 1607488299013711977, guid: 7764156d9c5354f41aba3d2b04d8570a, type: 3}

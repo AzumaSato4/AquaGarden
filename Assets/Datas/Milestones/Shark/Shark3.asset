@@ -16,3 +16,4 @@ MonoBehaviour:
   rewards:
   - {fileID: 11400000, guid: 5b00321ac3fed0147a871a430327dd01, type: 2}
   conditions: 040000000400000004000000
+  sprite: {fileID: 2978869970384450639, guid: fea4a8ab4fe93d5448ee97a159e23465, type: 3}

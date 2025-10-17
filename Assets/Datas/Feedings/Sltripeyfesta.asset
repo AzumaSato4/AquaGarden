@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d11de60dde706c14a8e47767cc194c26, type: 3}
-  m_Name: SlripeyFeyla
+  m_Name: Sltripeyfesta
   m_EditorClassIdentifier: 
   nameA: 1
   nameB: 7
-  sprite: {fileID: 0}
+  sprite: {fileID: 3616134474923079980, guid: b1e632eca94336e4288573ceca2dcc4d, type: 3}

@@ -1,7 +1,5 @@
-using NUnit.Framework.Internal;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -19,25 +17,21 @@ public class UIController : MonoBehaviour
 
     [SerializeField] GameObject[] panels; //UIボード
 
-    [SerializeField] GameObject seaBoard; //海ボード
-    [SerializeField] GameObject advanceBoard; //上級駒ボード
-    [SerializeField] GameObject attentionPanel; //警告パネル
-    [SerializeField] GameObject messagePanel; //メッセージパネル
-    [SerializeField] GameObject message; //メッセージ
+    [SerializeField] GameObject cameraChangeImage;
     public static TextMeshProUGUI messageText; //メッセージパネルのテキスト
-    [SerializeField] GameObject hintPanel; //魚駒の情報一覧のパネル
-    [SerializeField] GameObject cardPanel; //マイルストーンと餌やりイベントのカードパネル
 
     public static bool isActiveUI = false; //UIが表示されているかどうか
     public bool isOK;
     public static bool isMessageChanged = false;
 
     AquaPieceManager aquaPieceManager;
+    AttentionPanel attentionPanel;
 
     private void Start()
     {
         aquaPieceManager = GetComponent<AquaPieceManager>();
-        messageText = message.GetComponent<TextMeshProUGUI>();
+        messageText = panels[(int)PanelType.message].GetComponentInChildren<TextMeshProUGUI>();
+        attentionPanel = panels[(int)PanelType.attention].GetComponent<AttentionPanel>();
 
         //パネルは最初すべて非表示
         for (int i = 0; i < panels.Length; i++)
@@ -84,11 +78,16 @@ public class UIController : MonoBehaviour
         switch (panel)
         {
             case PanelType.sea:
-                OnSeaBoradButton();
+                //魚駒が選択中なら海ボードへ移動させるメソッドを実行
+                if (AquaPieceManager.selectedPiece != null)
+                {
+                    aquaPieceManager.MoveToSeaBoard();
+                    return;
+                }
                 break;
             case PanelType.none:
                 HidePanel();
-                break;
+                return;
         }
         
         //表示中なら非表示に
@@ -102,35 +101,26 @@ public class UIController : MonoBehaviour
         }
     }
 
-    //海ボードボタンが押されたらパネルを表示、非表示
-    public void OnSeaBoradButton()
-    {
-        //魚駒が選択中なら海ボードへ移動させるメソッドを実行
-        if (AquaPieceManager.selectedPiece != null)
-        {
-            aquaPieceManager.MoveToSeaBoard();
-            return;
-        }
-    }
-
     //警告パネル
     public void ShowAttentionPanel(string massage, Sprite sprite)
     {
         isActiveUI = true;
-        attentionPanel.GetComponent<AttentionPanel>().ShowMassage(massage, sprite);
+        ShowPanel(PanelType.attention);
+        attentionPanel.ShowMassage(massage, sprite);
 
         StartCoroutine(OKCoroutine());
     }
 
     IEnumerator OKCoroutine()
     {
+
         //警告パネルでの操作が終わるまで待機
-        while (attentionPanel.GetComponent<AttentionPanel>().isShow)
+        while (attentionPanel.isShow)
         {
             yield return null;
         }
 
-        if (attentionPanel.GetComponent<AttentionPanel>().isOK)
+        if (attentionPanel.isOK)
         {
             //OKが選ばれたら
             isActiveUI = false;
@@ -141,6 +131,7 @@ public class UIController : MonoBehaviour
             isActiveUI = false;
             isOK = false;
         }
+        HidePanel();
     }
 
     //メッセージパネル
@@ -156,5 +147,17 @@ public class UIController : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         panels[(int)PanelType.message].SetActive(false);
         isActiveUI = false;
+    }
+
+    //カメラ変更時の画面遷移画像
+    public void ActiveCameraChangeImage()
+    {
+        cameraChangeImage.SetActive(true);
+        Invoke("HideCameraChangeImage", 1.8f);
+    }
+
+    void HideCameraChangeImage()
+    {
+        cameraChangeImage.SetActive(false);
     }
 }

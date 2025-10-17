@@ -18,7 +18,8 @@ public class PhaseManager : MonoBehaviour
     public static Phase currentPhase;
 
     public CameraManager cameraManager;
-    [SerializeField] TextMeshProUGUI phaseText;
+    [SerializeField] UIController uiController;
+    [SerializeField] TextMeshProUGUI headerText;
     bool ischange = false;
 
 
@@ -26,42 +27,16 @@ public class PhaseManager : MonoBehaviour
     {
         if (!ischange) return;
 
-        string headerText = null;
         string name = TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerName;
         switch (currentPhase)
         {
             case Phase.gallery:
-                headerText = ($"ギャラリー　{name}");
-                ischange = false;
-                break;
-            case Phase.aquarium:
-                headerText = ($"水族館　{name}");
-                ischange = false;
-                break;
-            case Phase.edit:
-                headerText = ($"水族館編集　{name}");
-                ischange = false;
-                break;
-            case Phase.adEdit:
-                headerText = ($"水族館特別編集　{name}");
-                ischange = false;
-                break;
-            case Phase.mileEdit:
-                headerText = ($"水族館特別編集　{name}");
-                ischange = false;
-                break;
-            case Phase.ad:
-                headerText = ($"広告選択　{name}");
-                ischange = false;
-                break;
-            case Phase.feeding:
-                headerText = ($"餌やりイベント　{name}");
+                headerText.text = $"ラウンド{TurnManager.roundCnt}\n{name}のターン";
+                UIController.messageText.text = $"{name}のターン";
                 ischange = false;
                 break;
         }
 
-        phaseText.text = headerText;
-        UIController.messageText.text = headerText;
         UIController.isMessageChanged = true;
     }
 
@@ -77,7 +52,7 @@ public class PhaseManager : MonoBehaviour
     {
         currentPhase = Phase.ad;
         Debug.Log($"広告イベント（{player.playerName}のターン）開始");
-        ischange = true;
+        //ischange = true;
     }
 
     public void EndAd(Player player)
@@ -93,10 +68,11 @@ public class PhaseManager : MonoBehaviour
 
     void StartAquarium(Player player)
     {
+        uiController.ActiveCameraChangeImage();
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.aquarium;
         Debug.Log($"水族館（{player.playerName}のターン）開始");
-        ischange = true;
+        //ischange = true;
     }
 
     public void StartFeeding(Player player)
@@ -114,7 +90,7 @@ public class PhaseManager : MonoBehaviour
     {
         currentPhase = Phase.edit;
         Debug.Log($"レイアウト変更（{player.playerName}のターン）開始");
-        ischange= true;
+        //ischange= true;
     }
     
     public void StartAdEdit(Player player)
@@ -122,7 +98,7 @@ public class PhaseManager : MonoBehaviour
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.adEdit;
         Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
-        ischange= true;
+        //ischange= true;
     }
 
     public void StartMileEdit(Player player)
@@ -130,7 +106,7 @@ public class PhaseManager : MonoBehaviour
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.mileEdit;
         Debug.Log($"特別レイアウト変更（{player.playerName}のターン）開始");
-        ischange= true;
+        //ischange= true;
     }
 
 

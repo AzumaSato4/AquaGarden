@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static string[] playerName;
     public static Sprite[] galleryColor;
     public static Sprite[] aquariumColor;
+    public static Sprite[] milestoneColor;
     //データ元
     [SerializeField] DB_PieceData pieceData;
     [SerializeField] DB_AdCardData adCardData;
@@ -22,10 +23,11 @@ public class GameManager : MonoBehaviour
 
     public static bool[] avalableAdPieces;
 
-    //テスト用
     [SerializeField] string[] pName;
     [SerializeField] Sprite[] gColor;
     [SerializeField] Sprite[] aColor;
+    [SerializeField] Sprite[] mColor;
+
 
     private void Awake()
     {
@@ -46,11 +48,13 @@ public class GameManager : MonoBehaviour
         playerName = new string[players];
         galleryColor = new Sprite[players];
         aquariumColor = new Sprite[players];
+        milestoneColor = new Sprite[players];
         for (int i = 0; i < players; i++)
         {
             playerName[i] = pName[i];
             galleryColor[i] = gColor[i];
             aquariumColor[i] = aColor[i];
+            milestoneColor[i] = mColor[i];
         }
 
 

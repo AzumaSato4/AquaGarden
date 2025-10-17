@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,7 +12,7 @@ public class TurnManager : MonoBehaviour
     public GameObject[] players;
 
     int loopCnt = 0;
-    int roundCnt = 0;
+    public static int roundCnt = 0;
 
     [SerializeField] GalleryBoard galleryBoard;
     [SerializeField] SeaBoard seaBoard;
@@ -23,7 +21,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField] GalleryPieceManager gPieceManager;
     [SerializeField] GameObject roundPiece;
 
-    public MilestoneData[] milestones;
+    [SerializeField] MilestonePanel milestonePanel;
+    public static MilestoneData[] milestones;
     List<MilestoneData.MilestoneType> mileTypes;
     //マイルストーン達成状況（0：未達成　1：達成済み）
     public int[,] achivements;
@@ -47,6 +46,7 @@ public class TurnManager : MonoBehaviour
         milestones = new MilestoneData[4];
         mileTypes = new List<MilestoneData.MilestoneType>();
         achivements = new int[milestones.Length, GameManager.players];
+        //今回のゲームのマイルストーンを設定
         for (int i = 0; i < milestones.Length; i++)
         {
             //マイルストーンの種類がかぶらないようにする
@@ -68,6 +68,7 @@ public class TurnManager : MonoBehaviour
                 achivements[i, j] = 0;
             }
         }
+        milestonePanel.Initialize();
         //動作を安定させるために遅らせる
         Invoke("Initialize", 0.1f);
     }
@@ -80,6 +81,7 @@ public class TurnManager : MonoBehaviour
         seaBoard.Initialize();
         advanceBoard.Initialize();
         gPieceManager.Initialize();
+
         StartRound();
     }
 

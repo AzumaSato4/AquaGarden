@@ -288,8 +288,9 @@ public class PlayerManager : MonoBehaviour
 
         money += getMoney;
 
-        ShowMessage("えさやりイベント\n合計資金獲得" + getMoney);
-        Invoke("EditAquarium", 2.1f);
+        //ShowMessage("えさやりイベント\n合計資金獲得" + getMoney);
+        //Invoke("EditAquarium", 2.1f);
+        EditAquarium();
     }
 
     //水族館編集
@@ -388,14 +389,18 @@ public class PlayerManager : MonoBehaviour
             //マイルストーン達成
             if (mileIndex >= 0)
             {
-                //全体に記録
+                ShowMessage("マイルストーン達成");
+
                 for (int i = 0; i < GameManager.players; i++)
                 {
                     if (turnManager.achivements[mileIndex, i] == 0)
                     {
+                        //全体に記録
                         turnManager.achivements[mileIndex, i] = 1;
                         //自分用に記録
                         playerAchievement[mileIndex] = i + 1;
+                        //マイルストーンチェッカーを生成
+                        MilestonePanel.SetChecker(player.playerNum, mileIndex);
                         break;
 
                     }
@@ -409,12 +414,7 @@ public class PlayerManager : MonoBehaviour
                     isMoveMilestone = false;
                     return;
                 }
-                else
-                {
-                    ShowMessage("マイルストーン達成");
-                }
             }
-
         }
 
         AbledTurnEnd(false);
@@ -428,7 +428,7 @@ public class PlayerManager : MonoBehaviour
     {
         int index = -1;
 
-        for (int i = 0; i < turnManager.milestones.Length; i++)
+        for (int i = 0; i < TurnManager.milestones.Length; i++)
         {
             //すでに達成していたらスキップ
             if (playerAchievement[i] != 0)
@@ -437,7 +437,7 @@ public class PlayerManager : MonoBehaviour
             }
 
             //条件の名前リストを作成
-            List<PieceData.PieceName> conditionName = new List<PieceData.PieceName>(turnManager.milestones[i].conditions);
+            List<PieceData.PieceName> conditionName = new List<PieceData.PieceName>(TurnManager.milestones[i].conditions);
             foreach (GameObject piece in slot.slotPieces)
             {
                 PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
@@ -458,11 +458,11 @@ public class PlayerManager : MonoBehaviour
         return index;
     }
 
-    //マイルストーン駒を生成
+    //マイルストーン魚駒を生成
     void CreateMilePiece(int index)
     {
         Debug.Log("生成");
-        StartCoroutine(CreateMileCoroutine(turnManager.milestones[index].rewards));
+        StartCoroutine(CreateMileCoroutine(TurnManager.milestones[index].rewards));
     }
 
     //重ならないように駒を間隔をあけて生成

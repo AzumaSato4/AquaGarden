@@ -36,22 +36,25 @@ public class AquariumPlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
             //クリックしたオブジェクトを取得
-            if (hit.collider != null)
-            {
-                selected = hit.collider.gameObject;
+            if (hit.collider == null) return;
+            selected = hit.collider.gameObject;
 
-                //マウスクリックしたら
-                if (Input.GetMouseButtonDown(0))
+            //マウスクリックしたら
+            if (Input.GetMouseButtonDown(0))
+            {
+                //何かオブジェクトをクリックしたら
+                if (selected == null) return;
+
+                if (UnityEngine.Device.Application.isMobilePlatform)
                 {
-                    //何かオブジェクトをクリックしたら
-                    if (selected != null)
-                    {
-                        clickCount++;
-                        Invoke("CheckDouble", 0.4f);
-                    }
+                    clickCount++;
+                    Invoke("CheckDouble", 0.4f);
+                }
+                else
+                {
+                    Move();
                 }
             }
-
         }
 
 
@@ -68,15 +71,19 @@ public class AquariumPlayerController : MonoBehaviour
         else
         {
             clickCount = 0;
-
-            //水族館のクリックしたマスに移動する
-            if (selected.CompareTag("AquariumTile"))
-            {
-                playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
-                transform.position = selected.transform.position;
-                movedAquarium = true;
-            }
-            selected = null;
+            Move();
         }
+    }
+
+    void Move()
+    {
+        //水族館のクリックしたマスに移動する
+        if (selected.CompareTag("AquariumTile"))
+        {
+            playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
+            transform.position = selected.transform.position;
+            movedAquarium = true;
+        }
+        selected = null;
     }
 }

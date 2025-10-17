@@ -23,7 +23,8 @@ public class AquaSlot : MonoBehaviour
     {
         oxygenText.text = slotOxygen.ToString();
 
-        if (AquaPieceManager.selectedPiece != null)
+        //魚駒が選択中、この水槽が選択可能ならレイキャストに反応するようにレイヤー変更
+        if (AquaPieceManager.selectedPiece != null && selectable)
         {
             Invoke("ChengeLayer", 0.5f);
         }
