@@ -13,8 +13,8 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        cameras = new GameObject[GameManager.players + 1];
-        canvases = new GameObject[GameManager.players];
+        cameras = new GameObject[GameManager.selectPlayers + 1];
+        canvases = new GameObject[GameManager.selectPlayers];
 
         cameras[0] = galleryCamera;
         currentIndex = 0;
@@ -52,7 +52,7 @@ public class CameraManager : MonoBehaviour
             for (int i = 0; i < cameras.Length; i++)
             {
                 cameras[i].SetActive(false);
-                if (i < GameManager.players) canvases[i].SetActive(false);
+                if (i < GameManager.selectPlayers) canvases[i].SetActive(false);
             }
 
             //indexのカメラだけをオンにする
@@ -81,7 +81,7 @@ public class CameraManager : MonoBehaviour
         for (int i = 0; i < cameras.Length; i++)
         {
             cameras[i].SetActive(false);
-            if (i < GameManager.players) canvases[i].SetActive(false);
+            if (i < GameManager.selectPlayers) canvases[i].SetActive(false);
         }
         //今のメインカメラがどのプレイヤーかで戻るカメラを変える
         if (isCurrentPlayerCam)

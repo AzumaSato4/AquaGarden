@@ -27,7 +27,15 @@ public class PhaseManager : MonoBehaviour
     {
         if (!ischange) return;
 
-        string name = TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerName;
+        string name;
+        if (TurnManager.currentPlayer.GetComponent<GossManager>())
+        {
+            name = TurnManager.currentPlayer.GetComponent<GossManager>().player.playerName;
+        }
+        else
+        {
+            name = TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerName;
+        }
         switch (currentPhase)
         {
             case Phase.gallery:

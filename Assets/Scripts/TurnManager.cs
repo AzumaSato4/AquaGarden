@@ -11,12 +11,12 @@ public class TurnManager : MonoBehaviour
     [SerializeField] PhaseManager phaseManager;
     public GameObject[] players;
 
-    int loopCnt = 0;
+    public int loopCnt = 0;
     public static int roundCnt = 0;
 
     [SerializeField] GalleryBoard galleryBoard;
-    [SerializeField] SeaBoard seaBoard;
     [SerializeField] AdvanceBoard advanceBoard;
+    public SeaBoard seaBoard;
 
     [SerializeField] GalleryPieceManager gPieceManager;
     [SerializeField] GameObject roundPiece;
@@ -53,7 +53,7 @@ public class TurnManager : MonoBehaviour
             int rand;
             do
             {
-                rand = UnityEngine.Random.Range(0, gameManager.milestoneDataCount);
+                rand = Random.Range(0, gameManager.milestoneDataCount);
             } while (mileTypes.Contains(gameManager.GetMilestoneData(rand).type));
             //かぶっていなければ確定
             milestones[i] = gameManager.GetMilestoneData(rand);
@@ -109,9 +109,18 @@ public class TurnManager : MonoBehaviour
         gPieceManager.SetPiece();
 
         loopCnt = 0;
-        for (int i = 0; i < players.Length; i++)
+        if (GameManager.selectPlayers == 2)
         {
-            players[i].GetComponent<PlayerManager>().isGoal = false;
+            players[0].GetComponent<PlayerManager>().isGoal = false;
+            players[1].GetComponent<PlayerManager>().isGoal = false;
+            players[2].GetComponent<GossManager>().isGoal = false;
+        }
+        else
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].GetComponent<PlayerManager>().isGoal = false;
+            }
         }
         galleryBoard.ResetTile();
         roundPiece.transform.position = galleryBoard.roundSpots[roundCnt - 1].transform.position;
@@ -126,9 +135,12 @@ public class TurnManager : MonoBehaviour
         loopCnt++;
 
         int minIndex = 23;
-        for (int i = 0; i < players.Length; i++)
+        PlayerManager pManager;
+
+        for (int i = 0; i < GameManager.selectPlayers; i++)
         {
-            PlayerManager pManager = players[i].GetComponent<PlayerManager>();
+            pManager = players[i].GetComponent<PlayerManager>();
+
             if (pManager.isGoal)
             {
                 continue;
@@ -141,27 +153,47 @@ public class TurnManager : MonoBehaviour
             }
         }
 
-        if (loopCnt == players.Length + 1)
+        //2人プレイ専用ルール（ゴスの順番を考慮）
+        if (GameManager.selectPlayers == 2)
         {
-            galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = true;
+            GossManager gossManager = players[2].GetComponent<GossManager>();
+            if ((minIndex - gossManager.galleryIndex) > 0 && !gossManager.isGoal)
+            {
+                currentPlayer = players[2];
+            }
         }
-        else if (loopCnt > players.Length + 1)
+
+        int goalplayers = 0;
+        if (loopCnt > players.Length)
         {
-            int goalplayers = 0;
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < GameManager.selectPlayers; i++)
             {
                 if (players[i].GetComponent<PlayerManager>().isGoal)
                 {
                     goalplayers++;
                 }
-                if (goalplayers == players.Length)
+            }
+            if (GameManager.selectPlayers == 2)
+            {
+                if (players[2].GetComponent<GossManager>().isGoal)
                 {
-                    EndRound();
-                    return;
+                    goalplayers++;
                 }
             }
 
-            if (galleryBoard.isPlayer[0] && goalplayers == 1)
+            //全プレイヤーがゴールしたらラウンド終了
+            if (goalplayers == players.Length)
+            {
+                EndRound();
+                return;
+            }
+
+            if (!galleryBoard.isPlayer[0] && goalplayers == 0)
+            {
+                galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = true;
+                Debug.Log("ゴール1解放");
+            }
+            else if (galleryBoard.isPlayer[0] && goalplayers == 1)
             {
                 galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = false;
                 galleryBoard.startSpots[1].GetComponent<BoxCollider2D>().enabled = true;
@@ -182,16 +214,34 @@ public class TurnManager : MonoBehaviour
         }
 
         //プレイヤーを行動可能にし移動履歴を初期化
-        PlayerManager currentPlayerManager = currentPlayer.GetComponent<PlayerManager>();
+        if (GameManager.selectPlayers == 2 && currentPlayer == players[2])
+        {
+            GossManager gossManager = currentPlayer.GetComponent<GossManager>();
 
-        currentPlayerManager.isActive = true;
-        currentPlayerManager.StartGallery();
-        phaseManager.StartGallery(currentPlayerManager.player);
+            gossManager.isActive = true;
+            gossManager.Invoke("StartGallery", 2.0f);
+            phaseManager.StartGallery(gossManager.player);
+        }
+        else
+        {
+            PlayerManager currentPlayerManager = currentPlayer.GetComponent<PlayerManager>();
+
+            currentPlayerManager.isActive = true;
+            currentPlayerManager.StartGallery();
+            phaseManager.StartGallery(currentPlayerManager.player);
+        }
     }
 
     public void EndTurn()
     {
-        currentPlayer.GetComponent<PlayerManager>().isActive = false;
+        if (currentPlayer.GetComponent<GossManager>())
+        {
+            currentPlayer.GetComponent<GossManager>().isActive = false;
+        }
+        else
+        {
+            currentPlayer.GetComponent<PlayerManager>().isActive = false;
+        }
         phaseManager.EndTurn();
         NextTurn();
     }
@@ -215,7 +265,7 @@ public class TurnManager : MonoBehaviour
 
     void GetResult()
     {
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < GameManager.selectPlayers; i++)
         {
             scores.Add(players[i].GetComponent<PlayerManager>().GetScore());
         }

@@ -1397,6 +1397,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 728312889}
     - target: {fileID: 7777804724443627206, guid: c974ebb19b11a3b49b22e1291c7d10ed, type: 3}
+      propertyPath: gossPrefab
+      value: 
+      objectReference: {fileID: 2193617239553590087, guid: add1befa2a68e4241ac1cdf2840c2a28, type: 3}
+    - target: {fileID: 7777804724443627206, guid: c974ebb19b11a3b49b22e1291c7d10ed, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 681071040}
@@ -9565,7 +9569,7 @@ GameObject:
   - component: {fileID: 5817493275550029312}
   m_Layer: 5
   m_Name: SeaPanel
-  m_TagString: Untagged
+  m_TagString: SeaBoard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

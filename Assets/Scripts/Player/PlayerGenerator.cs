@@ -4,8 +4,9 @@ using UnityEngine;
 public class PlayerGenerator : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab;
-    GameManager gameManager;
+    [SerializeField] GameObject gossPrefab;
     [SerializeField] FeedingCardPanel feedingCardPanel;
+    GameManager gameManager;
 
     public List<int> feedingDatas = new List<int>(); //餌やりカードがかぶらないようにするために記録
 
@@ -15,7 +16,7 @@ public class PlayerGenerator : MonoBehaviour
         feedingDatas.Clear();
 
         //参加プレイヤーの数だけ繰り返す
-        for (int i = 0; i < GameManager.players; i++)
+        for (int i = 0; i < GameManager.selectPlayers; i++)
         {
             //プレイヤーを生成
             GameObject obj = Instantiate(playerPrefab, new Vector3(i * 40, 0, 0), Quaternion.identity);
@@ -46,6 +47,26 @@ public class PlayerGenerator : MonoBehaviour
             feedingDatas.Add(rand);
 
             feedingCardPanel.Initialize(data, GameManager.playerName[i]);
+        }
+
+        //2人プレイ専用ルール
+        if (GameManager.players != GameManager.selectPlayers)
+        {
+            //プレイヤーを生成
+            GameObject obj = Instantiate(gossPrefab);
+
+
+            //生成したプレイヤーにプレイヤー情報をセット
+            Player playerData = new Player()
+            {
+                playerNum = 3,  //プレイヤー番号
+                playerName = "ゴス君", //プレイヤー名
+                gallerySprite = GameManager.galleryColor[2],    //ギャラリーのプレイヤー駒画像
+            };
+            PlayerData.players.Add(playerData);
+
+            GossManager gossManager = obj.GetComponent<GossManager>();
+            gossManager.player = playerData;
         }
     }
 }

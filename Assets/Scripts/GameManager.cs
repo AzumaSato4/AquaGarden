@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //プレイヤー基本情報
+    public static int selectPlayers = 4; //プレイ人数
     public static int players = 4;
     public static string[] playerName;
     public static Sprite[] galleryColor;
@@ -62,6 +63,18 @@ public class GameManager : MonoBehaviour
         adCardDataCount = adCardData.adCardDatas.Count;
         feedingDataCount = feedingData.feedingDatas.Count;
         milestoneDataCount = milestoneData.milestoneDatas.Count;
+    }
+
+    public void SetPlayers()
+    {
+        if (selectPlayers == 2)
+        {
+            players = 3; //二人プレイ専用ルール
+        }
+        else
+        {
+            players = selectPlayers;
+        }
     }
 
     public PieceData GetPieceData(int id)

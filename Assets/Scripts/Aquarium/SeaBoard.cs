@@ -39,7 +39,15 @@ public class SeaBoard : MonoBehaviour
 
     public void ReleasePiece(GameObject selectPiece)
     {
-        PieceData pieceData = selectPiece.GetComponent<AquaPiece>().pieceData;
+        PieceData pieceData;
+        if (selectPiece.GetComponent<GalleryPiece>())
+        {
+            pieceData = selectPiece.GetComponent<GalleryPiece>().pieceData;
+        }
+        else
+        {
+            pieceData = selectPiece.GetComponent<AquaPiece>().pieceData;
+        }
 
         AddPiece(pieceData);
     }
