@@ -15,6 +15,7 @@ public class AdvanceItem : MonoBehaviour
 
     UIController uiController;
     AquaPieceManager aquaPieceManager;
+    SEManager seManager;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class AdvanceItem : MonoBehaviour
         amountText.text = pieceData.amount.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
+        seManager = SEManager.instance;
     }
 
     private void Update()
@@ -48,6 +50,7 @@ public class AdvanceItem : MonoBehaviour
         {
             advanceBoard.advanceAquaPieces[pieceData.pieceName]--;
 
+            seManager.PlaySE(SEManager.SE_Type.pay);
             aquaPieceManager.CreatePiece(pieceData, pieceData.amount, true);
             uiController.ChangeUI(UIController.PanelType.none);
             if (advanceBoard.advanceAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
@@ -57,6 +60,7 @@ public class AdvanceItem : MonoBehaviour
         }
         else
         {
+            seManager.PlaySE(SEManager.SE_Type.ng);
             uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");

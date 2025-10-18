@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
+    SEManager seManager;
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
@@ -68,6 +69,7 @@ public class PlayerManager : MonoBehaviour
         GameObject manager = GameObject.Find("MainManager");
         turnManager = manager.GetComponent<TurnManager>();
         phaseManager = manager.GetComponent<PhaseManager>();
+        seManager = SEManager.instance;
 
         //初期位置にセット
         //ギャラリースタート位置にセット
@@ -127,6 +129,7 @@ public class PlayerManager : MonoBehaviour
     public void StartGallery()
     {
         if (!isActive) return;
+        seManager.PlaySE(SEManager.SE_Type.turnStart);
         galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
         galleryPlayer.GetComponent<Animator>().enabled = true;
     }
@@ -159,6 +162,7 @@ public class PlayerManager : MonoBehaviour
 
                 phaseManager.EndGallery(player);
                 //UIが変に表示されないように遅らせる
+                seManager.PlaySE(SEManager.SE_Type.water);
                 Invoke("StartMyAquarium", 1.0f);
             }
             //広告マス
@@ -332,9 +336,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         money += getMoney;
-
-        //ShowMessage("えさやりイベント\n合計資金獲得" + getMoney);
-        //Invoke("EditAquarium", 2.1f);
+        seManager.PlaySE(SEManager.SE_Type.getMoney);
         EditAquarium();
     }
 
@@ -369,14 +371,19 @@ public class PlayerManager : MonoBehaviour
 
         if (isActive)
         {
-            for (int i = 0; i < 6; i++)
-            {
-                AquaSlot aquaSlot = aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>();
-                aquaSlot.mask.SetActive(false);
-                aquaSlot.selectable = true;
-            }
-            aquariumCanvas.SetActive(true);
+            Invoke("SetAdEdit", 2.0f);
         }
+    }
+
+    void SetAdEdit()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            AquaSlot aquaSlot = aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>();
+            aquaSlot.mask.SetActive(false);
+            aquaSlot.selectable = true;
+        }
+        aquariumCanvas.SetActive(true);
     }
 
     void MileEditAquarium()
@@ -419,6 +426,7 @@ public class PlayerManager : MonoBehaviour
         if (!aquariumBoard.storage.GetComponent<Storage>().CheckSpotEmpty())
         {
             ShowMessage("ストレージを空にしてください！");
+            seManager.PlaySE(SEManager.SE_Type.ng);
             return;
         }
 
@@ -517,6 +525,13 @@ public class PlayerManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             aquaPieceManager.CreatePiece(pieces[i]);
         }
+    }
+
+    //マイルストーン達成祝福
+    void Celebrate()
+    {
+        seManager.PlaySE(SEManager.SE_Type.celebrate);
+        UIController.isAchieved = true;
     }
 
     //キャンセルボタンを押した
@@ -688,10 +703,5 @@ public class PlayerManager : MonoBehaviour
     {
         UIController.messageText.text = message;
         UIController.isMessageChanged = true;
-    }
-
-    void Celebrate()
-    {
-        UIController.isAchieved = true;
     }
 }

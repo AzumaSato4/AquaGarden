@@ -6,6 +6,12 @@ public class GossController : MonoBehaviour
 
     int index;
     GameObject selected;
+    SEManager seManager;
+
+    private void Start()
+    {
+        seManager = SEManager.instance;
+    }
 
     public void MoveStart(int index, GameObject selcted)
     {
@@ -16,6 +22,7 @@ public class GossController : MonoBehaviour
 
     public void MoveGoss()
     {
+        seManager.PlaySE(SEManager.SE_Type.click);
         gossManager.MoveGallery(index, selected.name);
         transform.position = selected.transform.position;
         if (selected.GetComponent<BoxCollider2D>() != null)

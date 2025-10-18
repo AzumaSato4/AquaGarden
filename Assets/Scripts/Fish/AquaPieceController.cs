@@ -9,10 +9,12 @@ public class AquaPieceController : MonoBehaviour
     public AquaPieceManager aquaPieceManager;
 
     AquaPiece aquaPiece;
+    SEManager seManager;
 
     private void Start()
     {
         aquaPiece = GetComponent<AquaPiece>();
+        seManager = SEManager.instance;
     }
 
     private void LateUpdate()
@@ -107,10 +109,12 @@ public class AquaPieceController : MonoBehaviour
                     //相性チェック
                     if (!CheckType(slot))
                     {
+                        seManager.PlaySE(SEManager.SE_Type.ng);
                         aquaPieceManager.CanselSelect();
                         return;
                     }
                     //水槽への移動確定
+                    seManager.PlaySE(SEManager.SE_Type.click);
                     transform.position = to.transform.position;
                     aquaPiece.currentPos = target;
                     transform.parent = slot.transform;

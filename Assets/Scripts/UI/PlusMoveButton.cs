@@ -9,7 +9,14 @@ public class PlusMoveButton : MonoBehaviour
     [SerializeField] Button minusButton;
     [SerializeField] TextMeshProUGUI stepsText;
 
+    SEManager seManager;
+
     public int payMoney;
+
+    private void Start()
+    {
+        seManager = SEManager.instance;
+    }
 
     private void OnEnable()
     {
@@ -44,6 +51,7 @@ public class PlusMoveButton : MonoBehaviour
     {
         if (playerManager.money <= 0 || 5 <= playerManager.steps) return;
 
+        seManager.PlaySE(SEManager.SE_Type.pay);
         playerManager.steps++;
         playerManager.money--;
         payMoney++;

@@ -14,6 +14,7 @@ public class SeaItem : MonoBehaviour
 
     UIController uiController;
     AquaPieceManager aquaPieceManager;
+    SEManager seManager;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class SeaItem : MonoBehaviour
         pieceCountText.text = pieceCount.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
+        seManager = SEManager.instance;
     }
 
     private void Update()
@@ -45,12 +47,14 @@ public class SeaItem : MonoBehaviour
         {
             seaBoard.seaAquaPieces[pieceData]--;
 
+            seManager.PlaySE(SEManager.SE_Type.pay);
             aquaPieceManager.CreatePiece(pieceData, 2, true);
             uiController.ChangeUI(UIController.PanelType.none);
             if (seaBoard.seaAquaPieces[pieceData] <= 0) Destroy(this.gameObject);
         }
         else
         {
+            seManager.PlaySE(SEManager.SE_Type.ng);
             uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");

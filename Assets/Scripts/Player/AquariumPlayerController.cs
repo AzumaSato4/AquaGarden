@@ -8,6 +8,12 @@ public class AquariumPlayerController : MonoBehaviour
     public bool movedAquarium = true;
     int clickCount;
     GameObject selected;
+    SEManager seManager;
+
+    private void Start()
+    {
+        seManager = SEManager.instance;
+    }
 
     private void Update()
     {
@@ -56,8 +62,6 @@ public class AquariumPlayerController : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     void CheckDouble()
@@ -80,6 +84,7 @@ public class AquariumPlayerController : MonoBehaviour
         //水族館のクリックしたマスに移動する
         if (selected.CompareTag("AquariumTile"))
         {
+            seManager.PlaySE(SEManager.SE_Type.click);
             playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
             transform.position = selected.transform.position;
             movedAquarium = true;

@@ -63,7 +63,7 @@ public class UIController : MonoBehaviour
     void ShowPanel(PanelType panel)
     {
         //一度すべて非表示
-        for (int i = 0;i < panels.Length;i++)
+        for (int i = 0; i < panels.Length; i++)
         {
             panels[i].SetActive(false);
         }
@@ -75,7 +75,7 @@ public class UIController : MonoBehaviour
     //パネルを非表示
     void HidePanel()
     {
-        for(int i = 0;i < panels.Length; i++)
+        for (int i = 0; i < panels.Length; i++)
         {
             panels[i].SetActive(false);
         }
@@ -83,7 +83,7 @@ public class UIController : MonoBehaviour
     }
 
     public void ChangeUI(PanelType panel)
-    {   
+    {
         switch (panel)
         {
             case PanelType.sea:
@@ -98,7 +98,7 @@ public class UIController : MonoBehaviour
                 HidePanel();
                 return;
         }
-        
+
         //表示中なら非表示に
         if (panels[(int)panel].activeSelf)
         {
@@ -146,17 +146,14 @@ public class UIController : MonoBehaviour
     //メッセージパネル
     public void ShowMessagePanel()
     {
-        isActiveUI = true;
-        panels[(int)PanelType.message].SetActive(true);
+        ShowPanel(PanelType.message);
         Invoke("HidePanel", 2.0f);
     }
 
     void ShowAchievePanel()
     {
-        isActiveUI = true;
-        panels[(int)PanelType.achieve].SetActive(true);
+        ShowPanel(PanelType.achieve);
         Invoke("HidePanel", 2.0f);
-        
     }
 
     //カメラ変更時の画面遷移画像

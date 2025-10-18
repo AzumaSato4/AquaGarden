@@ -12,11 +12,11 @@ public class ResultCameraController : MonoBehaviour
     private void Start()
     {
         currentCamera = mainCamera;
-        cameras = new GameObject[GameManager.players + 1];
+        cameras = new GameObject[GameManager.selectPlayers + 1];
         cameras[0] = mainCamera;
-        GameObject[] players = new GameObject[GameManager.players];
+        GameObject[] players = new GameObject[GameManager.selectPlayers];
         players = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < GameManager.players; i++)
+        for (int i = 0; i < GameManager.selectPlayers; i++)
         {
             cameras[i + 1] = players[i].GetComponent<PlayerManager>().myCamera;
         }

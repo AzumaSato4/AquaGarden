@@ -8,6 +8,12 @@ public class GalleryPlayerController : MonoBehaviour
     public bool movedGallery = true;
     GameObject selected;
     int clickCount;
+    SEManager seManager;
+
+    private void Start()
+    {
+        seManager = SEManager.instance;
+    }
 
     private void Update()
     {
@@ -86,6 +92,7 @@ public class GalleryPlayerController : MonoBehaviour
             }
             else
             {
+                seManager.PlaySE(SEManager.SE_Type.click);
                 playerManager.MoveGallery(index, selected.name);
                 transform.position = selected.transform.position;
                 movedGallery = true;

@@ -5,10 +5,16 @@ using UnityEngine;
 public class AquaPieceManager : MonoBehaviour
 {
     [SerializeField] GameObject piecePrefab;
-    public static GameObject selectedPiece;
     [SerializeField] UIController uiController;
-    public PhaseManager phaseManager;
     [SerializeField] SeaBoard seaBoard;
+    public static GameObject selectedPiece;
+    public PhaseManager phaseManager;
+    SEManager seManager;
+
+    private void Start()
+    {
+        seManager = SEManager.instance;
+    }
 
     public void SelectedPiece(GameObject selected)
     {
@@ -130,6 +136,8 @@ public class AquaPieceManager : MonoBehaviour
             {
                 player.money += 2;
             }
+
+            seManager.PlaySE(SEManager.SE_Type.click);
             seaBoard.ReleasePiece(selectedPiece);
             Destroy(selectedPiece);
         }

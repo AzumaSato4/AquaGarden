@@ -452,6 +452,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 1164690252528954971, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 2140052279660164218, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: m_Color.a
       value: 0
@@ -464,6 +468,34 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 519420033}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_Spacing
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4926217030001868039, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5333116910484214369, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1920

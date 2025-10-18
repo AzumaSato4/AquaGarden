@@ -84,6 +84,7 @@ public class PhaseManager : MonoBehaviour
     
     public void StartAdEdit(Player player)
     {
+        uiController.ActiveCameraChangeImage();
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.adEdit;
     }

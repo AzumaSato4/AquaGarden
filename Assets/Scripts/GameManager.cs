@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Sprite[] aColor;
     [SerializeField] Sprite[] mColor;
 
+    public static bool isSecretMode; //マイルストーン非表示モード
 
     private void Awake()
     {
@@ -75,6 +76,12 @@ public class GameManager : MonoBehaviour
         {
             players = selectPlayers;
         }
+    }
+
+    public void ChangeMode(bool isMode)
+    {
+        isSecretMode = isMode;
+        Debug.Log($"シークレットモード{isSecretMode}");
     }
 
     public PieceData GetPieceData(int id)

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
     GameManager gameManager;
+    BGMManager bgmManager;
+    SEManager seManager;
 
     public static GameObject currentPlayer;
 
@@ -43,9 +45,13 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.instance;
+        bgmManager = BGMManager.instance;
+        seManager = SEManager.instance;
         milestones = new MilestoneData[4];
         mileTypes = new List<MilestoneData.MilestoneType>();
         achivements = new int[milestones.Length, GameManager.players];
+
+        roundCnt = 0;
         //今回のゲームのマイルストーンを設定
         for (int i = 0; i < milestones.Length; i++)
         {
@@ -219,6 +225,7 @@ public class TurnManager : MonoBehaviour
             GossManager gossManager = currentPlayer.GetComponent<GossManager>();
 
             gossManager.isActive = true;
+            seManager.PlaySE(SEManager.SE_Type.turnStart);
             gossManager.Invoke("StartGallery", 2.0f);
             phaseManager.StartGallery(gossManager.player);
         }
@@ -260,7 +267,9 @@ public class TurnManager : MonoBehaviour
     void EndGame()
     {
         Debug.Log("ゲーム終了！");
-        GetResult();
+        ShowMessage("ゲーム終了");
+        seManager.PlaySE(SEManager.SE_Type.turnEnd);
+        Invoke("GetResult", 2.0f);
     }
 
     void GetResult()
@@ -275,6 +284,13 @@ public class TurnManager : MonoBehaviour
             Debug.Log(i);
         }
 
+        bgmManager.PlayBGM(BGMManager.BGM_Type.result);
         SceneManager.LoadScene("Result");
+    }
+
+    void ShowMessage(string message)
+    {
+        UIController.messageText.text = message;
+        UIController.isMessageChanged = true;
     }
 }

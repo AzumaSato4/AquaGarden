@@ -15,6 +15,7 @@ public class GossManager : MonoBehaviour
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
     SeaBoard seaBoard;
     [SerializeField] GossController gossController;
+    SEManager seManager;
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
@@ -32,6 +33,7 @@ public class GossManager : MonoBehaviour
         turnManager = manager.GetComponent<TurnManager>();
         phaseManager = manager.GetComponent<PhaseManager>();
         seaBoard = turnManager.seaBoard;
+        seManager = SEManager.instance;
 
         //初期位置にセット
         //ギャラリースタート位置にセット
@@ -51,7 +53,18 @@ public class GossManager : MonoBehaviour
         {
             if (index == 23)
             {
-                index = 0;
+                if (!galleryBoard.isPlayer[0])
+                {
+                    index = 0;
+                }
+                else if (!galleryBoard.isPlayer[1])
+                {
+                    index = 1;
+                }
+                else if (!galleryBoard.isPlayer[2])
+                {
+                    index = 2;
+                }
                 tile = galleryBoard.startSpots[index];
                 isGoal = true;
             }
@@ -66,7 +79,6 @@ public class GossManager : MonoBehaviour
             isGoal = true;
         }
 
-            Debug.Log(index + "目標");
         Debug.Log(tile.name);
         gossController.MoveStart(index, tile);
     }
@@ -76,25 +88,9 @@ public class GossManager : MonoBehaviour
         int target; //移動目標タイル番号
         int headIndex = 0; //先頭にいるプレイヤーのタイル番号
 
-        if (turnManager.loopCnt > GameManager.players)
-        {
-            //もし誰かがゴールしていたらゴールを目標にする
-            if (galleryBoard.isPlayer[1])
-            {
-                target = 2;
-                return target;
-            }
-            else if (galleryBoard.isPlayer[0])
-            {
-                target = 1;
-                return target;
-            }
-        }
-
         //先頭のプレイヤーを探す
-        for (int i = galleryBoard.isPlayer.Length - 1; i > 3; i--)
+        for (int i = galleryBoard.isPlayer.Length - 1; i >= 0; i--)
         {
-            Debug.Log(i);
             if (galleryBoard.isPlayer[i])
             {
                 headIndex = i;
@@ -104,8 +100,9 @@ public class GossManager : MonoBehaviour
         target = headIndex + 1;
 
         //スタート時に全員がスタート地点にいたら最初の魚マスに移動する
-        if (target < 4)
+        if (target < 4 && galleryIndex == 0)
         {
+            Debug.Log("はいった");
             target = 4;
         }
 
