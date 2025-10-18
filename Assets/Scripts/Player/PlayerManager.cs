@@ -26,7 +26,10 @@ public class PlayerManager : MonoBehaviour
     public GameObject aquariumCanvas; //自分の水族館専用キャンバス
     [SerializeField] GameObject turnEnd;  //ターンエンドボタン
     [SerializeField] GameObject cancel; //キャンセルボタン
+    [SerializeField] GameObject plusMovePanel; //水族館の移動距離変更パネル
     TextMeshProUGUI moneyCountText; //所持資金テキスト
+    public int steps = 3; //水族館の移動可能距離
+    bool isCheck; //移動距離チェックするかどうか
 
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
@@ -108,15 +111,24 @@ public class PlayerManager : MonoBehaviour
         }
 
         if (isActive) moneyCountText.text = money.ToString();
+        if (isCheck) CheckMovableTile();
+
+        //水族館の移動距離変更パネル表示非表示切り替え
+        if (isActive && PhaseManager.currentPhase == PhaseManager.Phase.aquarium)
+        {
+            plusMovePanel.SetActive(true);
+        }
+        else
+        {
+            plusMovePanel.SetActive(false);
+        }
     }
 
     public void StartGallery()
     {
-        if (isActive)
-        {
-            galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
-            galleryPlayer.GetComponent<Animator>().enabled = true;
-        }
+        if (!isActive) return;
+        galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
+        galleryPlayer.GetComponent<Animator>().enabled = true;
     }
 
     public void MoveGallery(int to, string tile)
@@ -182,33 +194,66 @@ public class PlayerManager : MonoBehaviour
 
     public void StartMyAquarium()
     {
-        if (isActive)
-        {
-            aquariumCanvas.SetActive(true);
+        if (!isActive) return;
+        aquariumCanvas.SetActive(true);
+        steps = 3; //初期値に戻す
 
-            aquariumPlayer.GetComponent<Animator>().enabled = true;
-            aquariumPlayer.GetComponent<AquariumPlayerController>().movedAquarium = false;
-            for (int i = 1; i < 4; i++)
+        aquariumPlayer.GetComponent<Animator>().enabled = true;
+        aquariumPlayer.GetComponent<AquariumPlayerController>().movedAquarium = false;
+
+        isCheck = true;
+    }
+
+    public void CheckMovableTile()
+    {
+        foreach (GameObject tile in aquariumBoard.aquaTiles)
+        {
+            tile.GetComponent<PolygonCollider2D>().enabled = false;
+        }
+
+        for (int i = 1; i <= steps; i++)
+        {
+            int movableTiles = aquariumIndex + i;
+            if (movableTiles > aquariumBoard.aquaSlots.Length - 1)
             {
-                int movableTiles = aquariumIndex + i;
-                if (movableTiles > 5)
-                {
-                    movableTiles -= 6;
-                }
-                aquariumBoard.aquaTiles[movableTiles].GetComponent<PolygonCollider2D>().enabled = true;
+                movableTiles -= aquariumBoard.aquaSlots.Length;
             }
+            aquariumBoard.aquaTiles[movableTiles].GetComponent<PolygonCollider2D>().enabled = true;
         }
     }
 
     public void MoveAquarium(int to)
     {
+        isCheck = false;
         aquariumPlayer.GetComponent<Animator>().enabled = false;
         aquariumPlayer.transform.localScale = Vector2.one;
+
 
         bool isFeeding = false;
 
         int moveTiles = to - aquariumIndex;
         if (moveTiles < 0) moveTiles += 6;
+        //もし支払った資金より移動距離が少なければ返金する
+        int rePay = plusMovePanel.GetComponent<PlusMoveButton>().payMoney;
+        switch (steps)
+        {
+            case 4:
+                if (moveTiles < 4)
+                {
+                    money += rePay;
+                }
+                break;
+            case 5:
+                if (moveTiles < 4)
+                {
+                    money += rePay;
+                }
+                else if (moveTiles < 5)
+                {
+                    money += rePay - 1;
+                }
+                break;
+        }
 
         for (int i = 0; i < moveTiles; i++)
         {
