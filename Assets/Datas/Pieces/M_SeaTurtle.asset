@@ -18,3 +18,4 @@ MonoBehaviour:
   oxygen: -2
   amount: 0
   pieceType: 1
+  isMilestone: 1

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe005378022787c42afb2cb0f41bd9c3, type: 3}
-  m_Name: M_LargeFish
+  m_Name: M_Seaweed
   m_EditorClassIdentifier: 
-  pieceName: 1
-  pieceSprite: {fileID: 3845877642813170198, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
-  animationController: {fileID: 9100000, guid: 098b16c0eafb45842b7a62635dc69c19, type: 2}
-  oxygen: -1
+  pieceName: 6
+  pieceSprite: {fileID: 4356209697794142861, guid: eb8d1a7348ed8b545ad4d9271fa69367, type: 3}
+  animationController: {fileID: 9100000, guid: dd1c15515e4e0c141a7f0b759ff427d2, type: 2}
+  oxygen: 2
   amount: 0
-  pieceType: 0
+  pieceType: 5
   isMilestone: 1

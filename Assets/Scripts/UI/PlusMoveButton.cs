@@ -9,13 +9,13 @@ public class PlusMoveButton : MonoBehaviour
     [SerializeField] Button minusButton;
     [SerializeField] TextMeshProUGUI stepsText;
 
-    SEManager seManager;
+    SoundManager soundManager;
 
     public int payMoney;
 
     private void Start()
     {
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void OnEnable()
@@ -51,7 +51,7 @@ public class PlusMoveButton : MonoBehaviour
     {
         if (playerManager.money <= 0 || 5 <= playerManager.steps) return;
 
-        seManager.PlaySE(SEManager.SE_Type.pay);
+        soundManager.PlaySE(SoundManager.SE_Type.pay);
         playerManager.steps++;
         playerManager.money--;
         payMoney++;
@@ -60,7 +60,6 @@ public class PlusMoveButton : MonoBehaviour
     //ボタンが押されたら移動距離マイナス
     public void MinusMove()
     {
-        Debug.Log(payMoney);
         if (payMoney <= 0) return;
 
         playerManager.steps--;

@@ -9,13 +9,14 @@ public class AdvanceItem : MonoBehaviour
     public TextMeshProUGUI pieceNameText;
     public Image pieceImg;
     public TextMeshProUGUI pieceCountText;
+    [SerializeField] TextMeshProUGUI oxygenText;
     [SerializeField] TextMeshProUGUI amountText;
     [SerializeField] Button buyButton;
     int pieceCount;
 
     UIController uiController;
     AquaPieceManager aquaPieceManager;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
@@ -23,10 +24,11 @@ public class AdvanceItem : MonoBehaviour
         pieceImg.sprite = pieceData.pieceSprite;
         pieceCount = advanceBoard.advanceAquaPieces[pieceData.pieceName];
         pieceCountText.text = pieceCount.ToString();
+        oxygenText.text = pieceData.oxygen.ToString();
         amountText.text = pieceData.amount.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void Update()
@@ -50,7 +52,7 @@ public class AdvanceItem : MonoBehaviour
         {
             advanceBoard.advanceAquaPieces[pieceData.pieceName]--;
 
-            seManager.PlaySE(SEManager.SE_Type.pay);
+            soundManager.PlaySE(SoundManager.SE_Type.pay);
             aquaPieceManager.CreatePiece(pieceData, pieceData.amount, true);
             uiController.ChangeUI(UIController.PanelType.none);
             if (advanceBoard.advanceAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
@@ -60,7 +62,7 @@ public class AdvanceItem : MonoBehaviour
         }
         else
         {
-            seManager.PlaySE(SEManager.SE_Type.ng);
+            soundManager.PlaySE(SoundManager.SE_Type.ng);
             uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");

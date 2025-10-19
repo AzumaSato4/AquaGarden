@@ -9,11 +9,11 @@ public class AquaPieceManager : MonoBehaviour
     [SerializeField] SeaBoard seaBoard;
     public static GameObject selectedPiece;
     public PhaseManager phaseManager;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     public void SelectedPiece(GameObject selected)
@@ -32,7 +32,7 @@ public class AquaPieceManager : MonoBehaviour
 
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
         current.AbledCancel(false);
-        current.DontSelectSlot();
+        //current.DontSelectSlot();
         current.aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
     }
 
@@ -58,6 +58,7 @@ public class AquaPieceManager : MonoBehaviour
                 aquaPiece.pieceData = pieceData;
                 aquaPiece.isiFromSea = isFromSea;
                 aquaPiece.storageIndex = index;
+                aquaPiece.iscurrentTurn = true;
                 pieceController.playerManager = current;
                 pieceController.aquaPieceManager = this;
                 current.money -= amount;
@@ -137,7 +138,7 @@ public class AquaPieceManager : MonoBehaviour
                 player.money += 2;
             }
 
-            seManager.PlaySE(SEManager.SE_Type.click);
+            soundManager.PlaySE(SoundManager.SE_Type.click);
             seaBoard.ReleasePiece(selectedPiece);
             Destroy(selectedPiece);
         }

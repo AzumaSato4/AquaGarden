@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
     GameManager gameManager;
-    BGMManager bgmManager;
-    SEManager seManager;
+    SoundManager soundManager;
 
     public static GameObject currentPlayer;
 
@@ -45,8 +44,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.instance;
-        bgmManager = BGMManager.instance;
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
         milestones = new MilestoneData[4];
         mileTypes = new List<MilestoneData.MilestoneType>();
         achivements = new int[milestones.Length, GameManager.players];
@@ -128,6 +126,11 @@ public class TurnManager : MonoBehaviour
                 players[i].GetComponent<PlayerManager>().isGoal = false;
             }
         }
+        foreach (GameObject spot in galleryBoard.startSpots)
+        {
+            spot.layer = 2;
+        }
+
         galleryBoard.ResetTile();
         roundPiece.transform.position = galleryBoard.roundSpots[roundCnt - 1].transform.position;
 
@@ -197,24 +200,31 @@ public class TurnManager : MonoBehaviour
             if (!galleryBoard.isPlayer[0] && goalplayers == 0)
             {
                 galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = true;
+                galleryBoard.startSpots[0].layer = 0;
                 Debug.Log("ゴール1解放");
             }
             else if (galleryBoard.isPlayer[0] && goalplayers == 1)
             {
                 galleryBoard.startSpots[0].GetComponent<BoxCollider2D>().enabled = false;
                 galleryBoard.startSpots[1].GetComponent<BoxCollider2D>().enabled = true;
+                galleryBoard.startSpots[0].layer = 2;
+                galleryBoard.startSpots[1].layer = 0;
                 Debug.Log("ゴール2解放");
             }
             else if (galleryBoard.isPlayer[1] && goalplayers == 2)
             {
                 galleryBoard.startSpots[1].GetComponent<BoxCollider2D>().enabled = false;
                 galleryBoard.startSpots[2].GetComponent<BoxCollider2D>().enabled = true;
+                galleryBoard.startSpots[1].layer = 2;
+                galleryBoard.startSpots[2].layer = 0;
                 Debug.Log("ゴール3解放");
             }
             else if (galleryBoard.isPlayer[2] && goalplayers == 3)
             {
                 galleryBoard.startSpots[2].GetComponent<BoxCollider2D>().enabled = false;
                 galleryBoard.startSpots[3].GetComponent<BoxCollider2D>().enabled = true;
+                galleryBoard.startSpots[2].layer = 2;
+                galleryBoard.startSpots[3].layer = 0;
                 Debug.Log("ゴール4解放");
             }
         }
@@ -225,7 +235,7 @@ public class TurnManager : MonoBehaviour
             GossManager gossManager = currentPlayer.GetComponent<GossManager>();
 
             gossManager.isActive = true;
-            seManager.PlaySE(SEManager.SE_Type.turnStart);
+            soundManager.PlaySE(SoundManager.SE_Type.turnStart);
             gossManager.Invoke("StartGallery", 2.0f);
             phaseManager.StartGallery(gossManager.player);
         }
@@ -268,7 +278,7 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log("ゲーム終了！");
         ShowMessage("ゲーム終了");
-        seManager.PlaySE(SEManager.SE_Type.turnEnd);
+        soundManager.PlaySE(SoundManager.SE_Type.turnEnd);
         Invoke("GetResult", 2.0f);
     }
 
@@ -284,7 +294,7 @@ public class TurnManager : MonoBehaviour
             Debug.Log(i);
         }
 
-        bgmManager.PlayBGM(BGMManager.BGM_Type.result);
+        soundManager.PlayBGM(SoundManager.BGM_Type.result);
         SceneManager.LoadScene("Result");
     }
 

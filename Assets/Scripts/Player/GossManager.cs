@@ -15,7 +15,6 @@ public class GossManager : MonoBehaviour
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
     SeaBoard seaBoard;
     [SerializeField] GossController gossController;
-    SEManager seManager;
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
@@ -33,7 +32,6 @@ public class GossManager : MonoBehaviour
         turnManager = manager.GetComponent<TurnManager>();
         phaseManager = manager.GetComponent<PhaseManager>();
         seaBoard = turnManager.seaBoard;
-        seManager = SEManager.instance;
 
         //初期位置にセット
         //ギャラリースタート位置にセット
@@ -102,7 +100,6 @@ public class GossManager : MonoBehaviour
         //スタート時に全員がスタート地点にいたら最初の魚マスに移動する
         if (target < 4 && galleryIndex == 0)
         {
-            Debug.Log("はいった");
             target = 4;
         }
 
@@ -122,7 +119,7 @@ public class GossManager : MonoBehaviour
         {
             isGoal = true;
             //ゴールしたら強制ターンエンド
-            turnManager.EndTurn();
+            turnManager.Invoke("EndTurn", 1.0f);
             return;
         }
 
@@ -132,7 +129,7 @@ public class GossManager : MonoBehaviour
             FishTile fishTile = galleryBoard.galleryTiles[to - 4].GetComponent<FishTile>();
             RelesePiece(fishTile);
         }
-        turnManager.EndTurn();
+        turnManager.Invoke("EndTurn", 1.0f);
     }
 
     //魚駒を海ボードへ移動させる

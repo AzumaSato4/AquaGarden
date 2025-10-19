@@ -160,7 +160,7 @@ public class UIController : MonoBehaviour
     public void ActiveCameraChangeImage()
     {
         cameraChangeImage.SetActive(true);
-        Invoke("HideCameraChangeImage", 1.8f);
+        Invoke("HideCameraChangeImage", 2.0f);
     }
 
     void HideCameraChangeImage()

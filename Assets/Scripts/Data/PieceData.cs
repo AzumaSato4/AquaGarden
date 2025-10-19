@@ -35,4 +35,5 @@ public class PieceData : ScriptableObject
     public int oxygen;
     public int amount;
     public PieceType pieceType;
+    public bool isMilestone;
 }

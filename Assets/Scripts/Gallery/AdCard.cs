@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,7 +12,7 @@ public class AdCard : MonoBehaviour
     Vector2 defSize = new Vector2(2.0f, 2.0f);
 
     int adMoney = 0;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
@@ -21,7 +20,7 @@ public class AdCard : MonoBehaviour
         adData = GameManager.instance.GetAdCardData(spotNum - 1);
         adCard.GetComponent<SpriteRenderer>().sprite = adData.sprite;
         cardAnimator = adCard.GetComponent<Animator>();
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void Update()
@@ -178,12 +177,12 @@ public class AdCard : MonoBehaviour
     {
         if (adMoney > 0)
         {
-            seManager.PlaySE(SEManager.SE_Type.getMoney);
+            soundManager.PlaySE(SoundManager.SE_Type.getMoney);
             ShowMessage($"獲得資金{adMoney}");
         }
         else
         {
-            seManager.PlaySE(SEManager.SE_Type.ng);
+            soundManager.PlaySE(SoundManager.SE_Type.ng);
             ShowMessage("獲得資金0");
         }
         TurnManager.currentPlayer.GetComponent<PlayerManager>().EndAd();

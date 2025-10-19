@@ -8,11 +8,11 @@ public class GalleryPlayerController : MonoBehaviour
     public bool movedGallery = true;
     GameObject selected;
     int clickCount;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void Update()
@@ -88,11 +88,12 @@ public class GalleryPlayerController : MonoBehaviour
             {
                 Debug.Log("後ろには進めません");
                 ShowMessage("後ろには進めません");
+                soundManager.PlaySE(SoundManager.SE_Type.ng);
                 return;
             }
             else
             {
-                seManager.PlaySE(SEManager.SE_Type.click);
+                soundManager.PlaySE(SoundManager.SE_Type.click);
                 playerManager.MoveGallery(index, selected.name);
                 transform.position = selected.transform.position;
                 movedGallery = true;

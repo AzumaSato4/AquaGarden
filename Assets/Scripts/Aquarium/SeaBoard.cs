@@ -3,33 +3,32 @@ using UnityEngine;
 
 public class SeaBoard : MonoBehaviour
 {
-    public Dictionary<PieceData, int> seaAquaPieces = new Dictionary<PieceData, int>();
+    public Dictionary<PieceData.PieceName, int> seaAquaPieces = new Dictionary<PieceData.PieceName, int>();
 
     [SerializeField] GameObject content;
     [SerializeField] GameObject seaItemPrefab;
     GameManager gameManager;
-    SEManager seaManager;
 
     public void Initialize()
     {
         gameManager = GameManager.instance;
-        seaManager = SEManager.instance;
         for (int i = 0; i < gameManager.pieceDataCount; i++)
         {
             PieceData data = gameManager.GetPieceData(i);
-            if (seaAquaPieces.ContainsKey(data)) continue;
-            seaAquaPieces.Add(data, 0);
+            PieceData.PieceName name = data.pieceName;
+            if (seaAquaPieces.ContainsKey(name)) continue;
+            seaAquaPieces.Add(name, 0);
 
-            if (data.pieceName == PieceData.PieceName.Seaweed)
+            if (name == PieceData.PieceName.Seaweed)
             {
-                seaAquaPieces[data] = 16;
+                seaAquaPieces[name] = 16;
             }
-            if (data.pieceName == PieceData.PieceName.Coral)
+            if (name == PieceData.PieceName.Coral)
             {
-                seaAquaPieces[data] = 16;
+                seaAquaPieces[name] = 16;
             }
 
-            if (seaAquaPieces[data] > 0)
+            if (seaAquaPieces[name] > 0)
             {
                 GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
                 seaItem.GetComponent<SeaItem>().seaBoard = this;
@@ -56,12 +55,12 @@ public class SeaBoard : MonoBehaviour
 
     public void AddPiece(PieceData piece)
     {
-        if (seaAquaPieces[piece] <= 0)
+        if (seaAquaPieces[piece.pieceName] <= 0)
         {
             GameObject seaItem = Instantiate(seaItemPrefab, content.transform);
             seaItem.GetComponent<SeaItem>().seaBoard = this;
             seaItem.GetComponent<SeaItem>().pieceData = piece;
         }
-        seaAquaPieces[piece]++;
+        seaAquaPieces[piece.pieceName]++;
     }
 }

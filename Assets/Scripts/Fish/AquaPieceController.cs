@@ -9,12 +9,12 @@ public class AquaPieceController : MonoBehaviour
     public AquaPieceManager aquaPieceManager;
 
     AquaPiece aquaPiece;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
         aquaPiece = GetComponent<AquaPiece>();
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void LateUpdate()
@@ -85,6 +85,7 @@ public class AquaPieceController : MonoBehaviour
                         {
                             Debug.Log("水槽から水槽には移動できません");
                             ShowMessage("水槽から水槽には移動できません");
+                            soundManager.PlaySE(SoundManager.SE_Type.ng);
                             aquaPieceManager.CanselSelect();
                             return;
                         }
@@ -97,24 +98,37 @@ public class AquaPieceController : MonoBehaviour
                     {
                         Debug.Log("水槽がいっぱいです");
                         ShowMessage("水槽がいっぱいです");
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
                         aquaPieceManager.CanselSelect();
                         return;
                     }
                     //酸素計算
                     if (!CheckOxygen(slot))
                     {
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
                         aquaPieceManager.CanselSelect();
                         return;
                     }
                     //相性チェック
                     if (!CheckType(slot))
                     {
-                        seManager.PlaySE(SEManager.SE_Type.ng);
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
                         aquaPieceManager.CanselSelect();
                         return;
                     }
+                    //マイルストーンチェック
+                    if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit)
+                    {
+                        if (!CheckMilestone(slot))
+                        {
+                            soundManager.PlaySE(SoundManager.SE_Type.ng);
+                            ShowMessage("水槽内にこのターンのマイルストーン駒がありません");
+                            aquaPieceManager.CanselSelect();
+                            return;
+                        }
+                    }
                     //水槽への移動確定
-                    seManager.PlaySE(SEManager.SE_Type.click);
+                    soundManager.PlaySE(SoundManager.SE_Type.click);
                     transform.position = to.transform.position;
                     aquaPiece.currentPos = target;
                     transform.parent = slot.transform;
@@ -125,19 +139,6 @@ public class AquaPieceController : MonoBehaviour
                     TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
                     aquaPiece.spotIndex = index;
 
-                    //マイルストーンの特別編集中なら水槽を最初に選んだものに限定する
-                    if (PhaseManager.currentPhase == PhaseManager.Phase.mileEdit && !playerManager.isMoveMilestone)
-                    {
-                        foreach (GameObject aquaSlot in playerManager.aquariumBoard.aquaSlots)
-                        {
-                            AquaSlot aSlot = aquaSlot.GetComponent<AquaSlot>();
-                            aSlot.selectable = false;
-                            aSlot.mask.SetActive(true);
-                        }
-                        slot.selectable = true;
-                        slot.mask.SetActive(false);
-                        playerManager.isMoveMilestone = true;
-                    }
                     aquaPieceManager.CanselSelect();
                 }
             }
@@ -168,6 +169,8 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("サメがいる水槽には入れられません");
                     ShowMessage("サメがいる水槽には入れられません");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -179,11 +182,15 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("サメがいる水槽には入れられません");
                     ShowMessage("サメがいる水槽には入れられません");
+                    isOK = false;
+                    return isOK;
                 }
                 else if (!types.Contains(PieceData.PieceType.seaweed))
                 {
                     Debug.Log("海藻がない水槽には入れられません");
                     ShowMessage("海藻がない水槽には入れられません");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -197,6 +204,8 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("サメと一緒に水槽に入れられない生き物がいます");
                     ShowMessage("サメと一緒に水槽に入れられない生き物がいます");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -211,6 +220,8 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("すでに上級駒があります");
                     ShowMessage("すでに上級駒があります");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -222,6 +233,8 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("海藻は水槽に1つまでです");
                     ShowMessage("海藻は水槽に1つまでです");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -233,6 +246,8 @@ public class AquaPieceController : MonoBehaviour
                 {
                     Debug.Log("サンゴは水槽に1つまでです");
                     ShowMessage("サンゴは水槽に1つまでです");
+                    isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -251,6 +266,7 @@ public class AquaPieceController : MonoBehaviour
                     Debug.Log("水槽内にサメがいません");
                     ShowMessage("水槽内にサメがいません");
                     isOK = false;
+                    return isOK;
                 }
                 else
                 {
@@ -277,6 +293,48 @@ public class AquaPieceController : MonoBehaviour
         {
             Debug.Log("水槽内の酸素量が限界です");
             ShowMessage("水槽内の酸素量が限界です");
+        }
+
+        return isOK;
+    }
+
+    //マイルストーン駒チェック
+    bool CheckMilestone(AquaSlot slot)
+    {
+        bool isOK = false;
+
+        //マイルストーン駒ならOK
+        if (aquaPiece.iscurrentTurn && aquaPiece.pieceData.isMilestone)
+        {
+            isOK = true;
+            playerManager.isMoveMilestone = true;
+            return isOK;
+        }
+
+        //マイルストーン駒、海藻駒を移動済み
+        if (playerManager.isMoveMilestone)
+        {
+            foreach (GameObject piece in slot.slotPieces)
+            {
+                AquaPiece slotPiece = piece.GetComponent<AquaPiece>();
+                //水槽内にこのターンで手に入れたマイルストーン駒があればtrue
+                if (slotPiece.iscurrentTurn && slotPiece.pieceData.isMilestone)
+                {
+                    isOK = true;
+                    return isOK;
+                }
+            }
+        }
+        //まだ移動していない
+        else
+        {
+            //海藻駒は特別にOK
+            if (aquaPiece.pieceData.pieceName == PieceData.PieceName.Seaweed)
+            {
+                isOK = true;
+                playerManager.isMoveMilestone = true;
+                return isOK;
+            }
         }
 
         return isOK;

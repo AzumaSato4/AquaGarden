@@ -9,22 +9,24 @@ public class SeaItem : MonoBehaviour
     public TextMeshProUGUI pieceNameText;
     public Image pieceImg;
     public TextMeshProUGUI pieceCountText;
+    [SerializeField] TextMeshProUGUI oxygenText;
     [SerializeField] Button buyButton;
     int pieceCount;
 
     UIController uiController;
     AquaPieceManager aquaPieceManager;
-    SEManager seManager;
+    SoundManager soundManager;
 
     private void Start()
     {
         pieceNameText.text = pieceData.pieceName.ToString();
         pieceImg.sprite = pieceData.pieceSprite;
-        pieceCount = seaBoard.seaAquaPieces[pieceData];
+        pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
         pieceCountText.text = pieceCount.ToString();
+        oxygenText.text = pieceData.oxygen.ToString();
         aquaPieceManager = GameObject.Find("MainManager").GetComponent<AquaPieceManager>();
         uiController = GameObject.Find("MainManager").GetComponent<UIController>();
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
     }
 
     private void Update()
@@ -37,7 +39,7 @@ public class SeaItem : MonoBehaviour
         {
             buyButton.interactable = false;
         }
-        pieceCount = seaBoard.seaAquaPieces[pieceData];
+        pieceCount = seaBoard.seaAquaPieces[pieceData.pieceName];
         pieceCountText.GetComponent<TextMeshProUGUI>().text = pieceCount.ToString();
     }
 
@@ -45,16 +47,16 @@ public class SeaItem : MonoBehaviour
     {
         if (TurnManager.currentPlayer.GetComponent<PlayerManager>().money >= 2)
         {
-            seaBoard.seaAquaPieces[pieceData]--;
+            seaBoard.seaAquaPieces[pieceData.pieceName]--;
 
-            seManager.PlaySE(SEManager.SE_Type.pay);
+            soundManager.PlaySE(SoundManager.SE_Type.pay);
             aquaPieceManager.CreatePiece(pieceData, 2, true);
             uiController.ChangeUI(UIController.PanelType.none);
-            if (seaBoard.seaAquaPieces[pieceData] <= 0) Destroy(this.gameObject);
+            if (seaBoard.seaAquaPieces[pieceData.pieceName] <= 0) Destroy(this.gameObject);
         }
         else
         {
-            seManager.PlaySE(SEManager.SE_Type.ng);
+            soundManager.PlaySE(SoundManager.SE_Type.ng);
             uiController.ChangeUI(UIController.PanelType.none);
             Debug.Log("資金が足りません！");
             ShowMessage("資金が足りません！");

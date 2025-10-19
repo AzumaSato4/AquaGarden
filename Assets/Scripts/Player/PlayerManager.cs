@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     TurnManager turnManager;    //TurnManagerを格納するための変数
     public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
     public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
-    SEManager seManager;
+    SoundManager soundManager;
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour
         GameObject manager = GameObject.Find("MainManager");
         turnManager = manager.GetComponent<TurnManager>();
         phaseManager = manager.GetComponent<PhaseManager>();
-        seManager = SEManager.instance;
+        soundManager = SoundManager.instance;
 
         //初期位置にセット
         //ギャラリースタート位置にセット
@@ -129,7 +129,7 @@ public class PlayerManager : MonoBehaviour
     public void StartGallery()
     {
         if (!isActive) return;
-        seManager.PlaySE(SEManager.SE_Type.turnStart);
+        soundManager.PlaySE(SoundManager.SE_Type.turnStart);
         galleryPlayer.GetComponent<GalleryPlayerController>().movedGallery = false;
         galleryPlayer.GetComponent<Animator>().enabled = true;
     }
@@ -147,7 +147,7 @@ public class PlayerManager : MonoBehaviour
         {
             isGoal = true;
             //ゴールしたら強制ターンエンド
-            turnManager.EndTurn();
+            turnManager.Invoke("EndTurn", 1.0f);
             return;
         }
 
@@ -161,9 +161,9 @@ public class PlayerManager : MonoBehaviour
                 StartCoroutine(GetPieceCoroutine(fishTile));
 
                 phaseManager.EndGallery(player);
-                //UIが変に表示されないように遅らせる
-                seManager.PlaySE(SEManager.SE_Type.water);
-                Invoke("StartMyAquarium", 1.0f);
+                //カメラが完全に切り替わってからスタートする
+                soundManager.PlaySE(SoundManager.SE_Type.water);
+                Invoke("StartMyAquarium", 2.0f);
             }
             //広告マス
             else if (tile == "AdTile")
@@ -336,7 +336,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         money += getMoney;
-        seManager.PlaySE(SEManager.SE_Type.getMoney);
+        soundManager.PlaySE(SoundManager.SE_Type.getMoney);
         EditAquarium();
     }
 
@@ -426,10 +426,16 @@ public class PlayerManager : MonoBehaviour
         if (!aquariumBoard.storage.GetComponent<Storage>().CheckSpotEmpty())
         {
             ShowMessage("ストレージを空にしてください！");
-            seManager.PlaySE(SEManager.SE_Type.ng);
+            soundManager.PlaySE(SoundManager.SE_Type.ng);
             return;
         }
 
+        //水槽ごとにマイルストーン達成しているかチェック
+        StartCoroutine(CheckSlots());
+    }
+
+    IEnumerator CheckSlots()
+    {
         foreach (GameObject slot in aquariumBoard.aquaSlots)
         {
             AquaSlot aquaSlot = slot.GetComponent<AquaSlot>();
@@ -441,8 +447,6 @@ public class PlayerManager : MonoBehaviour
             //マイルストーン達成
             if (mileIndex >= 0)
             {
-                Celebrate();
-
                 for (int i = 0; i < GameManager.players; i++)
                 {
                     if (turnManager.achivements[mileIndex, i] == 0)
@@ -461,15 +465,17 @@ public class PlayerManager : MonoBehaviour
                 //一番最初に達成したら駒を獲得
                 if (playerAchievement[mileIndex] == 1)
                 {
+                    Celebrate();
                     AchievePanel.isReward = true;
                     CreateMilePiece(mileIndex);
                     MileEditAquarium();
                     isMoveMilestone = false;
-                    return;
+                    yield break;
                 }
+                Celebrate();
+                yield return new WaitForSeconds(2.0f);
             }
         }
-
         AbledTurnEnd(false);
         AbledCancel(false);
         aquariumCanvas.SetActive(false);
@@ -530,7 +536,7 @@ public class PlayerManager : MonoBehaviour
     //マイルストーン達成祝福
     void Celebrate()
     {
-        seManager.PlaySE(SEManager.SE_Type.celebrate);
+        soundManager.PlaySE(SoundManager.SE_Type.celebrate);
         UIController.isAchieved = true;
     }
 
