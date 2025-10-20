@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public Player player; //プレイヤー情報
-    GalleryBoard galleryBoard; //ギャラリータイル情報を取得するための変数
+    public GalleryBoard galleryBoard; //ギャラリータイル情報を取得するための変数
     public AquariumBoard aquariumBoard; //水族館ボード情報を取得するための変数
     public int money; //所持資金
     int preMoney; //ひとつ前時点の所持資金
@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     GameObject currentGalleryTile;  //現在のギャラリーマス
     public int galleryIndex;        //現在のギャラリーマス番号
     GameObject currentAquariumTile; //現在の水族館マス
-    int aquariumIndex;              //現在の水族館マス番号
+    public int aquariumIndex;              //現在の水族館マス番号
     public GameObject aquariumCanvas; //自分の水族館専用キャンバス
     [SerializeField] GameObject turnEnd;  //ターンエンドボタン
     [SerializeField] GameObject cancel; //キャンセルボタン

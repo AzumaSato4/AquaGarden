@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GalleryBoard : MonoBehaviour
 {
+    public GameObject[] Tiles;
     public GameObject[] galleryTiles;
     public GameObject[] startSpots;
     public GameObject[] roundSpots;

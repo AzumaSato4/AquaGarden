@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class AquaPieceController : MonoBehaviour
 {
     public PlayerManager playerManager;
     public AquaPieceManager aquaPieceManager;
+    float moveTime = 0.3f;
 
     AquaPiece aquaPiece;
     SoundManager soundManager;
@@ -128,18 +130,8 @@ public class AquaPieceController : MonoBehaviour
                         }
                     }
                     //水槽への移動確定
-                    soundManager.PlaySE(SoundManager.SE_Type.click);
-                    transform.position = to.transform.position;
-                    aquaPiece.currentPos = target;
-                    transform.parent = slot.transform;
-                    slot.slotPieces.Add(AquaPieceManager.selectedPiece);
-                    slot.slotOxygen += aquaPiece.pieceData.oxygen;
-                    slot.isPiece[index] = true;
-                    aquaPiece.isiFromSea = false;
-                    TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
-                    aquaPiece.spotIndex = index;
-
-                    aquaPieceManager.CanselSelect();
+                    //移動処理
+                    Move(to, target, slot, index);
                 }
             }
         }
@@ -338,6 +330,26 @@ public class AquaPieceController : MonoBehaviour
         }
 
         return isOK;
+    }
+
+    //移動処理
+    void Move(GameObject to, GameObject target, AquaSlot slot, int index)
+    {
+        //DoTweenで移動アニメーション
+        transform.DOMove(to.transform.position, moveTime).OnComplete(() =>
+        {
+            soundManager.PlaySE(SoundManager.SE_Type.click);
+        });
+        aquaPiece.currentPos = target;
+        transform.parent = slot.transform;
+        slot.slotPieces.Add(AquaPieceManager.selectedPiece);
+        slot.slotOxygen += aquaPiece.pieceData.oxygen;
+        slot.isPiece[index] = true;
+        aquaPiece.isiFromSea = false;
+        TurnManager.currentPlayer.GetComponent<PlayerManager>().aquariumBoard.storage.GetComponent<Storage>().ReleasePiece();
+        aquaPiece.spotIndex = index;
+        //選択中の魚駒をnullにする
+        aquaPieceManager.CanselSelect();
     }
 
     //メッセージを表示

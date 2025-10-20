@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +8,8 @@ public class AquariumPlayerController : MonoBehaviour
 
     public bool movedAquarium = true;
     int clickCount;
+    float moveTime = 0.3f; //移動アニメーションの時間
+
     GameObject selected;
     SoundManager soundManager;
 
@@ -84,11 +87,35 @@ public class AquariumPlayerController : MonoBehaviour
         //水族館のクリックしたマスに移動する
         if (selected.CompareTag("AquariumTile"))
         {
-            soundManager.PlaySE(SoundManager.SE_Type.click);
-            playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
-            transform.position = selected.transform.position;
+            int nextIndex = playerManager.aquariumIndex + 1;
+            //1マスずつ移動
+            OneStep(nextIndex);
             movedAquarium = true;
         }
-        selected = null;
+    }
+
+    void OneStep(int nextIndex)
+    {
+        if (nextIndex >= playerManager.aquariumBoard.aquaTiles.Length)
+        {
+            nextIndex -= playerManager.aquariumBoard.aquaTiles.Length;
+        }
+        Debug.Log(nextIndex);
+        GameObject next = playerManager.aquariumBoard.aquaTiles[nextIndex];
+        //DoTweenで移動アニメーション
+        transform.DOMove(next.transform.position, moveTime).OnComplete(() =>
+        {
+            soundManager.PlaySE(SoundManager.SE_Type.click);
+            if (transform.position != selected.transform.position)
+            {
+                nextIndex++; 
+                OneStep(nextIndex);
+            }
+            else //移動が完了
+            {
+                playerManager.MoveAquarium(selected.GetComponent<TileManager>().tileIndex);
+                selected = null;
+            }
+        });
     }
 }

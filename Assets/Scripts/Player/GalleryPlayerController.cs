@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,7 +9,10 @@ public class GalleryPlayerController : MonoBehaviour
 
     public bool movedGallery = true;
     GameObject selected;
+    int selectIndex;
     int clickCount;
+    float moveTime = 0.3f; //移動アニメーションの時間
+
     SoundManager soundManager;
 
     private void Start()
@@ -83,8 +88,8 @@ public class GalleryPlayerController : MonoBehaviour
         //ギャラリーのクリックしたマスに移動する
         if (selected.CompareTag("GalleryTile"))
         {
-            int index = selected.GetComponent<TileManager>().tileIndex;
-            if (index < playerManager.galleryIndex && 3 < index)
+            selectIndex = selected.GetComponent<TileManager>().tileIndex;
+            if (selectIndex < playerManager.galleryIndex && 3 < selectIndex)
             {
                 Debug.Log("後ろには進めません");
                 ShowMessage("後ろには進めません");
@@ -93,9 +98,9 @@ public class GalleryPlayerController : MonoBehaviour
             }
             else
             {
-                soundManager.PlaySE(SoundManager.SE_Type.click);
-                playerManager.MoveGallery(index, selected.name);
-                transform.position = selected.transform.position;
+                int nextIndex = playerManager.galleryIndex + 1;
+                //1マスずつ進む
+                OneStep(nextIndex);
                 movedGallery = true;
                 if (selected.GetComponent<BoxCollider2D>() != null)
                     selected.GetComponent<BoxCollider2D>().enabled = false;
@@ -103,6 +108,31 @@ public class GalleryPlayerController : MonoBehaviour
                     selected.GetComponent<CircleCollider2D>().enabled = false;
             }
         }
+    }
+
+    void OneStep(int nextIndex)
+    {
+        if (nextIndex >= playerManager.galleryBoard.Tiles.Length)
+        {
+            nextIndex -= playerManager.galleryBoard.Tiles.Length;
+        }
+        Debug.Log(nextIndex);
+        GameObject next = playerManager.galleryBoard.Tiles[nextIndex];
+        //DoTweenで移動アニメーション
+        transform.DOMove(next.transform.position, moveTime).OnComplete(() =>
+        {
+            soundManager.PlaySE(SoundManager.SE_Type.click);
+            if (transform.position != selected.transform.position)
+            {
+                nextIndex++;
+                OneStep(nextIndex);
+            }
+            else //移動が完了
+            {
+                playerManager.MoveGallery(selectIndex, selected.name);
+                selected = null;
+            }
+        });
     }
 
     void ShowMessage(string message)
