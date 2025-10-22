@@ -45,14 +45,14 @@ public class AquariumPlayerController : MonoBehaviour
 
             //カーソルの位置を取得
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
-            //クリックしたオブジェクトを取得
-            if (hit.collider == null) return;
-            selected = hit.collider.gameObject;
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1.0f);
 
             //マウスクリックしたら
             if (Input.GetMouseButtonDown(0))
             {
+                //クリックしたオブジェクトを取得
+                if (hit.collider == null) return;
+                selected = hit.collider.gameObject;
                 //何かオブジェクトをクリックしたら
                 if (selected == null) return;
 
@@ -91,11 +91,6 @@ public class AquariumPlayerController : MonoBehaviour
 
         int moveToIndex = selected.GetComponent<TileManager>().tileIndex;
         int nextIndex = currentIndex;
-        if (playerManager.isMovedAquarium)
-        {
-            //1度移動したら前にしか進めない
-            if (currentIndex > moveToIndex) return;
-        }
 
         nextIndex++;
         if (nextIndex >= playerManager.aquariumBoard.aquaTiles.Length)
@@ -105,6 +100,11 @@ public class AquariumPlayerController : MonoBehaviour
 
         //1マスずつ移動
         OneStepForward(nextIndex, moveToIndex);
+        playerManager.totalSteps += moveToIndex - currentIndex;
+        if (playerManager.totalSteps < 0)
+        {
+            playerManager.totalSteps += playerManager.aquariumBoard.aquaTiles.Length;
+        }
     }
 
     //前に進む
@@ -159,6 +159,7 @@ public class AquariumPlayerController : MonoBehaviour
             nextIndex += playerManager.aquariumBoard.aquaTiles.Length;
         }
 
+        playerManager.totalSteps = 0;
         RePayMoveMoney();
         OneStepBack(nextIndex, moveToIndex);
     }
@@ -299,6 +300,7 @@ public class AquariumPlayerController : MonoBehaviour
         selected = null;
         getMoney = 0;
         isGetMoney = false;
+        playerManager.totalSteps = 0;
     }
 
     //そのマスが止まれるかどうかチェック

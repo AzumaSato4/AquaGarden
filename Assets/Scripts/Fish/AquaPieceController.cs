@@ -56,7 +56,7 @@ public class AquaPieceController : MonoBehaviour
             {
                 //カーソルの位置を取得
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+                RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1.0f);
                 //クリックしたオブジェクトを取得
                 if (hit.collider != null)
                 {

@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject plusMovePanel; //水族館の移動距離変更パネル
     TextMeshProUGUI moneyCountText; //所持資金テキスト
     public int steps = 3; //水族館の移動可能距離
+    public int totalSteps; //水族館の合計移動距離
     bool isCheck; //移動距離チェックするかどうか
     public bool isMoveing; //移動中かどうか
     public bool isMovedAquarium; //移動完了したかどうか
@@ -214,7 +215,7 @@ public class PlayerManager : MonoBehaviour
             tile.GetComponent<PolygonCollider2D>().enabled = false;
         }
 
-        for (int i = 1; i <= steps; i++)
+        for (int i = totalSteps + 1; i <= steps; i++)
         {
             int movableTiles = aquariumIndex + i;
             if (movableTiles > aquariumBoard.aquaSlots.Length - 1)

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -45,14 +46,14 @@ public class GalleryPlayerController : MonoBehaviour
 
             //カーソルの位置を取得
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
-            //クリックしたオブジェクトを取得
-            if (hit.collider == null) return;
-            selected = hit.collider.gameObject;
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 1.0f);
 
             //マウスクリックしたら
             if (Input.GetMouseButtonDown(0))
             {
+                //クリックしたオブジェクトを取得
+                if (hit.collider == null) return;
+                selected = hit.collider.gameObject;
                 //何かオブジェクトをクリックしたら
                 if (selected == null) return;
                 if (UnityEngine.Device.Application.isMobilePlatform)
@@ -73,7 +74,7 @@ public class GalleryPlayerController : MonoBehaviour
         if (clickCount != 2)
         {
             clickCount = 0;
-            selected = null;
+            //selected = null;
             return;
         }
         else
