@@ -4,8 +4,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     //プレイヤー基本情報
-    public static int selectPlayers = 1; //プレイ人数
-    public static int players = 1;
+    public static int selectPlayers = 4; //プレイ人数
+    public static int players = 4;
     public static string[] playerName;
     public static Sprite[] galleryColor;
     public static Sprite[] aquariumColor;
