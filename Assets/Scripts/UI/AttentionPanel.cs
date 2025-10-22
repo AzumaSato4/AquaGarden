@@ -14,9 +14,7 @@ public class AttentionPanel : MonoBehaviour
         isShow = true;
         messageText.text = message;
         image.sprite = sprite;
-        image.SetNativeSize();
         image.preserveAspect = true;
-        image.rectTransform.sizeDelta = new Vector2(300f,300f);
     }
 
     public void OnOKButton()

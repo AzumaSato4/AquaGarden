@@ -21,8 +21,7 @@ public class AquaPieceManager : MonoBehaviour
         selectedPiece = selected;
 
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
-        current.AbledCancel(true);
-        current.SelectSlot();
+        current.playerPanel.AbledCancel(true);
     }
 
     public void CanselSelect()
@@ -31,8 +30,7 @@ public class AquaPieceManager : MonoBehaviour
         selectedPiece = null;
 
         PlayerManager current = TurnManager.currentPlayer.GetComponent<PlayerManager>();
-        current.AbledCancel(false);
-        //current.DontSelectSlot();
+        current.playerPanel.AbledCancel(false);
         current.aquariumBoard.storage.GetComponent<Storage>().Invoke("CheckSpotEmpty", 0.1f);
     }
 
@@ -93,19 +91,20 @@ public class AquaPieceManager : MonoBehaviour
             {
                 AquaSlot aquaSlot = currentPos.GetComponent<AquaSlot>();
                 PieceData.PieceName name = selectedPiece.GetComponent<AquaPiece>().pieceData.pieceName;
+                PieceData.PieceName[] names = new PieceData.PieceName[aquaSlot.slotPieces.Count];
+                for (int i = 0; i < names.Length; i++)
+                {
+                    names[i] = aquaSlot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceName;
+                }
                 //サメ、ジンベエザメ
                 if (name == PieceData.PieceName.Shark || name == PieceData.PieceName.WhaleShark)
                 {
-                    PieceData.PieceName[] names = new PieceData.PieceName[aquaSlot.slotPieces.Count];
-                    for (int i = 0; i < names.Length; i++)
-                    {
-                        names[i] = aquaSlot.slotPieces[i].GetComponent<AquaPiece>().pieceData.pieceName;
-                    }
                     //コバンザメ
                     if (names.Contains(PieceData.PieceName.Remora))
                     {
                         Debug.Log("水槽内にサメが必要です");
                         ShowMessage("水槽内にサメが必要です");
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
 
                         CanselSelect();
                         yield break;
@@ -120,6 +119,17 @@ public class AquaPieceManager : MonoBehaviour
                     {
                         Debug.Log("水槽の酸素量が足りなくなります");
                         ShowMessage("水槽の酸素量が足りなくなります");
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
+
+                        CanselSelect();
+                        yield break;
+                    }
+                    //ウミガメ
+                    if (names.Contains(PieceData.PieceName.SeaTurtle))
+                    {
+                        Debug.Log("水槽内に海藻が必要です");
+                        ShowMessage("水槽内に海藻が必要です");
+                        soundManager.PlaySE(SoundManager.SE_Type.ng);
 
                         CanselSelect();
                         yield break;

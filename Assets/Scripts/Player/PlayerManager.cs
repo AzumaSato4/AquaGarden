@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -22,26 +21,27 @@ public class PlayerManager : MonoBehaviour
     GameObject currentGalleryTile;  //現在のギャラリーマス
     public int galleryIndex;        //現在のギャラリーマス番号
     GameObject currentAquariumTile; //現在の水族館マス
-    public int aquariumIndex;              //現在の水族館マス番号
+    public int aquariumIndex;       //現在の水族館マス番号
     public GameObject aquariumCanvas; //自分の水族館専用キャンバス
-    [SerializeField] GameObject turnEnd;  //ターンエンドボタン
-    [SerializeField] GameObject cancel; //キャンセルボタン
-    [SerializeField] GameObject plusMovePanel; //水族館の移動距離変更パネル
+    public PlayerPanel playerPanel; //プレイヤー専用パネル
+    public GameObject plusMovePanel; //水族館の移動距離変更パネル
     TextMeshProUGUI moneyCountText; //所持資金テキスト
     public int steps = 3; //水族館の移動可能距離
     bool isCheck; //移動距離チェックするかどうか
+    public bool isMoveing; //移動中かどうか
+    public bool isMovedAquarium; //移動完了したかどうか
 
-    TurnManager turnManager;    //TurnManagerを格納するための変数
-    public PhaseManager phaseManager;  //PhaseManagerを格納するための変数
-    public AquaPieceManager aquaPieceManager;  //PieceManagerを格納するための変数
+    TurnManager turnManager;
+    public PhaseManager phaseManager;
+    public AquaPieceManager aquaPieceManager;
     SoundManager soundManager;
 
     public bool isActive = false;   //自分のターンかどうか
     public bool isGoal = false;     //ゴールしたかどうか
-    int[] playerAchievement; //マイルストーン達成状況
+    int[] playerAchievement;        //マイルストーン達成状況
     public bool isMoveMilestone = false; //マイルストーン駒を動かしたかどうか
 
-    int another;    //選択可能なもう一つの水槽を記録するための変数
+    public int another;    //選択可能なもう一つの水槽を記録するための変数
 
     private void Awake()
     {
@@ -60,10 +60,6 @@ public class PlayerManager : MonoBehaviour
 
         //ギャラリーの情報を取得
         galleryBoard = GameObject.Find("Gallery").GetComponent<GalleryBoard>();
-
-        //ターンエンドボタンとキャンセルボタンを最初は選択不可にする
-        turnEnd.GetComponent<Button>().interactable = false;
-        cancel.GetComponent<Button>().interactable = false;
 
         //TurnManagerとPhaseManagerを取得
         GameObject manager = GameObject.Find("MainManager");
@@ -88,6 +84,7 @@ public class PlayerManager : MonoBehaviour
         aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
         moneyCountText = GameObject.Find("MoneyCountText").GetComponent<TextMeshProUGUI>();
         //UIは最初は消す
+        playerPanel.ChengePanel(null);
         aquariumCanvas.SetActive(false);
         //水族館用カメラとキャンバスを配列に追加
         phaseManager.cameraManager.cameras[player.playerNum] = myCamera;
@@ -108,6 +105,7 @@ public class PlayerManager : MonoBehaviour
         if (preMoney != money)
         {
             if (money > 15) money = 15;
+            if (money < 0) money = 0;
             aquariumBoard.coin.transform.position = aquariumBoard.CoinSpots[money].transform.position;
             preMoney = money;
         }
@@ -200,10 +198,11 @@ public class PlayerManager : MonoBehaviour
     {
         if (!isActive) return;
         aquariumCanvas.SetActive(true);
+        playerPanel.ChengePanel(playerPanel.movedPanel);
         steps = 3; //初期値に戻す
 
         aquariumPlayer.GetComponent<Animator>().enabled = true;
-        aquariumPlayer.GetComponent<AquariumPlayerController>().movedAquarium = false;
+        isMovedAquarium = false;
 
         isCheck = true;
     }
@@ -232,9 +231,6 @@ public class PlayerManager : MonoBehaviour
         aquariumPlayer.GetComponent<Animator>().enabled = false;
         aquariumPlayer.transform.localScale = Vector2.one;
 
-
-        bool isFeeding = false;
-
         int moveTiles = to - aquariumIndex;
         if (moveTiles < 0) moveTiles += 6;
         //もし支払った資金より移動距離が少なければ返金する
@@ -259,18 +255,6 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
 
-        for (int i = 0; i < moveTiles; i++)
-        {
-            int indexA = aquariumIndex + i;
-            if (indexA > 5) indexA -= 6;
-            int indexB = indexA + 1;
-
-            if (indexA == 0 && indexB == 1)
-            {
-                isFeeding = true;
-            }
-        }
-
         aquariumBoard.isPlayer[aquariumIndex] = false;
         aquariumIndex = to;
         aquariumBoard.isPlayer[aquariumIndex] = true;
@@ -280,71 +264,15 @@ public class PlayerManager : MonoBehaviour
             aquariumBoard.aquaTiles[i].GetComponent<PolygonCollider2D>().enabled = false;
         }
 
-        if (isFeeding)
-        {
-            phaseManager.StartFeeding();
-            StartFeeding();
-            return;
-        }
-        else
-        {
-            EditAquarium();
-            return;
-        }
-    }
-
-    //餌やりイベント
-    void StartFeeding()
-    {
-        int getMoney = 0;
-        //無条件で資金を1追加
-        getMoney++;
-
-        int countA = 0;
-        int countB = 0;
-        foreach (GameObject piece in aquariumBoard.aquaSlots[0].GetComponent<AquaSlot>().slotPieces)
-        {
-            PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
-            if (name == feedingData.nameA)
-            {
-                countA++;
-            }
-            if (name == feedingData.nameB)
-            {
-                countB++;
-            }
-        }
-        foreach (GameObject piece in aquariumBoard.aquaSlots[1].GetComponent<AquaSlot>().slotPieces)
-        {
-            PieceData.PieceName name = piece.GetComponent<AquaPiece>().pieceData.pieceName;
-            if (name == feedingData.nameA)
-            {
-                countA++;
-            }
-            if (name == feedingData.nameB)
-            {
-                countB++;
-            }
-        }
-
-        while (countA > 0 && countB > 0)
-        {
-            getMoney++;
-
-            countA--;
-            countB--;
-        }
-
-        money += getMoney;
-        soundManager.PlaySE(SoundManager.SE_Type.getMoney);
         EditAquarium();
+        return;
     }
 
     //水族館編集
     void EditAquarium()
     {
         phaseManager.StartEdit();
-        AbledTurnEnd(true);
+        playerPanel.ChengePanel(playerPanel.editPanel);
 
         another = aquariumIndex - 1;
         if (another < 0)
@@ -362,12 +290,14 @@ public class PlayerManager : MonoBehaviour
                 aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>().mask.SetActive(true);
             }
         }
+
+        SelectSlot();
     }
 
     public void AdEditAquarium()
     {
         phaseManager.StartAdEdit(player);
-        AbledTurnEnd(true);
+        playerPanel.ChengePanel(playerPanel.editPanel);
 
         if (isActive)
         {
@@ -389,7 +319,7 @@ public class PlayerManager : MonoBehaviour
     void MileEditAquarium()
     {
         phaseManager.StartMileEdit(player);
-        AbledTurnEnd(true);
+        playerPanel.AbledTurnEnd(true);
 
         if (isActive)
         {
@@ -429,6 +359,7 @@ public class PlayerManager : MonoBehaviour
             soundManager.PlaySE(SoundManager.SE_Type.ng);
             return;
         }
+        phaseManager.EndEdit();
 
         //水槽ごとにマイルストーン達成しているかチェック
         StartCoroutine(CheckSlots());
@@ -468,7 +399,8 @@ public class PlayerManager : MonoBehaviour
                     Celebrate();
                     AchievePanel.isReward = true;
                     CreateMilePiece(mileIndex);
-                    MileEditAquarium();
+                    //編集モードを終了させるために少し遅らせる
+                    Invoke("MileEditAquarium", 0.1f);
                     isMoveMilestone = false;
                     yield break;
                 }
@@ -476,10 +408,16 @@ public class PlayerManager : MonoBehaviour
                 yield return new WaitForSeconds(2.0f);
             }
         }
-        AbledTurnEnd(false);
-        AbledCancel(false);
+        playerPanel.ChengePanel(null);
         aquariumCanvas.SetActive(false);
-        turnManager.EndTurn();
+        for (int i = 0; i < 6; i++)
+        {
+            AquaSlot aquaSlot = aquariumBoard.aquaSlots[i].GetComponent<AquaSlot>();
+            aquaSlot.mask.SetActive(false);
+            aquaSlot.selectable = false;
+        }
+        //編集モードを終了させるために少し遅らせる
+        turnManager.Invoke("EndTurn", 0.1f);
     }
 
     //マイルストーンチェック
@@ -538,24 +476,6 @@ public class PlayerManager : MonoBehaviour
     {
         soundManager.PlaySE(SoundManager.SE_Type.celebrate);
         UIController.isAchieved = true;
-    }
-
-    //キャンセルボタンを押した
-    public void OnCancelButton()
-    {
-        aquaPieceManager.CanselSelect();
-    }
-
-    //ターンエンドを押せるかどうか変更
-    public void AbledTurnEnd(bool isAble)
-    {
-        turnEnd.GetComponent<Button>().interactable = isAble;
-    }
-
-    //キャンセルボタンを押せるかどうか変更
-    public void AbledCancel(bool isAble)
-    {
-        cancel.GetComponent<Button>().interactable = isAble;
     }
 
     //最終スコア計算

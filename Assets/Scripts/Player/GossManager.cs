@@ -3,7 +3,7 @@ using UnityEngine;
 public class GossManager : MonoBehaviour
 {
     public Player player; //プレイヤー情報
-    GalleryBoard galleryBoard; //ギャラリータイル情報を取得するための変数
+    public GalleryBoard galleryBoard; //ギャラリータイル情報を取得するための変数
 
     [SerializeField] GameObject galleryPlayer;   //ギャラリーのプレイヤー駒
 

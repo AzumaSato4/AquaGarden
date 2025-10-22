@@ -21,7 +21,7 @@ public class AquaPiece : MonoBehaviour
 
     private void Update()
     {
-        if (PhaseManager.currentPhase == PhaseManager.Phase.end)
+        if (PhaseManager.currentPhase == PhaseManager.Phase.endEdit)
         {
             iscurrentTurn = false;
         }

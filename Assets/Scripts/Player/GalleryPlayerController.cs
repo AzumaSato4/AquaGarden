@@ -116,7 +116,6 @@ public class GalleryPlayerController : MonoBehaviour
         {
             nextIndex -= playerManager.galleryBoard.Tiles.Length;
         }
-        Debug.Log(nextIndex);
         GameObject next = playerManager.galleryBoard.Tiles[nextIndex];
         //DoTweenで移動アニメーション
         transform.DOMove(next.transform.position, moveTime).OnComplete(() =>

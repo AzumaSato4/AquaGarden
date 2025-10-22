@@ -12,6 +12,7 @@ public class PhaseManager : MonoBehaviour
         mileEdit,
         ad,
         feeding,
+        endEdit,
         end
     }
 
@@ -93,6 +94,11 @@ public class PhaseManager : MonoBehaviour
     {
         cameraManager.ChangeMainCamera(player.playerNum);
         currentPhase = Phase.mileEdit;
+    }
+
+    public void EndEdit()
+    {
+        currentPhase = Phase.endEdit;
     }
 
     public void EndTurn()

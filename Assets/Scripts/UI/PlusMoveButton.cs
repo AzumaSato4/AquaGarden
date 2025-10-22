@@ -25,6 +25,13 @@ public class PlusMoveButton : MonoBehaviour
 
     private void Update()
     {
+        if (playerManager.isMoveing)
+        {
+            plusButton.interactable = false;
+            minusButton.interactable = false;
+            return;
+        }
+
         if (playerManager.money <= 0 || 5 <= playerManager.steps)
         {
             plusButton.interactable = false;
@@ -34,7 +41,7 @@ public class PlusMoveButton : MonoBehaviour
             plusButton.interactable = true;
         }
 
-        if (payMoney <= 0)
+        if (payMoney <= 0 || playerManager.steps <= 3 || playerManager.isMovedAquarium)
         {
             minusButton.interactable = false;
         }
@@ -60,7 +67,7 @@ public class PlusMoveButton : MonoBehaviour
     //ボタンが押されたら移動距離マイナス
     public void MinusMove()
     {
-        if (payMoney <= 0) return;
+        if (payMoney <= 0 || playerManager.steps <= 3) return;
 
         playerManager.steps--;
         playerManager.money++;
