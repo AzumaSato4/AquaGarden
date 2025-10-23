@@ -35,7 +35,7 @@ AquaGardenは机いっぱいに広げて遊ぶ中量級ボードゲームであ�
 
 ### ゲームルール
 
-[うちばこや様のルールブック(PDF)](https://uchibacoya.com/images/aqua-garden-rulebook.zip)
+[うちばこや様のルールブック(PDF)](/Readme/aqua-garden-rulebook.pdf)
 
 一部抜粋
 
@@ -81,7 +81,13 @@ PCでもスマートフォンでも同じような見栄えになるようにUI�
 
 - ギャラリーボードの広告イラストは画面上で見やすくするために横長に変更した。
 
+  ![ボードゲーム版ギャラリー](/Readme/aquagarden_base_gallery.png)
+  ![デジタルゲーム版ギャラリー](/Readme/aquagarden_gallery.png)
+
 - 水族館ボードの上部に魚駒を一時的に置くためのストレージ置き場を制作した。
+
+  ![ボードゲーム版水族館](/Readme/aquagarden_base_aquarium.png)
+  ![デジタルゲーム版水族館](/Readme/aquagarden_aquarium1.png)
 
 ### スクリプトの詳細
 
