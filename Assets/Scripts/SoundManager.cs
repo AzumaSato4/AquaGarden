@@ -56,6 +56,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayBGM(BGM_Type type)
     {
+        StopBGM();
         bgmAudio.resource = bgm[(int)type];
         bgmAudio.Play();
     }

@@ -513,10 +513,26 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 700
       objectReference: {fileID: 0}
+    - target: {fileID: 1255786057940578741, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9f28b5ff2e4c35b478809f6c29faf2cd, type: 3}
+    - target: {fileID: 1499537087505599233, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: de884ed58ee3a92489436863e405750e, type: 3}
+    - target: {fileID: 2542319689365142834, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 25e9d631746943949b5fdedafede565f, type: 3}
     - target: {fileID: 2542319689365142834, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 519420033}
+    - target: {fileID: 2804121358545651590, guid: 82e45cd674648104caa553d13f28341e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a18243c5d1204634aa8c2b11bd52162e, type: 3}
     - target: {fileID: 4485357623120432009, guid: 82e45cd674648104caa553d13f28341e, type: 3}
       propertyPath: cameraController
       value: 

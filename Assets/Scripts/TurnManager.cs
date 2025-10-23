@@ -284,6 +284,8 @@ public class TurnManager : MonoBehaviour
 
     void GetResult()
     {
+        scores.Clear();
+
         for (int i = 0; i < GameManager.selectPlayers; i++)
         {
             scores.Add(players[i].GetComponent<PlayerManager>().GetScore());
