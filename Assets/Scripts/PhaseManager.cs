@@ -37,15 +37,13 @@ public class PhaseManager : MonoBehaviour
         {
             name = TurnManager.currentPlayer.GetComponent<PlayerManager>().player.playerName;
         }
-        switch (currentPhase)
-        {
-            case Phase.gallery:
-                headerText.text = $"ラウンド{TurnManager.roundCnt}\n{name}のターン";
-                UIController.messageText.text = $"{name}のターン";
-                ischange = false;
-                break;
-        }
 
+        if (currentPhase == Phase.gallery)
+        {
+            headerText.text = $"ラウンド{TurnManager.roundCnt}\n{name}のターン";
+            UIController.messageText.text = $"{name}のターン";
+            ischange = false;
+        }
         UIController.isMessageChanged = true;
     }
 
@@ -82,7 +80,7 @@ public class PhaseManager : MonoBehaviour
     {
         currentPhase = Phase.edit;
     }
-    
+
     public void StartAdEdit(Player player)
     {
         uiController.ActiveCameraChangeImage();
