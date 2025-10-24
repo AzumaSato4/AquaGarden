@@ -230,7 +230,7 @@ void ChengeLayer()
 ```
 
 - FishData.cs  
-魚の情報をScriptableObjectを利用することで同じプレハブから簡単に魚駒を生成できるようにした。  
+魚の情報はScriptableObjectを利用することで同じプレハブから簡単に魚駒を生成できるようにした。  
 また、enumで種類と名前を宣言することでタイピングミスを無くした。
 ```C#
 public class PieceData : ScriptableObject
